@@ -1,0 +1,43 @@
+header{
+    background-color: rgb(244, 241, 241);
+    border-radius: 50px;
+    border: 0.5px solid rgba(128, 128, 128, 0.169);
+}
+.nav_content {
+    display: flex;
+    align-items: center; 
+}
+.nav_content ul {
+    display: flex;        
+    gap: 20px;            
+    list-style: none;   
+    margin: 0;
+    padding: 0;  
+}
+.nav_content li a{
+    font-size: 20px;
+    margin: 0px 20px 0px 20px;
+    text-decoration: none;
+    color: black;
+}
+nav{
+    margin: 0px 40px 0px 40px;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+}
+header img{
+    width: 80px;
+    height: auto;
+}
+nav button{
+    font-size: 15px;
+    font-weight: bolder;
+    color: orange;
+    background-color:rgb(244, 241, 241) ;
+    border-radius: 50px;
+    border: 2px solid orange;
+    width: 100px;
+    height: 40px;
+}
