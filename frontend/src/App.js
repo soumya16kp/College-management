@@ -5,7 +5,7 @@ import authService from "./services/authService";
 import { login, logout } from "./store/AuthSlice";
 import { Footer, Header } from './components';
 import { Outlet } from 'react-router-dom';
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 function App() {
 
   const dispatch = useDispatch();
