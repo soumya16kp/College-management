@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login as authLogin } from "../store/AuthSlice";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import authService  from "../services/authService";
-import  Input  from "./Input";
+
+// Make sure these imports are correct for your project structure
+import { login as authLogin } from "../store/AuthSlice";
+import authService from "../services/authService";
+import Input from "./Input"; // Assuming you have a custom Input component
 import "./Login.css"; 
 
 function Login() {
@@ -13,30 +15,32 @@ function Login() {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
 
-  const login = async(data) => {
-    setError("")
+  const handleLogin = async (data) => {
+    setError("");
     try {
-        const session = await authService.login(data)
-        if (session) {
-            const userData = await authService.getCurrentUser()
-            if(userData) dispatch(authLogin(userData));
-            navigate("/")
-        }
-    } catch (error) {
-        setError(error.message)
+      const response = await authService.login(data.email, data.password);
+      
+      if (response && response.user) {
+        dispatch(authLogin(response.user));
+        navigate("/"); 
+      }
+    } catch (err) {
+      setError("Login failed. Please check your credentials.");
+      console.error("Login Error:", err);
     }
-}
+  };
 
   return (
     <div className="login-container">
-      <h2>Login in to your account</h2>
+      <h2>Login to your account</h2>
+      
       <p>
-        Don&apos;t have an account? <Link to="/signup">Sign up here</Link>
+        Don't have an account? <Link to="/signup">Sign up here</Link>
       </p>
 
       {error && <p className="error-message">{error}</p>}
 
-      <form onSubmit={handleSubmit(login)} className="login-form">
+      <form onSubmit={handleSubmit(handleLogin)} className="login-form">
         <div className="input-group">
           <label>Email:</label>
           <Input
@@ -45,7 +49,7 @@ function Login() {
             {...register("email", {
               required: "Email is required",
               pattern: {
-                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
                 message: "Invalid email format",
               },
             })}
@@ -63,7 +67,7 @@ function Login() {
           />
         </div>
 
-        <button type="submit" className="login-button">Login in</button>
+        <button type="submit" className="login-button">Login</button>
       </form>
     </div>
   );

@@ -9,14 +9,15 @@ import { useForm } from "react-hook-form";
 
 function Signup() {
     const navigate = useNavigate();
-    const [error, setError] = useState("");
     const dispatch = useDispatch();
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+    const [serverError, setServerError] = useState("");
 
-    const create = async (data) => {
-        setError("");
+    const createAccount = async (data) => {
+        setServerError("");
         try {
-            const userData = await authService.signup(data.name, data.email, data.password);
+            const userData = await authService.signup(data.username, data.email, data.password);
+            
             if (userData) {
                 const currentUser = await authService.getCurrentUser();
                 if (currentUser) {
@@ -25,8 +26,17 @@ function Signup() {
                 }
             }
         } catch (error) {
-            
-            setError(error.message);
+
+            if (error.response) {
+                const errorData = error.response.data;
+                const errorMessages = Object.keys(errorData).map(key => 
+                    `${key}: ${errorData[key].join(', ')}`
+                ).join(' ');
+                setServerError(errorMessages);
+                console.error("Signup failed:", errorData);
+            } else {
+                setServerError("An unexpected error occurred. Please try again.");
+            }
         }
     };
 
@@ -35,15 +45,18 @@ function Signup() {
             <h2>Sign up to create an account</h2>
             <p>Already have an account? <Link to="/login">Sign In</Link></p>
 
-            {error && <p className="error-message">{error}</p>}
+            {serverError && <p className="error-message">{serverError}</p>}
 
-            <form onSubmit={handleSubmit(create)} className="signup-form">
+            <form onSubmit={handleSubmit(createAccount)} className="signup-form">
+                
+           
                 <div className="input-group">
-                    <label>Full Name:</label>
+                    <label>Username:</label>
                     <Input  
-                        placeholder="Enter your full name"
-                        {...register("name", { required: "Full name is required" })}
+                        placeholder="Choose a username"
+                        {...register("username", { required: "Username is required" })}
                     />
+                    {errors.username && <p className="error-message">{errors.username.message}</p>}
                 </div>
 
                 <div className="input-group">
@@ -54,11 +67,12 @@ function Signup() {
                         {...register("email", {
                             required: "Email is required",
                             pattern: {
-                                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
                                 message: "Invalid email format",
                             },
                         })}
                     />
+                    {errors.email && <p className="error-message">{errors.email.message}</p>}
                 </div>
 
                 <div className="input-group">
@@ -68,9 +82,12 @@ function Signup() {
                         placeholder="Enter your password"
                         {...register("password", { required: "Password is required" })}
                     />
+                    {errors.password && <p className="error-message">{errors.password.message}</p>}
                 </div>
 
-                <button type="submit" className="signup-button">Create Account</button>
+                <button type="submit" className="signup-button" disabled={isSubmitting}>
+                    {isSubmitting ? "Creating Account..." : "Create Account"}
+                </button>
             </form>
         </div>
     );

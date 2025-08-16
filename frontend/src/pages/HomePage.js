@@ -20,6 +20,7 @@ function Navbar() {
 
   return (
     <div>
+    {console.log(localStorage.getItem("token"))};
     <h1>Give me your dick</h1>
     <nav>
       {/* other nav content */}
