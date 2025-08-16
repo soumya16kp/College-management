@@ -3,14 +3,9 @@ import logo from "../../assets/collage.png"
 import "./Header.css"
 import {Link,NavLink} from 'react-router-dom';
 function Header(){
-    const Active = (paraf)=>{
-        const obj = {
-            active_who : 'Home',
-        }
-    }
     return(
         <>
-            <header>
+                        <header>
                 <nav>
                     <div className="logo">
                          <img src={logo} alt="Logo" />

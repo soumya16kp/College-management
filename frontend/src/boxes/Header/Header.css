@@ -1,7 +1,13 @@
 header{
-    background-color: rgb(244, 241, 241);
+    margin: 1% 1% 0% 1%;
+    background-color: #EBEBEB;
     border-radius: 50px;
     border: 0.5px solid rgba(128, 128, 128, 0.169);
+    box-shadow: 0px 1.5px 1px rgb(103, 103, 103);
+    transition: 0.3s;
+}
+header:hover{
+    box-shadow: 0px 4px 1px rgb(103, 103, 103);
 }
 .nav_content {
     display: flex;
@@ -9,16 +15,23 @@ header{
 }
 .nav_content ul {
     display: flex;        
-    gap: 20px;            
+    gap: 30px;            
     list-style: none;   
     margin: 0;
     padding: 0;  
 }
 .nav_content li a{
-    font-size: 20px;
+    font-weight: 700;
+    font-size: 1.2rem;
     margin: 0px 20px 0px 20px;
     text-decoration: none;
-    color: black;
+    color: #3A6EA5;
+    display: inline-block;
+    transition: transform 0.1s ease, color 0.1s ease;
+}
+.nav_content li a:hover{
+    color:#FF6700;
+    transform: translatey(-20%);
 }
 nav{
     margin: 0px 40px 0px 40px;
@@ -30,14 +43,25 @@ nav{
 header img{
     width: 80px;
     height: auto;
+    cursor: pointer;
 }
 nav button{
-    font-size: 15px;
+    cursor: pointer;
+    font-size: 1.1rem;
     font-weight: bolder;
-    color: orange;
-    background-color:rgb(244, 241, 241) ;
+    color: #004E98;
+    background-color: #EBEBEB;
     border-radius: 50px;
-    border: 2px solid orange;
-    width: 100px;
-    height: 40px;
+    border: 2px solid #004E98;
+    width: 125px;
+    height: 50px;
+    box-shadow: 0px 1px 1px #004E98;
+    transition: transform 0.1s ease, color 0.1s ease;
+}
+nav button:hover{
+    color:#FF6700;
+    border: 2px solid #FF6700;
+    box-shadow: 0px 1px 1px #FF6700;
+    transform: translatey(-10%);
+    background-color: #C0C0C0;
 }
