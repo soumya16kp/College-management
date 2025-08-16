@@ -4,10 +4,11 @@ import { useDispatch } from 'react-redux';
 import authService from "./services/authService";
 import { login, logout } from "./store/AuthSlice";
 import { Footer, Header } from './components';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 function App() {
-
+  const location = useLocation();
+  const login_page = location.pathname === "/login";
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
@@ -26,11 +27,11 @@ function App() {
   return !loading ? (
     <div className="app-container">
       <div className="content-wrapper">
-        <Header/>
+        {!login_page && <Header />}
         <main className="main-content">
           <Outlet />
         </main>
-        <Footer/>
+        {!login_page && <Footer />}
       </div>
     </div>
   ) : null;

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { logout as authLogout } from "../store/AuthSlice";
 import authService from "../services/authService";
 import { useNavigate } from "react-router-dom";
-
+import WelcomingEvents from "../components/home_page_components/welcoming_events.jsx";
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,10 +20,7 @@ function Navbar() {
 
   return (
     <div>
-      <h1>hello</h1>
-    <nav>
-      {/* other nav content */}
-    </nav>
+      <WelcomingEvents />
     </div>
   );
 }

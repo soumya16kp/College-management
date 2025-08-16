@@ -59,9 +59,9 @@ nav button{
     transition: transform 0.1s ease, color 0.1s ease;
 }
 nav button:hover{
-    color:#FF6700;
+    box-shadow: 0px 4px 1px rgb(103, 103, 103);
+    background-color: #FF6700;
+    color: white;
     border: 2px solid #FF6700;
-    box-shadow: 0px 1px 1px #FF6700;
     transform: translatey(-10%);
-    background-color: #C0C0C0;
 }
