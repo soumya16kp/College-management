@@ -20,7 +20,11 @@ function Navbar() {
 
   return (
     <div>
-      <h1>Give me your dick</h1>
+    <h1>Give me your dick</h1>
+    <nav>
+      {/* other nav content */}
+      <button onClick={handleLogout}>Logout</button>
+    </nav>
     </div>
   );
 }

@@ -1,24 +1,29 @@
-from rest_framework import serializers
+# users/serializers.py
 from django.contrib.auth.models import User
-from .models import Task
-
-class TaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Task
-        fields = '__all__'
+from rest_framework import serializers, validators
 
 class UserSignupSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ('username', 'password', 'email')
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'email': {
+                'required': True,
+                'allow_blank': False,
+                'validators': [
+                    validators.UniqueValidator(
+                        User.objects.all(), "A user with that Email already exists."
+                    )
+                ]
+            }
+        }
 
     def create(self, validated_data):
-        user = User(
+        # Use create_user to handle password hashing
+        user = User.objects.create_user(
             username=validated_data['username'],
-            email=validated_data.get('email', '')
+            email=validated_data['email'],
+            password=validated_data['password']
         )
-        user.set_password(validated_data['password'])  # Hash the password
-        user.save()
         return user
