@@ -65,3 +65,10 @@ nav button:hover{
     border: 2px solid #FF6700;
     transform: translatey(-10%);
 }
+nav button:active{
+    background-color: #EBEBEB;
+    color: #004E98;
+    box-shadow: 0px 1px 1px #004E98;
+    border: 2px solid #004E98;
+    transform: translatey(0%);
+}
