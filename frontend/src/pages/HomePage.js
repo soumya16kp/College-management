@@ -4,6 +4,7 @@ import { logout as authLogout } from "../store/AuthSlice";
 import authService from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import WelcomingEvents from "../components/home_page_components/welcoming_events.jsx";
+import Clubs from "../components/intro_of_clubs/why_clubs.jsx";
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,9 +20,12 @@ function Navbar() {
   };
 
   return (
-    <div>
-      <WelcomingEvents />
-    </div>
+    <>
+       <div>
+         <WelcomingEvents />
+         <Clubs />
+       </div>
+    </>
   );
 }
 

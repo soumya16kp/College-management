@@ -1,0 +1,82 @@
+
+.clubs-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.clubs-container h1 {
+      display: inline-block;
+  padding: 2% 3%;
+    background-color: #EBEBEB;
+  font-size: 2rem;
+  border-radius: 80px;
+  margin-bottom: 20px;
+  color: #004E98;
+      border: 0.5px solid rgba(128, 128, 128, 0.169);
+    box-shadow: 0px 1.5px 1px rgb(103, 103, 103);
+    transition: 0.1s;
+}
+.clubs-container h1:hover {
+  box-shadow: 0px 4px 1px rgb(103, 103, 103);
+}
+/* Benefits Section */
+.benefits {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 2%;
+}
+
+/* Image Section */
+.image img {
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+  border-radius: 50px;
+        border: 0.5px solid rgba(128, 128, 128, 0.169);
+    box-shadow: 0px 1.5px 1px rgb(103, 103, 103);
+    transition: 0.1s;
+}
+.image img:hover{
+    box-shadow: 0px 4px 1px rgb(103, 103, 103);
+}
+/* Content Section */
+.content {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+}
+
+.title p {
+    font-weight: 700;
+      display: inline-block;
+  padding: 2% 3%;
+    background-color: #EBEBEB;
+  font-size: 2rem;
+  border-radius: 80px;
+  color: #004E98;
+      border: 0.5px solid rgba(128, 128, 128, 0.169);
+    box-shadow: 0px 1.5px 1px rgb(103, 103, 103);
+    transition: 0.3s;
+}
+.title p:hover{
+    box-shadow: 0px 4px 1px rgb(103, 103, 103);
+}
+.description p {
+    margin-top: -1%;
+      display: inline-block;
+  padding: 5% 5%;
+    background-color: #EBEBEB;
+  font-size: 1.3rem;
+  border-radius: 50px;
+  color: #004E98;
+      border: 0.5px solid rgba(128, 128, 128, 0.169);
+    box-shadow: 0px 1.5px 1px rgb(103, 103, 103);
+  white-space: pre-line; /* This makes \n work for line breaks */
+  transition: 0.1s;
+}
+.description p:hover {
+    box-shadow: 0px 4px 1px rgb(103, 103, 103);
+}
