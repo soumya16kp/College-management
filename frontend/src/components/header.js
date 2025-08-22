@@ -28,7 +28,6 @@ function Header() {
                     <NavLink to="/about" onClick={() => Active("About")}>About</NavLink>
                   </li>
                   <li>
-                    <NavLink to="/contact" onClick={() => Active("Contact")}>Contact</NavLink>
                   </li>
                 </ul>
                 </div>

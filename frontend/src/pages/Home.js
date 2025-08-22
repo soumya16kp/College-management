@@ -1,7 +1,7 @@
-import React from "react";
+
 import { useDispatch } from "react-redux";
-import { logout as authLogout } from "../store/AuthSlice";
-import authService from "../services/authService";
+import { logout as authLogout } from "../store/AuthSlice.js";
+import authService from "../services/authService.js";
 import { useNavigate } from "react-router-dom";
 import WelcomingEvents from "../components/home_page_components/welcoming_events.jsx";
 import Clubs from "../components/intro_of_clubs/why_clubs.jsx";

@@ -9,7 +9,13 @@ import App from './App';
 
 import Login from './pages/Login.js';
 import Signup from './pages/Signup.js';
-import HomePage from './pages/HomePage.js';
+import HomePage from './pages/Home.js';
+import Event from './pages/Event.js';
+import Clubs from './pages/Clubs.js';
+import About from './pages/Event_Pages/About.js';
+import Member from './pages/Event_Pages/Member.js';
+import Gallery from './pages/Event_Pages/Gallery.js';
+import Contact from './pages/Event_Pages/Contact.js';
 
 
 const router = createBrowserRouter([
@@ -55,42 +61,42 @@ const router = createBrowserRouter([
       //         </AuthLayout>
       //     ),
       // },
-      // {
-      //     path: "/about",
-      //     element: (
-      //         <AuthLayout authentication>
-      //             {" "}
-      //             <About/>
-      //         </AuthLayout>
-      //     ),
-      // },
-      // {
-      //     path: "/trustees",
-      //     element: (
-      //         <AuthLayout authentication>
-      //             {" "}
-      //             <Trustees/>
-      //         </AuthLayout>
-      //     ),
-      // },
-      // {
-      //     path: "/gallery",
-      //     element: (
-      //         <AuthLayout authentication>
-      //             {" "}
-      //             <Gallery/>
-      //         </AuthLayout>
-      //     ),
-      // },
-      // {
-      //     path: "/contribution",
-      //     element: (
-      //         <AuthLayout authentication>
-      //             {" "}
-      //             <Contribution/>
-      //         </AuthLayout>
-      //     ),
-      // },
+      {
+          path: "/about",
+          element: (
+              <AuthLayout authentication>
+                  {" "}
+                  <About/>
+              </AuthLayout>
+          ),
+      },
+      {
+          path: "/events",
+          element: (
+              <AuthLayout authentication>
+                  {" "}
+                  <Event/>
+              </AuthLayout>
+          ),
+      },
+      {
+          path: "/gallery",
+          element: (
+              <AuthLayout authentication>
+                  {" "}
+                  <Gallery/>
+              </AuthLayout>
+          ),
+      },
+      {
+          path: "/clubs",
+          element: (
+              <AuthLayout authentication>
+                  {" "}
+                  <Clubs/>
+              </AuthLayout>
+          ),
+      },
       //   {
       //       path:"/gallery/:id",
       //       element:(
