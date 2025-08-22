@@ -1,7 +1,7 @@
-import React from 'react'
-import { Link,NavLink } from 'react-router-dom'
-import "../boxes/footer/Footer.css"
-import logo from "../assets/collage.png"
+
+import { Link } from 'react-router-dom'
+import "./Footer.css"
+import logo from "../../assets/collage.png"
 function Footer() {
   return (
     <>

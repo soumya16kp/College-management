@@ -3,18 +3,20 @@ import { useDispatch } from "react-redux";
 import { logout as authLogout } from "../store/AuthSlice.js";
 import authService from "../services/authService.js";
 import { useNavigate } from "react-router-dom";
-import WelcomingEvents from "../components/home_page_components/welcoming_events.jsx";
-import Clubs from "../components/intro_of_clubs/why_clubs.jsx";
-import CardComp from "../components/card-of-club/card-componenet.jsx";
-function Navbar() {
+import EventCarousel from "../components/Home_Components/EventSlideShow.js";
+import WelcomingEvents from "../components/Home_Components/welcoming_events.jsx";
+import Clubs from "../components/Home_Components/why_clubs.jsx";
+import Card from "../components/Club_Card/card.jsx";
+import ClubsList from "../components/Home_Components/ClubSlideShow.js";
+function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await authService.logout(); // API call to backend if needed
-      dispatch(authLogout());     // Update Redux state
-      navigate("/login");         // Redirect to login page
+      await authService.logout(); 
+      dispatch(authLogout());     
+      navigate("/login");         
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -23,12 +25,13 @@ function Navbar() {
   return (
     <>
        <div>
+         <EventCarousel/>
+         <ClubsList/>
          <WelcomingEvents />
          <Clubs />
-         <CardComp />
        </div>
     </>
   );
 }
 
-export default Navbar;
+export default Home;

@@ -1,0 +1,138 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+.clubs-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  color: #1a1a1a;
+}
+
+
+.clubs-container h1 {
+  display: inline-block;
+  padding: 15px 40px;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  font-size: 2.5rem;
+  font-weight: 700;
+  border-radius: 60px;
+  margin-bottom: 40px;
+  color: #1e3a8a;
+  border: 1px solid rgba(30, 58, 138, 0.2);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+.clubs-container h1:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* Benefits Section */
+.benefits {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 60px;
+  gap: 40px;
+}
+
+/* Image Section */
+.image img {
+  width: 350px;
+  height: 350px;
+  object-fit: contain;
+  border-radius: 30px;
+  border: 2px solid rgba(30, 58, 138, 0.15);
+  background: #ffffff;
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.image img:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Content Section */
+.content {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.title p {
+  font-weight: 700;
+  display: inline-block;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #fef9c3, #fde68a);
+  font-size: 1.8rem;
+  border-radius: 50px;
+  color: #92400e; /* Rich amber */
+  border: 1px solid rgba(146, 64, 14, 0.2);
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+.title p:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Description */
+.description p {
+  margin-top: 0;
+  display: inline-block;
+  padding: 20px 25px;
+  background: #f9fafb;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  border-radius: 20px;
+  color: #374151; /* Neutral dark grey */
+  border-left: 5px solid #3b82f6; /* Accent blue bar */
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.08);
+  white-space: pre-line;
+  transition: all 0.3s ease;
+}
+.description p:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.timeline-container {
+  position: relative;
+  z-index: 0;
+}
+
+/* the line sits behind everything */
+.timeline-svg {
+  position: absolute;
+  inset: 0;            
+  z-index: -1;          
+  pointer-events: none; 
+}
+
+/* style the curve */
+.timeline-svg path {
+  fill: none;
+  stroke: #3b82f6;
+  stroke-width: 0.8;    
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 8 8; 
+}
+
+/* ensure cards render above the line */
+.benefits {
+  position: relative;
+  z-index: 1;
+}
