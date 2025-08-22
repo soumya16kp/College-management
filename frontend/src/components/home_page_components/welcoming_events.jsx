@@ -1,6 +1,5 @@
 import React from "react";
 import './welcoming_events.css'
-import ai from "../../assets/ai.png";
 import front from "../../assets/front_photo.png";
 let i = 0;
 function WelcomingEvents() {
@@ -23,7 +22,7 @@ function WelcomingEvents() {
                 </div>
                 <div className="box1">
                     <div className="images">
-                        <img src={ai} />
+                        <img src={front} />
                     </div>
                     <div className="text" id="box1">
                         <h1>AI Horizons: Exploring the Future of Artificial Intelligence</h1>

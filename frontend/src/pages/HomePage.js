@@ -5,6 +5,7 @@ import authService from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import WelcomingEvents from "../components/home_page_components/welcoming_events.jsx";
 import Clubs from "../components/intro_of_clubs/why_clubs.jsx";
+import CardComp from "../components/card-of-club/card-componenet.jsx";
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function Navbar() {
        <div>
          <WelcomingEvents />
          <Clubs />
+         <CardComp />
        </div>
     </>
   );

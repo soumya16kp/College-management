@@ -1,0 +1,94 @@
+.card-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+}
+.card {
+  position: relative;
+  width: 300px;
+  height: 425px;
+  background: #EBEBEB;
+  border-radius: 50px;
+  border: 0.5px solid rgba(128, 128, 128, 0.169);
+  box-shadow: 0px 1.5px 1px rgb(78, 76, 76);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  text-align: center;
+  margin: 0;
+  padding: 0px 20px;
+  flex: 0 0 auto; 
+}
+
+
+.card:hover {
+    transform: scale(1.1);
+  box-shadow: 0px 4px 1px rgb(49, 48, 48);
+}
+.card-img {
+    top: -25%;
+    left: 10%;
+    position: absolute;
+  width: 65%;
+  height: 300px;
+  object-fit: cover;
+  transition: 0.3s;
+}
+.card:hover .card-img {
+    top: -20%;
+    left: 20%;
+  transform: scale(1.1);
+}
+
+.card-content{
+    margin-top: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.card-content h2 {
+color:#004E98;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+.card:hover h2{
+    color: #FF6700;
+}
+.card-content p {
+    color: #004E98;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.card-btn {
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bolder;
+    color: #004E98;
+    background-color: #EBEBEB;
+    border-radius: 50px;
+    border: 2px solid #004E98;
+    width: 150px;
+    height: 50px;
+    box-shadow: 0px 1px 1px #004E98;
+    transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.card:hover .card-btn {
+      box-shadow: 0px 4px 1px rgb(103, 103, 103);
+    background-color: #FF6700;
+    color: white;
+    border: 2px solid #FF6700;
+    transform: translateY(-10%);
+}
+.card-btn:active{
+    background-color: #EBEBEB;
+    color: #004E98;
+    box-shadow: 0px 1px 1px #004E98;
+    border: 2px solid #004E98;
+    transform: translateY(0%);
+}
