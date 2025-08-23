@@ -10,6 +10,7 @@ import Event from './pages/Event.js';
 import Login from './pages/Login.js';
 import Signup from './pages/Signup.js';
 import HomePage from './pages/Home.js';
+import Clubs from './pages/Clubs.js';
 
 
 const router = createBrowserRouter([
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
             <Event />
           </AuthLayout>
         )
-      }
+      },
       // {
       //     path: "/admin",
       //     element: (
@@ -90,15 +91,15 @@ const router = createBrowserRouter([
       //         </AuthLayout>
       //     ),
       // },
-      // {
-      //     path: "/contribution",
-      //     element: (
-      //         <AuthLayout authentication>
-      //             {" "}
-      //             <Contribution/>
-      //         </AuthLayout>
-      //     ),
-      // },
+      {
+          path: "/clubs",
+          element: (
+              <AuthLayout authentication>
+                  {" "}
+                  <Clubs/>
+              </AuthLayout>
+          ),
+      },
       //   {
       //       path:"/gallery/:id",
       //       element:(
