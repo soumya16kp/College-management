@@ -6,6 +6,8 @@ import { login, logout } from "./store/AuthSlice";
 import { Footer, Header } from './components';
 import { Outlet, useLocation } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { ClubProvider } from "./context/ClubContext";
+
 function App() {
   const location = useLocation();
   const login_page = location.pathname === "/login";
@@ -25,15 +27,17 @@ function App() {
     }, [dispatch]);
 
   return !loading ? (
-    <div className="app-container">
-      <div className="content-wrapper">
-        {!login_page && <Header />}
-        <main className="main-content">
-          <Outlet />
-        </main>
-        {!login_page && <Footer />}
-      </div>
-    </div>
+     <ClubProvider>  
+        <div className="app-container">
+          <div className="content-wrapper">
+            {!login_page && <Header />}
+            <main className="main-content">
+              <Outlet />
+            </main>
+            {!login_page && <Footer />}
+          </div>
+        </div>
+    </ClubProvider>
   ) : null;
 }
 
