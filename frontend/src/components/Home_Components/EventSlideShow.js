@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./EventSlideShow.css";
 
-const events = [
+export const events = [
   {
     id: 1,
     title: "Tech Fest 2025",
     description: "Join us for the biggest annual tech festival with coding, AI, and robotics events.",
     image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=800&q=80",
-    date: "March 15-17, 2025",
+    date: "March 17, 2025",
     link: "https://example.com/tech-fest"
   },
   {
@@ -24,7 +24,7 @@ const events = [
     title: "Sports Meet",
     description: "Witness the thrilling competitions and showcase of athletic talent.",
     image: "https://images.unsplash.com/photo-1505842465776-3d90f616310d?auto=format&fit=crop&w=800&q=80",
-    date: "May 12-14, 2025",
+    date: "May 14, 2025",
     link: "https://example.com/sports-meet"
   },
   {

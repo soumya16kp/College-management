@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import EventCarousel from "../components/Home_Components/EventSlideShow.js";
 import WelcomingEvents from "../components/Home_Components/welcoming_events.jsx";
 import Clubs from "../components/Home_Components/why_clubs.jsx";
-import Card from "../components/Club_Card/card.jsx";
 import ClubsList from "../components/Home_Components/ClubSlideShow.js";
 function Home() {
   const dispatch = useDispatch();
