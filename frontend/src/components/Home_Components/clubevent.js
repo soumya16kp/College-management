@@ -1,4 +1,6 @@
 import { useState } from "react";
+import "../../pages/Event.css";
+import notfound from "../../assets/notfound.png";
 function ClubEvent({ events = [], type }) {
   const [activeCard, setActiveCard] = useState(null);
 
@@ -19,7 +21,9 @@ function ClubEvent({ events = [], type }) {
                   <div className="club-overlay">
                     <div className="club-content">
                       <h3>{event.title}</h3>
+                      <p>{event.date}</p>
                       <p>{event.description}</p>
+                      <button className="club-join-btn1" title="Total People Enrolled"><i class="fa-regular fa-user"></i>&nbsp;100</button>
                       <button className="club-join-btn">Learn More</button>
                     </div>
                   </div>
@@ -28,7 +32,12 @@ function ClubEvent({ events = [], type }) {
               </div>
             ))
           ) : (
-            <p>No {type} events right now.</p>
+            <>
+              <div className="no-events-container">
+                <img className="no-events-image" src={notfound} alt="No events found" />
+                <p className="no-events-message">No {type} events right now.</p>
+              </div>
+            </>
           )}
         </div>
       </section>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import EventCarousel, { events } from "../components/Home_Components/EventSlideShow.js";
 import ClubEvent from '../components/Home_Components/clubevent.js';
-
+import "./Event.css";
 function Event() {
   const [activeTab, setActiveTab] = useState("live");
 
@@ -9,7 +9,7 @@ function Event() {
   const live = [];
   const upcoming = [];
   const past = [];
-
+  console.log(upcoming);
   events.forEach(element => {
     const eventdate = new Date(element.date);
     const today = new Date(time.toDateString());
@@ -27,11 +27,33 @@ function Event() {
   return (
     <div>
       <EventCarousel />
-      <div>
+      <div className='buttons'>
         <ul>
-          <li><button onClick={() => setActiveTab("live")}>Live Events</button></li>
-          <li><button onClick={() => setActiveTab("upcoming")}>Upcoming Events</button></li>
-          <li><button onClick={() => setActiveTab("past")}>Past Events</button></li>
+            <li>
+              <button
+                className={activeTab === "live" ? "active" : ""}
+                onClick={() => setActiveTab("live")}
+              >
+                Live Events
+              </button>
+            </li>
+            <li>
+              <button
+                className={activeTab === "upcoming" ? "active" : ""}
+                onClick={() => setActiveTab("upcoming")}
+              >
+                Upcoming Events
+              </button>
+            </li>
+            <li>
+              <button
+                className={activeTab === "past" ? "active" : ""}
+                onClick={() => setActiveTab("past")}
+              >
+                Past Events
+              </button>
+            </li>
+
         </ul>
       </div>
 

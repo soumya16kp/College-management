@@ -12,7 +12,6 @@ import Signup from './pages/Signup.js';
 import HomePage from './pages/Home.js';
 import Clubs from './pages/Clubs.js';
 
-
 const router = createBrowserRouter([
   {
     path: "/",
