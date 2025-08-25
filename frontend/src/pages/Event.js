@@ -25,8 +25,7 @@ function Event() {
   });
 
   return (
-    <div>
-      <EventCarousel />
+    <div className='event-container'> 
       <div className='buttons'>
         <ul>
             <li>
