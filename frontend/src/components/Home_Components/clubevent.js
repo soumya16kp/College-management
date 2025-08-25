@@ -7,6 +7,10 @@ function ClubEvent({ events = [], type }) {
   return (
     <div>
       <section className="clubs-section">
+        <div className="clubs-header">
+          <h2>Explore Our {type} Clubs Events</h2>
+          <p>Join vibrant communities Events and Discover your passion.</p>
+        </div>
         <div className="clubs-grid">
           {events.length > 0 ? (
             events.map((event, index) => (

@@ -25,9 +25,9 @@ function Home() {
     <>
        <div>
          <EventCarousel/>
-         <ClubsList/>
+         <ClubsList classes={1}/>
          <WelcomingEvents />
-         <Clubs />
+         <Clubs/>
        </div>
     </>
   );

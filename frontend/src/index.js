@@ -45,6 +45,14 @@ const router = createBrowserRouter([
           </AuthLayout>
         )
       },
+      {
+        path: "/clubs",
+        element: (
+          <AuthLayout authentication={false}>
+            <Clubs />
+          </AuthLayout>
+        )
+      },
       // {
       //     path: "/admin",
       //     element: (
