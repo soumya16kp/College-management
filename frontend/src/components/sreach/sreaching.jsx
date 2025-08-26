@@ -1,21 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./searching.css";
 
 const Searching = () => {
+  const inputRef = useRef(null);
   const [showOptions, setShowOptions] = useState(false);
-
+  const [isFilterActive, setIsFilterActive] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false);
   const toggleFilterOptions = () => {
     setShowOptions(prev => !prev);
+    setIsFilterActive(prev => !prev); 
   };
-
+  const handleSearchclick = () =>{
+    setIsSearchActive(prev => !prev);
+    if(inputRef.current){
+      inputRef.current.focus();
+    }
+  }
   return (
     <div className="search-container">
-      <input className="search" placeholder="Search Clubs" />
+      <input ref={inputRef} className="search" placeholder="Search Clubs" />
       <div className="se-icon">
-        <button><i className="fa-solid fa-magnifying-glass"></i></button>
+        <button onClick={handleSearchclick} 
+        className={isSearchActive ? "active" : ""}>
+          <i className="fa-solid fa-magnifying-glass"></i>
+        </button>
       </div>
       <div className="filter-container">
-        <button className="filter-button" onClick={toggleFilterOptions}>
+        <button
+          className={`filter-button ${isFilterActive ? "active" : ""}`}
+          onClick={toggleFilterOptions}
+
+        >
           <i className="fa-solid fa-filter"></i>
         </button>
         {showOptions && (
