@@ -50,6 +50,12 @@ const clubs = [
 ];
 
 function ClubsList({ classes }) {
+
+  const sorting = (info) =>{
+    console.log(info);
+    console.log("Hello")
+  }
+
   const [activeCard, setActiveCard] = useState(null);
 
   return (
@@ -90,7 +96,7 @@ function ClubsList({ classes }) {
         <h2>Explore Our Clubs</h2>
         <p>Join vibrant student communities and discover your passion.</p>
       </div>
-      <Searching />
+      <Searching sort={sorting} />
       <div className="clubs-grid">
         {clubs.map((club, index) => (
           <div 
