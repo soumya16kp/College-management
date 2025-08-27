@@ -1,9 +1,9 @@
 import {clubs} from "../components/Home_Components/ClubSlideShow";
 import { useState } from "react";
 import { useClubs } from "../context/ClubContext";
-import ClubCard from "../components/Club_Card/ClubCard";
+import ClubCard from "../components/Card/ClubCard";
 import "./Clubs.css";
-import ClubsList from "../components/Home_Components/ClubSlideShow";
+
 const Clubs = () => {
   const { clubs, addClub, editClub, removeClub } = useClubs();
   const [newClub, setNewClub] = useState({ name: "", description: "" });
@@ -25,7 +25,6 @@ const Clubs = () => {
 
   return (
     <div className="club-page">
-      <ClubsList classes={0} />
       <h1 className="club-heading">College Clubs</h1>
 
       <form onSubmit={handleAddClub} className="club-form">
@@ -47,6 +46,7 @@ const Clubs = () => {
       </form>
 
       <div className="club-grid">
+        {console.log(clubs)}
         {clubs.map((club) => (
           <ClubCard
             key={club.id}

@@ -1,5 +1,5 @@
-// frontend/src/context/ClubContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
+
+import  { createContext, useContext, useState, useEffect } from "react";
 import { getClubs, createClub, updateClub, deleteClub } from "../services/clubService";
 
 const ClubContext = createContext();

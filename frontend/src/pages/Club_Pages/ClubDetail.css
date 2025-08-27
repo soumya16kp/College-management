@@ -1,0 +1,31 @@
+.club-subnav {
+  display: flex;
+  gap: 20px;
+  background: #f9f9f9;
+  padding: 12px 20px;
+  border-bottom: 2px solid #ddd;
+}
+
+.club-subnav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: 0.3s ease;
+}
+
+.club-subnav a:hover {
+  background: #007bff;
+  color: white;
+}
+
+.club-subnav .active {
+  border-bottom: 3px solid #007bff;
+  font-weight: 600;
+  color: #007bff;
+}
+
+.club-subcontent {
+  padding: 20px;
+}

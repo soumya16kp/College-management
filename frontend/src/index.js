@@ -11,6 +11,20 @@ import Login from './pages/Login.js';
 import Signup from './pages/Signup.js';
 import HomePage from './pages/Home.js';
 import Clubs from './pages/Clubs.js';
+import EventDetail from './pages/EventDetail.js';
+
+import ClubAbout from './pages/Club_Pages/ClubAbout.js';
+import Contact from './pages/Club_Pages/Contact.js'
+import ClubEvent from './pages/Club_Pages/Event.js';
+import Member from './pages/Club_Pages/Member.js'
+import Gallery from './pages/Club_Pages/Gallery.js'
+import ClubDetail from "./pages/Club_Pages/ClubDetail.js";
+
+
+
+import { ClubProvider } from "./context/ClubContext";
+import { EventProvider } from "./context/EventContext";
+
 
 const router = createBrowserRouter([
   {
@@ -42,6 +56,15 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication={false}>
             <Event />
+          </AuthLayout>
+        )
+      },
+      {
+        path: "/clubs",
+        element: (
+          <AuthLayout authentication>
+            {" "}
+            <Clubs />
           </AuthLayout>
         )
       },
@@ -91,22 +114,35 @@ const router = createBrowserRouter([
       //     ),
       // },
       {
-          path: "/clubs",
+          path: "/events/:id",
           element: (
+<<<<<<< HEAD
               <AuthLayout authentication = {false}>
                   <Clubs/>
+=======
+              <AuthLayout authentication>
+                  {" "}
+                  <EventDetail/>
+>>>>>>> f3a34ad19ea06bbdbf458231a56b305b7591bf86
               </AuthLayout>
           ),
       },
-      //   {
-      //       path:"/gallery/:id",
-      //       element:(
-      //           <AuthLayout authentication>
-      //                {" "}
-      //                <Event/>
-      //           </AuthLayout>
-      //       ),
-      //   },
+        {
+            path:"/clubs/:id",
+            element:(
+                <AuthLayout authentication>
+                     {" "}
+                     <ClubDetail/>
+                </AuthLayout>
+            ),
+            children: [
+              { path: "about", element: <ClubAbout/> },
+              { path: "contact", element: <Contact/> },
+              { path: "gallery", element: <Gallery/>},
+              { path: "members", element: <Member/> },
+              { path: "events", element: <ClubEvent/> },
+            ]
+        },
       //   {
       //       path:"/user/:id",
       //       element:(
@@ -120,10 +156,14 @@ const router = createBrowserRouter([
   },
 ])
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-    <RouterProvider router={router}/>
+      <ClubProvider>
+        <EventProvider>
+          <RouterProvider router={router} />
+        </EventProvider>
+      </ClubProvider>
     </Provider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);
