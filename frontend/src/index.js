@@ -55,7 +55,6 @@ const router = createBrowserRouter([
         path: "/events",
         element: (
           <AuthLayout authentication>
-          <AuthLayout authentication>
             {" "}
             <Event />
           </AuthLayout>
@@ -65,6 +64,7 @@ const router = createBrowserRouter([
         path: "/clubs",
         element: (
           <AuthLayout authentication>
+            {" "}
             <Clubs />
           </AuthLayout>
         )
