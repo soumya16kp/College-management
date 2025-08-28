@@ -116,14 +116,9 @@ const router = createBrowserRouter([
       {
           path: "/events/:id",
           element: (
-<<<<<<< HEAD
-              <AuthLayout authentication = {false}>
-                  <Clubs/>
-=======
               <AuthLayout authentication>
                   {" "}
                   <EventDetail/>
->>>>>>> f3a34ad19ea06bbdbf458231a56b305b7591bf86
               </AuthLayout>
           ),
       },
