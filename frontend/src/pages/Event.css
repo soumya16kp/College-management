@@ -7,11 +7,14 @@
 
 .event-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+  display:flex;
+  flex-direction: column;
 }
 
 .event-header h1 {
-  font-size: 2.5rem;
+  font-size: 4rem;
+  color: #2c5282;
 }
 .clubs-header h2 {
   font-size: 2rem;
@@ -30,7 +33,7 @@
 .tab-buttons {
   display: flex;
   justify-content: center;
-  margin: 2rem 0 3rem;
+  margin: 2rem 0 2.5rem;
   margin: 70px 0px -30px;
 }
 
@@ -85,6 +88,7 @@
 }
 
 .events-container {
+  margin-top: 4rem;
   min-height: 400px;
 }
 
@@ -108,7 +112,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem;
+  padding: 1rem;
   text-align: center;
 }
 
@@ -116,12 +120,11 @@
   font-size: 1.5rem;
   font-weight: 600;
   color: #64748b;
-  margin-top: 1.5rem;
 }
 
 .no-events-image {
-  max-width: 400px;
-  height: auto;
+  max-width: 500px;
+  height: 350px;
   opacity: 0.8;
 }
 

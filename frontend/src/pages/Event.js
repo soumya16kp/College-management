@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useEvents } from '../context/EventContext';
 import EventCard from '../components/Card/EventCard';
+import NoEvents from "../assets/ChatGPT Image Aug 28, 2025, 11_56_28 AM.png"
 import "./Event.css";
 
 function Event() {
@@ -97,7 +98,7 @@ function Event() {
         ) : (
           <div className="no-events-container">
             <img 
-              src="/api/placeholder/400/300" 
+              src={NoEvents}
               alt="No events" 
               className="no-events-image"
             />

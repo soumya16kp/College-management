@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import { logout as authLogout } from "../store/AuthSlice.js";
 import authService from "../services/authService.js";
 import { useNavigate } from "react-router-dom";
-import EventCarousel from "../components/Home_Components/EventSlideShow.js";
-import WelcomingEvents from "../components/Home_Components/welcoming_events.jsx";
-import Clubs from "../components/Home_Components/why_clubs.jsx";
-import ClubsList from "../components/Home_Components/ClubSlideShow.js";
+import EventCarousel from "../components/HomeComponents/EventSlideShow.js";
+import WelcomingEvents from "../components/HomeComponents/welcoming_events.jsx";
+import Clubs from "../components/HomeComponents/why_clubs.jsx";
+import ClubsList from "../components/HomeComponents/ClubSlideShow.js";
 function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

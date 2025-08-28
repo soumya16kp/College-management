@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './ClubAbout.css';
+import { useClubs } from "../../context/ClubContext";
+import { useParams } from 'react-router-dom';
+import ClubEditForm from '../../forms/ClubEditForm'; // Import the new component
 
 const ClubAbout = () => {
+  const { id } = useParams();
+  const { clubs, editClub, removeClub } = useClubs();
+  const [club, setClub] = useState(null);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [aboutText, setAboutText] = useState("Welcome to Literary Legends, a community of passionate readers who believe in the transformative power of books. We gather to explore diverse genres, discuss thought-provoking ideas, and connect with fellow literature enthusiasts. Our club meets every second Tuesday of the month to discuss our latest read, share recommendations, and occasionally host author Q&A sessions.");
+
+  useEffect(() => {
+    const found = clubs.find((c) => String(c.id) === String(id));
+    if (found) {
+      setClub(found);
+    }
+  }, [id, clubs]);
+
+  if (!club) {
+    return <p>Loading club...</p>;
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -25,28 +42,49 @@ const ClubAbout = () => {
     closeMenu();
   };
 
-  const handleSave = () => {
-    setIsEditModalOpen(false);
-    // In a real app, you would save the changes to your backend here
+  const handleSaveEdit = async (formData) => {
+    try {
+      // Create FormData for file uploads
+      const uploadData = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (formData[key]) {
+          uploadData.append(key, formData[key]);
+        }
+      });
+      
+      await editClub(club.id, uploadData);
+      setIsEditModalOpen(false);
+      
+      // Refresh the club data
+      const updatedClub = clubs.find((c) => String(c.id) === String(id));
+      if (updatedClub) {
+        setClub(updatedClub);
+      }
+    } catch (error) {
+      console.error("Failed to update club:", error);
+    }
   };
 
-  const confirmDelete = () => {
-    setIsDeleteModalOpen(false);
-    // In a real app, you would delete the club from your backend here
+  const confirmDelete = async () => {
+    try {
+      await removeClub(club.id);
+      setIsDeleteModalOpen(false);
+      // Navigate away or show success message
+    } catch (error) {
+      console.error("Failed to delete club:", error);
+    }
   };
 
   return (
     <div className="club-about-container" onClick={closeMenu}>
-      {/* Club Header with Banner */}
       <div className="club-header">
         <img 
-          src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" 
+          src={club.coursol || "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
           alt="Club Banner" 
           className="club-banner" 
         />
       </div>
 
-      {/* Club Info Section */}
       <div className="club-info">
         {/* Actions Dropdown */}
         <div className="club-actions">
@@ -69,13 +107,13 @@ const ClubAbout = () => {
         {/* Club Title and Logo */}
         <div className="club-title">
           <img 
-            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" 
-            alt="Book Club Logo" 
+            src={club.image || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
+            alt="Club Logo" 
             className="club-logo" 
           />
           <div>
-            <h1 className="club-name">Literary Legends Book Club</h1>
-            <span className="club-category">Books & Literature</span>
+            <h1 className="club-name">{club.name}</h1>
+            <span className="club-category">{club.tagline}</span>
           </div>
         </div>
 
@@ -103,7 +141,7 @@ const ClubAbout = () => {
         <div className="about-section">
           <h2 className="section-title">About Us</h2>
           <p className="about-text">
-            {aboutText}
+            {club.description}
           </p>
         </div>
 
@@ -114,7 +152,7 @@ const ClubAbout = () => {
               <i className="fas fa-users"></i> Membership
             </div>
             <div className="detail-content">
-              Open to all book lovers. No membership fees required.
+              {club.interest}
             </div>
           </div>
           <div className="detail-card">
@@ -122,7 +160,7 @@ const ClubAbout = () => {
               <i className="fas fa-map-marker-alt"></i> Location
             </div>
             <div className="detail-content">
-              Mostly virtual with occasional in-person meetings in Central Park.
+              {club.location}
             </div>
           </div>
           <div className="detail-card">
@@ -130,7 +168,7 @@ const ClubAbout = () => {
               <i className="fas fa-calendar-alt"></i> Meeting Schedule
             </div>
             <div className="detail-content">
-              Every 2nd Tuesday of the month, 7:00 PM EST via Zoom.
+             {club.schedule}
             </div>
           </div>
         </div>
@@ -176,66 +214,13 @@ const ClubAbout = () => {
         </div>
       </div>
 
-      {/* Edit Modal */}
+      {/* Edit Modal using ClubEditForm component */}
       {isEditModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2 className="modal-title">Edit Club Information</h2>
-              <button className="close-btn" onClick={() => setIsEditModalOpen(false)}>
-                &times;
-              </button>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Club Name</label>
-              <input 
-                type="text" 
-                className="form-input" 
-                defaultValue="Literary Legends Book Club" 
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Category</label>
-              <input 
-                type="text" 
-                className="form-input" 
-                defaultValue="Books & Literature" 
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Description</label>
-              <textarea 
-                className="form-input form-textarea" 
-                defaultValue={aboutText}
-                onChange={(e) => setAboutText(e.target.value)}
-              ></textarea>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Meeting Schedule</label>
-              <input 
-                type="text" 
-                className="form-input" 
-                defaultValue="Every 2nd Tuesday of the month, 7:00 PM EST" 
-              />
-            </div>
-            <div className="modal-actions">
-              <button 
-                type="button" 
-                className="btn btn-cancel" 
-                onClick={() => setIsEditModalOpen(false)}
-              >
-                Cancel
-              </button>
-              <button 
-                type="button" 
-                className="btn btn-primary" 
-                onClick={handleSave}
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
+        <ClubEditForm 
+          club={club} 
+          onSave={handleSaveEdit} 
+          onCancel={() => setIsEditModalOpen(false)} 
+        />
       )}
 
       {/* Delete Modal */}
@@ -248,7 +233,7 @@ const ClubAbout = () => {
                 &times;
               </button>
             </div>
-            <p>Are you sure you want to delete "Literary Legends Book Club"? This action cannot be undone.</p>
+            <p>Are you sure you want to delete "{club.name}"? This action cannot be undone.</p>
             <div className="modal-actions">
               <button 
                 type="button" 

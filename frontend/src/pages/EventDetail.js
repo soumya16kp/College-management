@@ -16,7 +16,7 @@ export default function EventDetail() {
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this event?")) {
       await removeEvent(id);
-      navigate(-1); // go back after deletion
+      navigate(-1); 
     }
   };
 
@@ -31,7 +31,7 @@ export default function EventDetail() {
       </button>
 
       <div className="event-card">
-        <div className="event-header">
+        <div className="eventdetail-header">
           <h1>{selectedEvent.title}</h1>
           <div className="event-menu">
             <button className="menu-btn">

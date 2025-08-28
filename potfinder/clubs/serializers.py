@@ -11,12 +11,14 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 # --- serializer for Club (basic) ---
+
 class ClubSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
+    image = serializers.ImageField(use_url=True, required=False)
+    coursol = serializers.ImageField(use_url=True, required=False)
+
     class Meta:
         model = Club
-        fields = ['id','name', 'description', 'image']  
-
+        fields = ['id', 'name', 'tagline','description', 'image', 'coursol','schedule','interest','location']
 
 # --- serializer for Club with related events ---
 class ClubDetailSerializer(serializers.ModelSerializer):

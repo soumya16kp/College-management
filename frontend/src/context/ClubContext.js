@@ -9,7 +9,6 @@ export const useClubs = () => useContext(ClubContext);
 export const ClubProvider = ({ children }) => {
   const [clubs, setClubs] = useState([]);
 
-  // Fetch all clubs on mount
   useEffect(() => {
     fetchClubs();
   }, []);
