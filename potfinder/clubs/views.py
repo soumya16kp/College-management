@@ -11,7 +11,6 @@ def club_list(request):
     if request.method == 'GET':
         clubs = Club.objects.all()
         serializer = ClubSerializer(clubs, many=True)
-        print(serializer.data)  
         return Response(serializer.data)
 
     elif request.method == 'POST':
@@ -96,6 +95,7 @@ def event_detail(request, pk):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+          
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':

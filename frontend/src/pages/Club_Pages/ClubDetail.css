@@ -56,7 +56,6 @@
 
 /* Content area */
 .club-subcontent {
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
   padding: 2rem;
   min-height: 400px;
 }
