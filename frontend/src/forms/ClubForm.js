@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useClubs } from "../context/ClubContext";
 import "./ClubForm.css";
-
+import club from "../assets/club.png";
 const ClubForm = () => {
   const { addClub } = useClubs();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -10,13 +10,13 @@ const ClubForm = () => {
   const [formErrors, setFormErrors] = useState({});
 
   const [formData, setFormData] = useState({
-    name: "",
-    tagline: "",
-    description: "",
-    interest: "",
-    location: "",
-    schedule: "",
-    image: null,
+    name: "Tech Innovators Club",
+    tagline: "Innovate. Build. Lead.",
+    description: "A club for tech enthusiasts to collaborate and innovate.",
+    interest: "Technology",
+    location: "Building A, Room 101",
+    schedule: "Fridays at 3 PM",
+    image: club,
     coursol: null,
   });
 

@@ -3,11 +3,11 @@ import "./EventForm.css";
 
 const EventForm = ({clubId, onAddEvent }) => {
   const [eventData, setEventData] = useState({
-    title: "",
-    date: "",
-    time: "",
-    location: "",
-    description: "",
+    title: "Tech Talk 2025",
+    date: "2025-09-15",
+    time: "14:30",
+    location: "Auditorium",
+    description: "A session on the latest trends in Artificial Intelligence, Cloud Computing, and their applications in real-world projects.",
   });
 
   const handleChange = (e) => {
@@ -22,11 +22,11 @@ const EventForm = ({clubId, onAddEvent }) => {
     console.log("Calling onAddEvent now...");
     onAddEvent(clubId, eventData);
     setEventData({
-      title: "",
-      date: "",
-      time: "",
-      location: "",
-      description: "",
+      title: "Coding Marathon 2025",
+      date: "2025-10-10",
+      time: "10:00",
+      location: "Main Hall",
+      description: "A 12-hour competitive coding event where participants solve algorithmic challenges to win exciting prizes.",
     });
   };
 
