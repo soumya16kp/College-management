@@ -18,7 +18,7 @@ export const EventProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 🔹 Fetch all events (global)
+ 
   const fetchAllEvents = useCallback(async () => {
     try {
       setLoading(true);
@@ -67,6 +67,7 @@ export const EventProvider = ({ children }) => {
   const addEvent = async (clubId, eventData) => {
     try {
       setError(null);
+      console.log(eventData);
       const newEvent = await createEvent(clubId, eventData);
       setEvents((prev) => [...prev, newEvent]);
       return newEvent;

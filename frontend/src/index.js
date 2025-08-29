@@ -54,7 +54,8 @@ const router = createBrowserRouter([
       {
         path: "/events",
         element: (
-          <AuthLayout authentication={false}>
+          <AuthLayout authentication>
+            {" "}
             <Event />
           </AuthLayout>
         )
@@ -96,7 +97,7 @@ const router = createBrowserRouter([
       //     ),
       // },
       // {
-      //     path: "/trustees",
+      //     path: "/members",
       //     element: (
       //         <AuthLayout authentication>
       //             {" "}

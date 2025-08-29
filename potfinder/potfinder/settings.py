@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'api',
     'clubs',
+    'gallery',
     'rest_framework.authtoken',
 ]
 

@@ -17,6 +17,7 @@ const ClubAbout = () => {
     const found = clubs.find((c) => String(c.id) === String(id));
     if (found) {
       setClub(found);
+      console.log(club)
     }
   }, [id, clubs]);
 

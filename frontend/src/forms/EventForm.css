@@ -1,46 +1,70 @@
+/* Alternative modern glass effect style */
 .event-form {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin: 2rem 0;
   max-width: 500px;
-  margin: 20px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .event-form h2 {
+  color: #2d3748;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
   text-align: center;
-  margin-bottom: 10px;
-  color: #333;
+  background: linear-gradient(135deg, #4299e1 0%, #667eea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .event-form input,
 .event-form textarea {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  outline: none;
-  font-size: 14px;
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 1.2rem;
+  border: 2px solid rgba(66, 153, 225, 0.1);
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .event-form input:focus,
 .event-form textarea:focus {
-  border-color: #007bff;
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.15);
+  background: white;
 }
 
 .event-form .btn {
-  background: #007bff;
+  width: 100%;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #4299e1 0%, #667eea 100%);
   color: white;
   border: none;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 15px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
 }
 
 .event-form .btn:hover {
-  background: #0056b3;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
+}
+
+.event-form .btn:active {
+  transform: translateY(-1px);
 }
