@@ -3,11 +3,11 @@ import "./EventForm.css";
 
 const EventForm = ({clubId, onAddEvent }) => {
   const [eventData, setEventData] = useState({
-    title: "Tech Talk 2025",
-    date: "2025-09-15",
-    time: "14:30",
-    location: "Auditorium",
-    description: "A session on the latest trends in Artificial Intelligence, Cloud Computing, and their applications in real-world projects.",
+    title: "",
+    date: "",
+    time: "",
+    location: "",
+    description: "",
   });
 
   const handleChange = (e) => {
