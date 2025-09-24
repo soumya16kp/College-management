@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react';
+import "./Contact.css";
 
 function Contact() {
-  return (
-    <div>Contact</div>
+  return(
+    <div>
+      <h1>Contact Us</h1>
+    </div>
   )
 }
 
-export default Contact
+export default Contact;
