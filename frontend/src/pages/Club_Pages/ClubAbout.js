@@ -174,45 +174,7 @@ const ClubAbout = () => {
           </div>
         </div>
 
-        {/* Members Section */}
-        <div className="members-section">
-          <h2 className="section-title">Club Leaders</h2>
-          <div className="members-grid">
-            <div className="member-card">
-              <img 
-                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80" 
-                alt="Member" 
-                className="member-img" 
-              />
-              <div className="member-info">
-                <div className="member-name">Sarah Johnson</div>
-                <div className="member-role">Founder & Lead Organizer</div>
-              </div>
-            </div>
-            <div className="member-card">
-              <img 
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80" 
-                alt="Member" 
-                className="member-img" 
-              />
-              <div className="member-info">
-                <div className="member-name">Michael Chen</div>
-                <div className="member-role">Discussion Moderator</div>
-              </div>
-            </div>
-            <div className="member-card">
-              <img 
-                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80" 
-                alt="Member" 
-                className="member-img" 
-              />
-              <div className="member-info">
-                <div className="member-name">Jessica Williams</div>
-                <div className="member-role">Event Coordinator</div>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
 
       {/* Edit Modal using ClubEditForm component */}

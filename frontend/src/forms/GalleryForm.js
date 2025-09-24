@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import authService from "../services/authService";
 import { FiUpload, FiX, FiCheck, FiAlertCircle } from "react-icons/fi";
 import { MdCloudUpload } from "react-icons/md";
+import './GalleryForm.css'
 
 const GalleryForm = ({ eventId, onUploadSuccess }) => {
   const [images, setImages] = useState([]);

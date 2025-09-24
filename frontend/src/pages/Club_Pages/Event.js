@@ -4,7 +4,7 @@ import { useEvents } from "../../context/EventContext";
 import { useParams } from "react-router-dom";
 import { FiCalendar, FiClock, FiMapPin, FiTrash2, FiPlus, FiEdit } from "react-icons/fi";
 import { MdEvent, MdGroups } from "react-icons/md";
-import "./Event.css";
+import "./ClubEvent.css";
 
 function ClubEvent() {
   const { id } = useParams(); 
@@ -55,69 +55,69 @@ function ClubEvent() {
     });
   };
 
-  if (loading) return <div className="events-loading">Loading events...</div>;
-  if (error) return <div className="events-error">Error: {error}</div>;
+  if (loading) return <div className="club-event-loading">Loading events...</div>;
+  if (error) return <div className="club-event-error">Error: {error}</div>;
 
   return (
-    <div className="club-events-container">
+    <div className="club-event-container">
       {/* Header */}
-      <div className="events-header">
-        <div className="header-content">
-          <MdEvent className="header-icon" />
+      <div className="club-event-header">
+        <div className="club-event-header-content">
+          <MdEvent className="club-event-header-icon" />
           <div>
             <h1>Club Events</h1>
             <p>Manage and organize your club's events</p>
           </div>
         </div>
         <button 
-          className="toggle-form-btn"
+          className="club-event-toggle-form-btn"
           onClick={() => setShowForm(!showForm)}
         >
-          <FiPlus className="btn-icon" />
+          <FiPlus className="club-event-btn-icon" />
           {showForm ? "Cancel" : "Add New Event"}
         </button>
       </div>
 
       {/* Event Form */}
       {showForm && (
-        <div className="form-section">
+        <div className="club-event-form-section">
           <EventForm clubId={id} onAddEvent={handleAddEvent} />
         </div>
       )}
 
       {/* Events Content */}
-      <div className="events-content">
+      <div className="club-event-content">
         {events.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-icon-container">
-              <MdEvent className="empty-icon" />
+          <div className="club-event-empty-state">
+            <div className="club-event-empty-icon-container">
+              <MdEvent className="club-event-empty-icon" />
             </div>
             <h3>No Events Scheduled</h3>
             <p>Get started by creating your first event for the club!</p>
             {!showForm && (
               <button 
-                className="cta-button"
+                className="club-event-cta-button"
                 onClick={() => setShowForm(true)}
               >
-                <FiPlus className="btn-icon" />
+                <FiPlus className="club-event-btn-icon" />
                 Create Your First Event
               </button>
             )}
           </div>
         ) : (
-          <div className="events-grid">
+          <div className="club-event-grid">
             {events.map((event) => (
-              <div key={event.id} className="event-card">
+              <div key={event.id} className="club-event-card">
                 {/* Event Header */}
-                <div className="event-header">
-                  <div className="event-title-section">
-                    <h3 className="event-title">{event.title}</h3>
-                    <span className="event-date-badge">
+                <div className="club-event-card-header">
+                  <div className="club-event-title-section">
+                    <h3 className="club-event-title">{event.title}</h3>
+                    <span className="club-event-date-badge">
                       {formatDate(event.date)}
                     </span>
                   </div>
                   <button 
-                    className="delete-btn"
+                    className="club-event-delete-btn"
                     onClick={() => handleRemoveEvent(event.id)}
                     title="Delete event"
                   >
@@ -126,40 +126,40 @@ function ClubEvent() {
                 </div>
                 
                 {/* Event Description */}
-                <p className="event-description">{event.description}</p>
+                <p className="club-event-description">{event.description}</p>
                 
                 {/* Event Details */}
-                <div className="event-details-grid">
-                  <div className="detail-item">
-                    <FiCalendar className="detail-icon" />
+                <div className="club-event-details-grid">
+                  <div className="club-event-detail-item">
+                    <FiCalendar className="club-event-detail-icon" />
                     <div>
-                      <span className="detail-label">Date</span>
-                      <span className="detail-value">{formatDate(event.date)}</span>
+                      <span className="club-event-detail-label">Date</span>
+                      <span className="club-event-detail-value">{formatDate(event.date)}</span>
                     </div>
                   </div>
                   
-                  <div className="detail-item">
-                    <FiClock className="detail-icon" />
+                  <div className="club-event-detail-item">
+                    <FiClock className="club-event-detail-icon" />
                     <div>
-                      <span className="detail-label">Time</span>
-                      <span className="detail-value">{formatTime(event.time)}</span>
+                      <span className="club-event-detail-label">Time</span>
+                      <span className="club-event-detail-value">{formatTime(event.time)}</span>
                     </div>
                   </div>
                   
-                  <div className="detail-item">
-                    <FiMapPin className="detail-icon" />
+                  <div className="club-event-detail-item">
+                    <FiMapPin className="club-event-detail-icon" />
                     <div>
-                      <span className="detail-label">Location</span>
-                      <span className="detail-value">{event.location || "To be announced"}</span>
+                      <span className="club-event-detail-label">Location</span>
+                      <span className="club-event-detail-value">{event.location || "To be announced"}</span>
                     </div>
                   </div>
                 </div>
                 
                 {/* Organized By */}
                 {event.club && (
-                  <div className="organizer-section">
-                    <MdGroups className="organizer-icon" />
-                    <span className="organizer-text">
+                  <div className="club-event-organizer-section">
+                    <MdGroups className="club-event-organizer-icon" />
+                    <span className="club-event-organizer-text">
                       Organized by <strong>{event.club.name}</strong>
                     </span>
                   </div>

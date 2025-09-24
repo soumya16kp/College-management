@@ -15,7 +15,8 @@ export const getEvents = async (clubId) => {
 // 🔹 Create a new event under a specific club
 export const createEvent = async (clubId, eventData) => {
   console.log("This is eventData", eventData);
-  const payload = { ...eventData, club: Number(clubId) }; // 👈 attach club
+  console.log("The ClubId is ",clubId)
+  const payload = { ...eventData  }; // 👈 attach club
   const response = await authService.apiClient.post(`/clubs/${clubId}/events/`, payload);
   return response.data;
 };
