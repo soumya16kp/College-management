@@ -11,6 +11,7 @@ import Login from './pages/Login.js';
 import Signup from './pages/Signup.js';
 import HomePage from './pages/Home.js';
 import Clubs from './pages/Clubs.js';
+import Account from './pages/Account.js';
 import EventDetail from './pages/EventDetail.js';
 
 import ClubAbout from './pages/Club_Pages/ClubAbout.js';
@@ -21,7 +22,8 @@ import Gallery from './pages/Club_Pages/Gallery.js'
 import ClubDetail from "./pages/Club_Pages/ClubDetail.js";
 
 
-
+import { UserProvider } from "./context/UserContext";
+import { MemberProvider} from './context/MemberContext.js';
 import { ClubProvider } from "./context/ClubContext";
 import { EventProvider } from "./context/EventContext";
 
@@ -105,15 +107,15 @@ const router = createBrowserRouter([
       //         </AuthLayout>
       //     ),
       // },
-      // {
-      //     path: "/gallery",
-      //     element: (
-      //         <AuthLayout authentication>
-      //             {" "}
-      //             <Gallery/>
-      //         </AuthLayout>
-      //     ),
-      // },
+      {
+          path: "/logout",
+          element: (
+              <AuthLayout authentication>
+                  {" "}
+                  <Gallery/>
+              </AuthLayout>
+          ),
+      },
       {
           path: "/events/:id",
           element: (
@@ -139,15 +141,15 @@ const router = createBrowserRouter([
               { path: "events", element: <ClubEvent/> },
             ]
         },
-      //   {
-      //       path:"/user/:id",
-      //       element:(
-      //           <AuthLayout authentication>
-      //                {" "}
-      //                <Account/>
-      //           </AuthLayout>
-      //       ),
-      //   },
+        {
+            path:"/profile",
+            element:(
+                <AuthLayout authentication>
+                     {" "}
+                     <Account/>
+                </AuthLayout>
+            ),
+        },
     ]
   },
 ])
@@ -155,11 +157,15 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <ClubProvider>
-        <EventProvider>
-          <RouterProvider router={router} />
-        </EventProvider>
-      </ClubProvider>
+      <UserProvider>
+        <MemberProvider>
+        <ClubProvider>
+          <EventProvider>
+            <RouterProvider router={router} />
+          </EventProvider>
+        </ClubProvider>
+        </MemberProvider>
+      </UserProvider>
     </Provider>
   </React.StrictMode>
 );

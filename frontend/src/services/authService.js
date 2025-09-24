@@ -10,7 +10,6 @@ apiClient.interceptors.request.use(
     const token = localStorage.getItem('token');
     if (token) {
       config.headers['Authorization'] = `Token ${token}`;
-      // console.log('Request has token:', config.headers['Authorization']);
     } else {
       console.log('Request does not have a token.');
     }

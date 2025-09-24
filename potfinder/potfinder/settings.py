@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'api',
     'clubs',
     'gallery',
+    'account',
+    'members',
     'rest_framework.authtoken',
 ]
 

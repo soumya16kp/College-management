@@ -8,6 +8,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = '__all__'
+        read_only_fields = ['club'] 
 
 
 # --- serializer for Club (basic) ---

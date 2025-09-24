@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import "./Header.css";
 import logo from "../../assets/collage.png";
+
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -62,6 +63,11 @@ function Header() {
             </ul>
           </div>
           
+          <div className="login">
+            <NavLink to="/profile">
+              <button className="login-btn">Account</button>
+            </NavLink>
+          </div>
           <div className="login">
             <NavLink to="/login">
               <button className="login-btn">Login</button>
