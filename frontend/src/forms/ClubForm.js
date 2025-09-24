@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useClubs } from "../context/ClubContext";
 import "./ClubForm.css";
-
 const ClubForm = () => {
   const { addClub } = useClubs();
   const [isSubmitting, setIsSubmitting] = useState(false);
