@@ -1,0 +1,86 @@
+.account-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  font-family: "Inter", sans-serif;
+}
+
+.account-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.profile-img {
+  display: block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+  border: 2px solid #eee;
+}
+
+.account-info {
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.account-info p {
+  margin: 0.4rem 0;
+}
+
+.edit-title {
+  font-size: 1.2rem;
+  margin: 1rem 0 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.logout-btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1.5rem;
+  background: #ff4d4d;
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.logout-btn:hover {
+  background: #e64545;
+}
+
+.loading,
+.no-user {
+  text-align: center;
+  margin-top: 3rem;
+  color: #666;
+}
+
+/* 📱 Mobile responsive */
+@media (max-width: 600px) {
+  .account-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .profile-img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .account-title {
+    font-size: 1.5rem;
+  }
+}

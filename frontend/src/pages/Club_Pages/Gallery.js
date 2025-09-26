@@ -109,8 +109,13 @@ function Gallery() {
     <div className="gallery-container">
       {/* Header */}
       <div className="gallery-header">
+        <div className="gallery-header-content">
         <MdPhotoLibrary className="gallery-header-icon" />
+        <div>
         <h1 className="gallery-title">Club Gallery</h1>
+        <p>Discover the vibrant moments of our club </p>
+        </div>
+        </div>
       </div>
 
       {events.length === 0 ? (

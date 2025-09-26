@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useUser } from "../context/UserContext";
 import userService from "../services/userservice";
+import "./AccountForm.css"; // ✅ new CSS file
 
 const AccountForm = () => {
   const { user, setUser } = useUser();
@@ -31,29 +32,47 @@ const AccountForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <textarea
-        name="bio"
-        value={formData.bio}
-        onChange={handleChange}
-        placeholder="Your bio"
-      />
-      <input
-        type="text"
-        name="phone"
-        value={formData.phone}
-        onChange={handleChange}
-        placeholder="Phone number"
-      />
-      <input
-        type="text"
-        name="designation"
-        value={formData.designation}
-        onChange={handleChange}
-        placeholder="Designation"
-      />
-      <input type="file" name="profile_image" onChange={handleFileChange} />
-      <button type="submit">Save</button>
+    <form className="account-form" onSubmit={handleSubmit}>
+      <label>
+        Bio
+        <textarea
+          name="bio"
+          value={formData.bio}
+          onChange={handleChange}
+          placeholder="Tell us about yourself..."
+        />
+      </label>
+
+      <label>
+        Phone
+        <input
+          type="text"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          placeholder="Phone number"
+        />
+      </label>
+
+      <label>
+        Designation
+        <input
+          type="text"
+          name="designation"
+          value={formData.designation}
+          onChange={handleChange}
+          placeholder="Your designation"
+        />
+      </label>
+
+      <label>
+        Profile Image
+        <input type="file" name="profile_image" onChange={handleFileChange} />
+      </label>
+
+      <button type="submit" className="save-btn">
+        Save Changes
+      </button>
     </form>
   );
 };

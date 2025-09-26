@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 
+    
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = '/media/'
@@ -28,10 +29,21 @@ SECRET_KEY = 'django-insecure-r(gfl98-xf7tdts19qef1hj@yd*ee0h^@%prz!+tp3d5*nir^!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
-
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {"hosts": [("127.0.0.1", 6379)]},
+#     },
+# }
 # Application definition
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -47,6 +59,8 @@ INSTALLED_APPS = [
     'gallery',
     'account',
     'members',
+    'channels',
+    'chat',
     'rest_framework.authtoken',
 ]
 
@@ -78,7 +92,9 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'potfinder.asgi.application'
 WSGI_APPLICATION = 'potfinder.wsgi.application'
+
 
 
 # Database
