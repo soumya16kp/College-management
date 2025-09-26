@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/gallery/',include('gallery.urls')),
     path('api/', include('account.urls')),
     path('api/', include("members.urls")),
+    path('api/',include("chat.urls")),
     
 ]
 

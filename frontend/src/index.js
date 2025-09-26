@@ -26,7 +26,7 @@ import { UserProvider } from "./context/UserContext";
 import { MemberProvider} from './context/MemberContext.js';
 import { ClubProvider } from "./context/ClubContext";
 import { EventProvider } from "./context/EventContext";
-
+import { ChatProvider } from './context/ChatContext.js';
 
 const router = createBrowserRouter([
   {
@@ -134,6 +134,7 @@ const router = createBrowserRouter([
                 </AuthLayout>
             ),
             children: [
+              { index: true, element: <ClubAbout /> }, 
               { path: "about", element: <ClubAbout/> },
               { path: "contact", element: <Contact/> },
               { path: "gallery", element: <Gallery/>},
@@ -160,9 +161,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <UserProvider>
         <MemberProvider>
         <ClubProvider>
+          <ChatProvider>
           <EventProvider>
             <RouterProvider router={router} />
           </EventProvider>
+          </ChatProvider>
         </ClubProvider>
         </MemberProvider>
       </UserProvider>
