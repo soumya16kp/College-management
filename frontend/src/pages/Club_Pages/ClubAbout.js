@@ -17,7 +17,9 @@ const ClubAbout = () => {
     const found = clubs.find((c) => String(c.id) === String(id));
     if (found) {
       setClub(found);
-      console.log(club)
+      console.log("Club found:", found);
+      console.log("club logo",found.image);
+      console.log("club coursol",found.coursol);
     }
   }, [id, clubs]);
 
@@ -80,7 +82,7 @@ const ClubAbout = () => {
     <div className="club-about-container" onClick={closeMenu}>
       <div className="club-header">
         <img 
-          src={club.coursol || "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
+          src={`http://localhost:8000${club.coursol}`} 
           alt="Club Banner" 
           className="club-banner" 
         />
@@ -108,7 +110,7 @@ const ClubAbout = () => {
         {/* Club Title and Logo */}
         <div className="club-title">
           <img 
-            src={club.image || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
+            src={club.image? `http://localhost:8000${club.image}`: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
             alt="Club Logo" 
             className="club-logo" 
           />

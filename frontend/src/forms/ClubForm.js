@@ -109,7 +109,8 @@ const ClubForm = () => {
       });
 
       await addClub(uploadData);
-      
+
+      console.log("Club added:", formData);
       // Reset form on success
       setFormData({
         name: "",
@@ -254,6 +255,7 @@ const ClubForm = () => {
             <div className="file-preview">
               <div className="preview-item">
                 <img src={imagePreview} alt="Club preview" />
+                {console.log(imagePreview)}
                 <button 
                   type="button" 
                   className="remove-btn"
@@ -280,6 +282,7 @@ const ClubForm = () => {
             <div className="file-preview">
               <div className="preview-item">
                 <img src={coursolPreview} alt="Cover preview" />
+                {console.log(coursolPreview)}
                 <button 
                   type="button" 
                   className="remove-btn"
