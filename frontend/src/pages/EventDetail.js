@@ -46,17 +46,19 @@ export default function EventDetail() {
     // The context already updates the state, so we don't need to do anything else
   };
 
-  const formattedDate = new Date(selectedEvent.date).toLocaleDateString("en-US", {
-  weekday: "short",   // Sat
-  month: "short",     // Sep
-  day: "numeric",     // 27
-  year: "numeric",    // 2025
-});
-
-
   if (loading) return <div className="event-about-loading">Loading...</div>;
-  if (error) return <div className="event-about-error">{error}</div>;
-  if (!selectedEvent) return null;
+if (error) return <div className="event-about-error">{error}</div>;
+if (!selectedEvent) return null;
+
+const formattedDate = selectedEvent.date
+  ? new Date(selectedEvent.date).toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  : "Date not specified";
+
 
   return (
     <div className="event-about-container">
