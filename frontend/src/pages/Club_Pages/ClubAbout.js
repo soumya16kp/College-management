@@ -82,7 +82,7 @@ const ClubAbout = () => {
     <div className="club-about-container" onClick={closeMenu}>
       <div className="club-header">
         <img 
-          src={`http://localhost:8000${club.coursol}`} 
+          src={`http://localhost:8000${club.coursol}`}  
           alt="Club Banner" 
           className="club-banner" 
         />
