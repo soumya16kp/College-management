@@ -9,6 +9,7 @@ const ClubAbout = () => {
   const { clubs, editClub, removeClub } = useClubs();
   const [club, setClub] = useState(null);
 
+  const [photosize , setphotosize] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -25,6 +26,10 @@ const ClubAbout = () => {
 
   if (!club) {
     return <p>Loading club...</p>;
+  }
+  
+  const togglephotosize = () => {
+    setphotosize(!photosize);
   }
 
   const toggleMenu = () => {
@@ -113,13 +118,24 @@ const ClubAbout = () => {
             src={club.image? `http://localhost:8000${club.image}`: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
             alt="Club Logo" 
             className="club-logo" 
+            onClick={togglephotosize}
           />
           <div>
             <h1 className="club-name">{club.name}</h1>
             <span className="club-category">{club.tagline}</span>
           </div>
         </div>
-
+        {
+          photosize && <div className='logo-big'>
+            <i class="fa-solid fa-xmark" onClick={togglephotosize}></i>
+            <img 
+              src={club.image? `http://localhost:8000${club.image}`: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
+              alt="Club Logo" 
+              className="club-logo" 
+              onClick={togglephotosize}
+            />
+          </div>
+        }
         {/* Club Stats */}
         <div className="club-stats">
           <div className="stat">

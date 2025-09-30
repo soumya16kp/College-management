@@ -10,13 +10,20 @@ const AccountPage = () => {
   const { user, loading } = useUser();
   const dispatch = useDispatch();
 
+  const [photosize ,setphotosize] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editUser, setEditUser] = useState(false);
 
+  const togglephotosize = () => {
+    setphotosize(!photosize);
+  }
   const editingToggle = () =>{
     setEditing(!editing);
   }
-  const editUserToggle = () => setEditUser(!editUser);
+  const editUserToggle = () => {
+    setEditUser(!editUser);
+    setEditing(false);
+  }
 
   if (loading) return <p className="loading">Loading...</p>;
   if (!user) return <p className="no-user">No user data available.</p>;
@@ -60,9 +67,20 @@ const AccountPage = () => {
           src={`${user.profile_image}`}
           alt="Profile"
           className="profile-img"
+          onClick={togglephotosize}
         />
       )}
-
+      {
+        photosize && <div className="logo-big">
+          <i class="fa-solid fa-xmark" onClick={togglephotosize}></i>
+          <img
+            src={`${user.profile_image}`}
+            alt="Profile"
+            className="profile-img"
+            onClick={togglephotosize}
+          />
+        </div>
+      }
       <div className="account-info">
         <p><strong>Username:</strong> {user.user.username}</p>
         <p><strong>Email:</strong> {user.user.email}</p>

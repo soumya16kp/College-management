@@ -3,7 +3,7 @@ import { useUser } from "../context/UserContext";
 import userService from "../services/userservice";
 import "./AccountForm.css"; // ✅ new CSS file
 
-const AccountForm = () => {
+const AccountForm = ({onClose}) => {
   const { user, setUser } = useUser();
   const [formData, setFormData] = useState({
     bio: user?.bio || "",
@@ -25,7 +25,9 @@ const AccountForm = () => {
     try {
       const updated = await userService.updateProfile(formData);
       setUser(updated);
-      alert("Profile updated successfully!");
+      setTimeout(()=>{
+        onClose?.();
+      },100);
     } catch (error) {
       console.error("Error updating profile:", error);
     }
