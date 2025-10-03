@@ -10,7 +10,9 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
+settings_module = 'potfinder.deployment_setting' if 'RENDER_EXTERNAL_HOSTNAME' in os.environ else 'potfinder.settings';
+# Set Django settings first
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'potfinder.settings')
 
 application = get_wsgi_application()
