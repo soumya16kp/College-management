@@ -1,8 +1,12 @@
+import sys
 import os
+from pathlib import Path
 import django
 from django.core.asgi import get_asgi_application
 
-# Set Django settings
+# Add outer folder to path so apps can be found
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'potfinder.settings')
 django.setup()
 
