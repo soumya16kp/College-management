@@ -3,16 +3,17 @@ import dj_database_url
 from .settings import *
 from .settings import BASE_DIR
 
-ALLOWED_HOSTS = [os.environ.get['RENDER_EXTENAL_HOSTNAME']]
-CSRF_TRUSTED_ORIGINS = ['https://'+os.environ.get['RENDER_EXTENAL_HOSTNAME']]
+# ✅ use () not []
+ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
+CSRF_TRUSTED_ORIGINS = ['https://' + os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
 
 DEBUG = False
-SECRET_KEY = os.environ.get['SECRET_KEY']
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',   
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenose.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # typo fixed: WhiteNoise not WhiteNose
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -22,16 +23,18 @@ MIDDLEWARE = [
 ]
 
 STORAGES = {
-    "default":{
-        "BACKEND" : "django.core.files.storage.FileSystemStirage",
+    "default": {
+        # typo fixed: FileSystemStorage, not FileSystemStirage
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
-    "staticfiles":{
-        "BACKEND" : "whitenoise.storage.CompressedStaticFilesStorage",
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     }
 }
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get['DATABASE_URL'],
-        conn_max_age= 600
+        default=os.environ.get('DATABASE_URL'),   # ✅ fixed get() call
+        conn_max_age=600
     )
 }
