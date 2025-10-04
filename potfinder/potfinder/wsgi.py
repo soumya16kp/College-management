@@ -12,8 +12,7 @@ from django.core.wsgi import get_wsgi_application
 # Add the outer project folder to the Python path
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
-# Set Django settings
-settings_module = 'potfinder.deployment_setting' if 'RENDER_EXTERNAL_HOSTNAME' in os.environ else 'potfinder.settings'
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
+# Always point to the real settings file
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'potfinder.potfinder.settings')
 
 application = get_wsgi_application()
