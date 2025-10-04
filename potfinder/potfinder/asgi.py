@@ -1,23 +1,26 @@
 import os
-import sys
-from pathlib import Path
-import django
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
+
+# Set Django settings module
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'potfinder.settings')
+
+# Standard Django ASGI application
+django_asgi_app = get_asgi_application()
+
+# Import routing from all apps that have websocket consumers
 import chat.routing
 
-# Add outer folder so apps are found
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
-
-# Always point to your real settings
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'potfinder.potfinder.settings')
-
-django.setup()
+# Combine all websocket URL patterns
+websocket_urlpatterns = []
+for module in [chat.routing, api.routing, clubs.routing, gallery.routing, members.routing]:
+    if hasattr(module, "websocket_urlpatterns"):
+        websocket_urlpatterns += module.websocket_urlpatterns
 
 application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
+    "http": django_asgi_app,
     "websocket": AuthMiddlewareStack(
-        URLRouter(chat.routing.websocket_urlpatterns)
+        URLRouter(websocket_urlpatterns)
     ),
 })
