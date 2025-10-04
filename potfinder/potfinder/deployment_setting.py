@@ -3,17 +3,21 @@ import dj_database_url
 from .settings import *
 from .settings import BASE_DIR
 
-# ✅ use () not []
+# --------------------
+# Hosts & Security
+# --------------------
 ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
 CSRF_TRUSTED_ORIGINS = ['https://' + os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
-
 DEBUG = False
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
+# --------------------
+# Middleware
+# --------------------
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # typo fixed: WhiteNoise not WhiteNose
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -22,9 +26,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# --------------------
+# Storage
+# --------------------
 STORAGES = {
     "default": {
-        # typo fixed: FileSystemStorage, not FileSystemStirage
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
@@ -32,9 +38,12 @@ STORAGES = {
     }
 }
 
+# --------------------
+# Database
+# --------------------
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),   # ✅ fixed get() call
+        default=os.environ.get('DATABASE_URL'),
         conn_max_age=600
     )
 }
