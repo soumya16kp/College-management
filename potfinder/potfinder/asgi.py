@@ -14,7 +14,7 @@ import chat.routing
 
 # Combine all websocket URL patterns
 websocket_urlpatterns = []
-for module in [chat.routing, api.routing, clubs.routing, gallery.routing, members.routing]:
+for module in [chat.routing]:
     if hasattr(module, "websocket_urlpatterns"):
         websocket_urlpatterns += module.websocket_urlpatterns
 
