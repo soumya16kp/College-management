@@ -6,7 +6,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 # Set Django settings module
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'potfinder.settings')  # ✅ Correct
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'potfinder.potfinder.settings')  # ✅ Correct
 
 # Standard Django ASGI application
 django_asgi_app = get_asgi_application()
