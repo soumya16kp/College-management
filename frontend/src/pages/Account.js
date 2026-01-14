@@ -358,7 +358,6 @@ const AccountPage = () => {
         </main>
       </div>
     </div>
-    </>
   );
 };
 

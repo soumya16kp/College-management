@@ -9,13 +9,12 @@ export const UserProvider = ({ children }) => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch user profile from backend
   const fetchProfile = async () => {
     setLoading(true);
     try {
       const data = await userService.getProfile();
+      // 'data' contains { user: {...}, designation: "...", participated_events: [...] }
       setProfile(data);
-      console.log(data)
     } catch (error) {
       console.error("Failed to load profile", error);
       setProfile(null);
@@ -24,45 +23,9 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // ✅ Run once on mount to load user if token exists
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetchProfile();
-    } else {
-      setLoading(false);
-    }
+    fetchProfile();
   }, []);
-
-  // ✅ Helper for login: store token + fetch user
-  const login = async (credentials) => {
-    try {
-      const data = await userService.login(credentials);
-      localStorage.setItem("token", data.token);
-      await fetchProfile(); // load user after login
-      return data;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  // ✅ Helper for signup
-  const signup = async (formData) => {
-    try {
-      const data = await userService.signup(formData);
-      localStorage.setItem("token", data.token);
-      await fetchProfile(); // load user after signup
-      return data;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  // ✅ Logout clears token + user
-  const logout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-  };
 
   return (
     <UserContext.Provider
