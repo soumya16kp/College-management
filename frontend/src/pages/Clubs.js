@@ -51,11 +51,11 @@ const Clubs = () => {
 
   return (
     <div className="club-page">
-      <header className="club-header">
+      <div className="club-headerr">
         <h1 className="club-heading">College Clubs</h1>
         <p className="club-subheading">Clubs bring students together to share interests, learn, and collaborate.
            They create space for growth, creativity, and teamwork while making college life engaging and memorable..</p>
-      </header>
+      </div>
 
       <div className="club-controls">
         <div className="search-filter-container">

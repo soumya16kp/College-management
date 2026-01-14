@@ -1,11 +1,12 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from django.db.models import Q
-from .models import Membership
 from .serializers import MemberSerializer, MembershipActionSerializer
 from clubs.models import Club
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
+from .models import Event, EventParticipant,Membership
 class ClubMembersList(generics.ListAPIView):
     serializer_class = MemberSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -69,12 +70,10 @@ def manage_membership(request, membership_id):
         if not current_user_membership:
             return Response({"detail": "You are not a member of this club"}, status=status.HTTP_403_FORBIDDEN)
         
-        # Role hierarchy: President > Admin > Secretary > Member
         role_hierarchy = {"president": 4, "admin": 3, "secretary": 2, "member": 1}
         current_user_weight = role_hierarchy.get(current_user_membership.role, 0)
         target_user_weight = role_hierarchy.get(membership.role, 0)
         
-        # Can only manage users with lower or equal rank
         if target_user_weight > current_user_weight:
             return Response({"detail": "Cannot manage users with higher role"}, status=status.HTTP_403_FORBIDDEN)
         
@@ -92,7 +91,6 @@ def manage_membership(request, membership_id):
             if current_user_membership.role not in ["admin", "president"]:
                 return Response({"detail": "Only admins can promote members"}, status=status.HTTP_403_FORBIDDEN)
             
-            # Define promotion path
             promotion_path = {"member": "secretary", "secretary": "admin", "admin": "president"}
             new_role = promotion_path.get(membership.role)
             
@@ -139,3 +137,47 @@ def leave_club(request, club_id):
         
     except Membership.DoesNotExist:
         return Response({"detail": "You are not an active member of this club"}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def register_for_event(request, event_id):
+    user = request.user
+
+    # 1️⃣ Get event
+    try:
+        event = Event.objects.get(id=event_id)
+    except Event.DoesNotExist:
+        return Response(
+            {"detail": "Event not found"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    club = event.club 
+
+    # 3️⃣ Check if already registered
+    participation, created = EventParticipant.objects.get_or_create(
+        user=user,
+        event=event,
+        defaults={"club": club, "status": "registered"}
+    )
+
+    if not created:
+        return Response(
+            {
+                "detail": "You are already registered for this event",
+                "status": participation.status
+            },
+            status=status.HTTP_200_OK
+        )
+
+    # 4️⃣ Success
+    return Response(
+        {
+            "detail": "Successfully registered for the event",
+            "status": participation.status
+        },
+        status=status.HTTP_201_CREATED
+    )

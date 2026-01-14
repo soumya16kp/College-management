@@ -26,8 +26,9 @@ const clubs = [
     name: "Sports Club",
     description:
       "Promotes fitness and teamwork through various indoor and outdoor sports events.",
-    image:
-      "https://images.unsplash.com/photo-1505842465776-3d90f616310d?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=80"
+
+
   },
   {
     total_students: 250,
@@ -35,8 +36,9 @@ const clubs = [
     name: "Robotics Club",
     description:
       "Hands-on learning with robotics, electronics, and AI-driven projects.",
-    image:
-      "https://images.unsplash.com/photo-1581091215367-59ab6b92c5a2?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&w=1200&q=80"
+    
+
   },
   {
     total_students: 300,

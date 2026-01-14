@@ -9,7 +9,7 @@ class Club(models.Model):
     interest = models.TextField(blank=True, null=True)
     location = models.TextField(blank=True, null=True)
     schedule = models.TextField(blank=True, null=True)
-
+    founded = models.DateTimeField(auto_now_add=True,null=True)  # automatically set when created
     image = models.ImageField(upload_to="club_images/", blank=True, null=True)
     coursol = models.ImageField(upload_to="club_carousel/", blank=True, null=True) 
 
@@ -23,6 +23,7 @@ class Event(models.Model):
     description = models.TextField(blank=True)
     date = models.DateField()
     time = models.TimeField(null=True, blank=True)
+    image = models.ImageField(upload_to="event_images/", blank=True, null=True)
     location = models.CharField(max_length=200, blank=True)
 
     def __str__(self):

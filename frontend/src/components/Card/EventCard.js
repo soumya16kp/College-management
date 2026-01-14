@@ -1,4 +1,5 @@
 
+import { getMediaUrl } from '../../services/media';
 import './EventCard.css';
 import { useNavigate } from "react-router-dom";
 
@@ -41,8 +42,10 @@ const EventCard = ({ event, type }) => {
   return (
     <div className="event-card">
       <div className="event-image">
+        {console.log(event)}
+        {console.log(event.imageUrl)}
         <img 
-          src={event.imageUrl || '/api/placeholder/300/200'} 
+          src={getMediaUrl(event.image) || '/api/placeholder/300/200'} 
           alt={event.title}
         />
         {getStatusBadge()}
@@ -76,7 +79,7 @@ const EventCard = ({ event, type }) => {
         </div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default EventCard;

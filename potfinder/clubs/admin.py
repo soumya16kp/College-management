@@ -6,7 +6,9 @@ class EventInline(admin.TabularInline):
     extra = 1
 
 class ClubAdmin(admin.ModelAdmin):
-    list_display = ('name', 'tagline', 'image', 'coursol')
+    list_display = ('name', 'tagline', 'image', 'coursol','founded')
+    readonly_fields = ('founded',)
+
     inlines = [EventInline]
 
 class EventAdmin(admin.ModelAdmin):

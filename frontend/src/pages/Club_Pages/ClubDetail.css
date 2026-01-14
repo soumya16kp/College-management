@@ -1,118 +1,213 @@
-/* ClubDetail.css */
-
-.club-detail {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+:root {
+  /* --- Glass Variables --- */
+  --glass-bg: rgba(255, 255, 255, 0.15); /* Low opacity white */
+  --glass-border: rgba(23, 107, 159, 0.3);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  --glass-blur: blur(12px);
+  
+  /* --- Blue Theme Variables --- */
+  --theme-blue: #2563eb;       /* Royal Blue */
+  --theme-dark: #0f172a;       /* Deep Navy for text */
+  --active-glass: rgba(37, 99, 235, 0.15); /* Blue tint for active state */
+  --active-border: #2563eb;
 }
 
-/* Sub-header navigation */
-.club-subnav {
+/* Layout Container */
+.club-glass-layout {
   display: flex;
-  justify-content: center;
-  border-bottom: 1px solid #eaeaea;
-  padding: 0.5rem;
-  background-color: #fff;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  max-width: 700px;
-  border-radius: 16px;
-}
-
-.club-subnav a {
-  text-decoration: none;
-  color: #666;
-  font-weight: 500;
-  padding: 0.75rem 1.5rem;
-  border-radius: 25px;
-  transition: all 0.3s ease;
   position: relative;
-  margin: 0 0.25rem;
+  min-height: 80vh; /* Adjust based on your needs */
+  margin-left: 20px;
+  padding-top: 20px; /* Spacing from your main header */
 }
 
-.club-subnav a:hover {
-  color: #4a6cf7;
-  background-color: rgba(74, 108, 247, 0.05);
+/* --- The Glass Sidebar --- */
+.glass-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  border-radius: 8px; /* Smooth corners */
+  padding: 24px;
+  
+  /* The Glassmorphism Magic */
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur); /* Safari support */
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 100;
+  height: 150vh ; /* Only takes up necessary space */
 }
 
-.club-subnav a.active {
-  color: #4a6cf7;
-  background-color: rgba(74, 108, 247, 0.1);
+/* Sidebar Header */
+.glass-header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--glass-border);
+}
+
+.glass-subtitle {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  color: var(--theme-blue);
+  font-weight: 700;
+}
+
+.glass-title {
+  margin: 5px 0 0;
+  font-size: 1.8rem;
+  color: var(--theme-dark);
+  font-weight: 800;
+}
+
+/* --- Navigation Links --- */
+.glass-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.glass-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  text-decoration: none;
+  color: #475569;
   font-weight: 600;
+  font-size: 1rem;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
 }
 
-.club-subnav a.active::after {
-  content: '';
-  position: absolute;
-  bottom: -0.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
-  background-color: #4a6cf7;
-  border-radius: 50%;
+.link-icon {
+  margin-right: 14px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  color: #64748b;
+  transition: color 0.3s ease;
 }
 
-/* Content area */
-.club-subcontent {
-  padding: 2rem;
-  min-height: 400px;
+.link-arrow {
+  margin-left: auto;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+  font-size: 1rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .club-detail {
-    padding: 1rem;
+/* Hover State */
+.glass-link:hover {
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--theme-blue);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.glass-link:hover .link-icon {
+  color: var(--theme-blue);
+}
+
+/* Active State */
+.glass-link.active {
+  background: var(--active-glass); /* Subtle blue tint */
+  color: var(--theme-blue);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.1);
+}
+
+.glass-link.active .link-icon {
+  color: var(--theme-blue);
+}
+
+.glass-link.active .link-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --- Content Area --- */
+.glass-content {
+  flex-grow: 1;
+  /* Optional: Make content area distinct or let it blend */
+  padding: 10px; 
+}
+
+/* --- Mobile Controls & Responsive --- */
+.mobile-glass-trigger {
+  display: none;
+}
+
+.glass-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 900px) {
+  .club-glass-layout {
+    flex-direction: column;
+    padding-top: 60px; /* Space for the floating button */
+  }
+
+  /* Floating Hamburger Button */
+  .mobile-glass-trigger {
+    display: block;
+    position: fixed;
+    top: 80px; /* Adjust based on your main header height */
+    right: 20px;
+    z-index: 110;
+  }
+
+  .glass-toggle-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    color: var(--theme-blue);
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
   }
   
-  .club-subnav {
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 1rem;
-    margin-bottom: 1.5rem;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  .glass-toggle-btn:active {
+    transform: scale(0.95);
   }
-  
-  .club-subnav::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
-  }
-  
-  .club-subnav a {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-  
-  .club-subcontent {
-    padding: 1.5rem;
-  }
-}
 
-@media (max-width: 480px) {
-  .club-subnav a {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
+  /* Sidebar Pop-In Logic */
+  .glass-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    transform: translateX(-120%);
+    border-radius: 0 20px 20px 0; /* Only round right side */
+    background: rgba(255, 255, 255, 0.85); /* More opacity for legibility on mobile */
+    box-shadow: 10px 0 30px rgba(0,0,0,0.1);
   }
-  
-  .club-subcontent {
-    padding: 1rem;
-  }
-}
 
-/* Animation for content */
-.club-subcontent {
-  animation: fadeIn 0.4s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+  .glass-sidebar.mobile-open {
+    transform: translateX(0);
   }
-  to {
+
+  .glass-overlay.show {
     opacity: 1;
-    transform: translateY(0);
+    pointer-events: auto;
   }
 }

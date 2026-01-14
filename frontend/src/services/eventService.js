@@ -16,7 +16,7 @@ export const getEvents = async (clubId) => {
 export const createEvent = async (clubId, eventData) => {
   console.log("This is eventData", eventData);
   console.log("The ClubId is ",clubId)
-  const payload = { ...eventData  }; // 👈 attach club
+  const payload = { ...eventData  }; 
   const response = await authService.apiClient.post(`/clubs/${clubId}/events/`, payload);
   return response.data;
 };
@@ -37,3 +37,4 @@ export const updateEvent = async (eventId, eventData) => {
 export const deleteEvent = async (eventId) => {
   await authService.apiClient.delete(`/clubs/events/${eventId}/`);
 };
+

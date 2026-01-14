@@ -1,38 +1,82 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./EventForm.css";
 
-const EventForm = ({clubId, onAddEvent }) => {
+const EventForm = ({ clubId, onAddEvent }) => {
   const [eventData, setEventData] = useState({
     title: "",
     date: "",
     time: "",
     location: "",
     description: "",
+    image: null, // Store the actual file object here
   });
+
+  const [imagePreview, setImagePreview] = useState(null); // Local state for showing the thumbnail
+
+  useEffect(() => {
+    return () => {
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEventData({ ...eventData, [name]: value });
   };
 
+  // Specific handler for file input
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setEventData({ ...eventData, image: file });
+      setImagePreview(URL.createObjectURL(file)); // Create a temporary URL for preview
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted", eventData);
     if (!eventData.title.trim()) return;
-    console.log("Calling onAddEvent now...");
+
+    // Send data to parent
     onAddEvent(clubId, eventData);
+
+    // Reset Form
     setEventData({
-      title: "Coding Marathon 2025",
-      date: "2025-10-10",
-      time: "10:00",
-      location: "Main Hall",
-      description: "A 12-hour competitive coding event where participants solve algorithmic challenges to win exciting prizes.",
+      title: "",
+      date: "",
+      time: "",
+      location: "",
+      description: "",
+      image: null,
     });
+    setImagePreview(null);
   };
 
   return (
     <form className="event-form" onSubmit={handleSubmit}>
       <h2>Add New Event</h2>
+
+      {/* --- Image Upload Section --- */}
+      <div className="form-group image-upload-group">
+        <label className="image-upload-label">
+          {imagePreview ? (
+            <img src={imagePreview} alt="Preview" className="image-preview" />
+          ) : (
+            <div className="upload-placeholder">
+              <span>📷 Upload Event Cover</span>
+            </div>
+          )}
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="file-input-hidden"
+          />
+        </label>
+      </div>
 
       <input
         type="text"
@@ -43,21 +87,22 @@ const EventForm = ({clubId, onAddEvent }) => {
         required
       />
 
-      <input
-        type="date"
-        name="date"
-        value={eventData.date}
-        onChange={handleChange}
-        required
-      />
-
-      <input
-        type="time"
-        name="time"
-        value={eventData.time}
-        onChange={handleChange}
-        required
-      />
+      <div className="form-row">
+        <input
+          type="date"
+          name="date"
+          value={eventData.date}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="time"
+          name="time"
+          value={eventData.time}
+          onChange={handleChange}
+          required
+        />
+      </div>
 
       <input
         type="text"
