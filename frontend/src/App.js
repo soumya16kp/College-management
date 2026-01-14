@@ -27,7 +27,6 @@ function App() {
     }, [dispatch]);
 
   return !loading ? (
-    <div class="scroll-container">
 
      <ClubProvider>  
         <div className="app-container">
@@ -40,7 +39,6 @@ function App() {
           </div>
         </div>
     </ClubProvider>
-    </div>
   ) : null;
 }
 
