@@ -1,6 +1,8 @@
 /* Contact.css - Neon Gradient Chat Interface */
 
 .chat-page-container {
+  margin-top: 10px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -13,7 +15,9 @@
 .chat-header {
  
   left: 0;
+  border-radius: 10px;
   right: 0;
+  width: 100%;
   background: rgba(15, 15, 35, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(100, 126, 234, 0.3);
@@ -71,6 +75,7 @@
 
 .groups-sidebar {
   width: 350px;
+  border-radius: 10px;
   background: rgba(26, 26, 46, 0.8);
   border-right: 1px solid rgba(100, 126, 234, 0.2);
   height: calc(100vh - 80px);

@@ -294,6 +294,7 @@ export default function EventDetail() {
                 <p><strong>Access:</strong> {selectedEvent.club?.is_private ? "Members Only" : "Open to All"}</p>
               </div>
             </div>
+            )}
           </div>
         </div>
 
@@ -315,6 +316,9 @@ export default function EventDetail() {
             </li>
           </ul>
         </div>
+        <button className="register-btn">
+          Register Now
+        </button>
       </div>
     </div>
   );

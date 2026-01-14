@@ -160,9 +160,8 @@ useEffect(() => {
   };
 
   return (
-    <div className="chat-page-container">
-      {/* Header */}
-      <div className="chat-header">
+    <>
+          <div className="chat-header">
         <div className="chat-header-content">
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <MdChat className="chat-header-icon" />
@@ -184,6 +183,8 @@ useEffect(() => {
           </div>
         </div>
       </div>
+    
+    <div className="chat-page-container">
 
       {/* Groups Sidebar */}
       <div className="groups-sidebar">
@@ -517,6 +518,7 @@ useEffect(() => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
