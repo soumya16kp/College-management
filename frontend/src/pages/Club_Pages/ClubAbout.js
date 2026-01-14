@@ -3,7 +3,7 @@ import './ClubAbout.css';
 import { useClubs } from "../../context/ClubContext";
 import { useParams } from 'react-router-dom';
 import ClubEditForm from '../../forms/ClubEditForm'; // Import the new component
-
+import { getMediaUrl } from '../../services/media';
 const ClubAbout = () => {
   const { id } = useParams();
   const { clubs, editClub, removeClub } = useClubs();
@@ -79,8 +79,9 @@ const ClubAbout = () => {
   return (
     <div className="club-about-container" onClick={closeMenu}>
       <div className="club-header">
+        {console.log(club)}
         <img 
-          src={club.coursol || "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
+          src={getMediaUrl(club.coursol) || "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
           alt="Club Banner" 
           className="club-banner" 
         />
@@ -108,7 +109,7 @@ const ClubAbout = () => {
         {/* Club Title and Logo */}
         <div className="club-title">
           <img 
-            src={club.image || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
+            src={getMediaUrl(club.image) || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
             alt="Club Logo" 
             className="club-logo" 
           />
@@ -121,21 +122,21 @@ const ClubAbout = () => {
         {/* Club Stats */}
         <div className="club-stats">
           <div className="stat">
-            <div className="stat-number">248</div>
+            <div className="stat-number">{club.members_count}</div>
             <div className="stat-label">Members</div>
           </div>
           <div className="stat">
-            <div className="stat-number">42</div>
+            <div className="stat-number">{club.events_count}</div>
             <div className="stat-label">Events</div>
           </div>
           <div className="stat">
-            <div className="stat-number">2018</div>
+            <div className="stat-number">{new Date(club.founded).getFullYear()}</div>
             <div className="stat-label">Founded</div>
           </div>
-          <div className="stat">
+          {/* <div className="stat">
             <div className="stat-number">16</div>
             <div className="stat-label">Books/Month</div>
-          </div>
+          </div> */}
         </div>
 
         {/* About Section */}
@@ -150,7 +151,7 @@ const ClubAbout = () => {
         <div className="club-details">
           <div className="detail-card">
             <div className="detail-title">
-              <i className="fas fa-users"></i> Membership
+              <i className="fas fa-users"></i> Interest
             </div>
             <div className="detail-content">
               {club.interest}

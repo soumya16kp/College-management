@@ -3,7 +3,9 @@ from rest_framework import serializers
 from .models import Membership
 from account.models import Profile
 from django.contrib.auth.models import User
-
+from rest_framework import serializers
+from .models import EventParticipant
+from clubs.serializers import EventMiniSerializer
 class UserProfileSerializer(serializers.ModelSerializer):
     full_name = serializers.ReadOnlyField()
     phone = serializers.ReadOnlyField(source='profile.phone')
@@ -25,3 +27,12 @@ class MemberSerializer(serializers.ModelSerializer):
 class MembershipActionSerializer(serializers.Serializer):
     action = serializers.ChoiceField(choices=['approve', 'reject', 'promote', 'demote', 'remove'])
     new_role = serializers.ChoiceField(choices=Membership.ROLE_CHOICES, required=False)
+
+
+class EventParticipationSerializer(serializers.ModelSerializer):
+    event = EventMiniSerializer(read_only=True)
+
+    class Meta:
+        model = EventParticipant
+        fields = ["id", "event", "status", "registered_at"]
+

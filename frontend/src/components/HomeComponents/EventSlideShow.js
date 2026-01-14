@@ -23,7 +23,7 @@ export const events = [
     id: 3,
     title: "Sports Meet",
     description: "Witness the thrilling competitions and showcase of athletic talent.",
-    image: "https://images.unsplash.com/photo-1505842465776-3d90f616310d?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1547347298-4074fc3086f0?auto=format&fit=crop&w=1200&q=80",
     date: "May 14, 2025",
     link: "https://example.com/sports-meet"
   },

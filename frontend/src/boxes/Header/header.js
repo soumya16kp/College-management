@@ -68,11 +68,6 @@ function Header() {
               <button className="login-btn">Account</button>
             </NavLink>
           </div>
-          <div className="login">
-            <NavLink to="/login">
-              <button className="login-btn">Login</button>
-            </NavLink>
-          </div>
           
           <div className="hamburger" onClick={toggleMenu}>
             <span></span>

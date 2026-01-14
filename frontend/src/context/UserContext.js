@@ -1,20 +1,23 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import userService from "../services/userservice";
 
-const UserContext = createContext();
+const UserContext = createContext(null);
 
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchProfile = async () => {
+    setLoading(true);
     try {
-      const profile = await userService.getProfile();
-      setUser(profile);
+      const data = await userService.getProfile();
+      setProfile(data);
+      console.log(data)
     } catch (error) {
       console.error("Failed to load profile", error);
+      setProfile(null);
     } finally {
       setLoading(false);
     }
@@ -25,7 +28,14 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, loading, fetchProfile }}>
+    <UserContext.Provider
+      value={{
+        profile,
+        loading,
+        fetchProfile,
+        setProfile,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

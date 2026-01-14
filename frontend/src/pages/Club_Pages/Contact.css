@@ -2,6 +2,7 @@
 
 .chat-page-container {
   display: flex;
+  flex-direction: column;
   height: 100vh;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -10,14 +11,12 @@
 
 /* Header Styles */
 .chat-header {
-  position: fixed;
-  top: 0;
+ 
   left: 0;
   right: 0;
   background: rgba(15, 15, 35, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(100, 126, 234, 0.3);
-  z-index: 1000;
   padding: 1rem 2rem;
 }
 
@@ -67,7 +66,7 @@
 /* Main Layout - Sidebar and Chat Area in Row */
 .chat-page-container {
   display: flex;
-  padding-top: 80px; /* Account for fixed header */
+ /* Account for fixed header */
 }
 
 .groups-sidebar {

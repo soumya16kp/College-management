@@ -27,6 +27,8 @@ function App() {
     }, [dispatch]);
 
   return !loading ? (
+    <div class="scroll-container">
+
      <ClubProvider>  
         <div className="app-container">
           <div className="content-wrapper">
@@ -38,6 +40,7 @@ function App() {
           </div>
         </div>
     </ClubProvider>
+    </div>
   ) : null;
 }
 
