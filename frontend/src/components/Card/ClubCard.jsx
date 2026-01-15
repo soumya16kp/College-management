@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./ClubCard.css";
+import { getMediaUrl } from "../../services/media"; // adjust path if needed
 
 const ClubCard = ({ club, onEdit, onDelete }) => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const ClubCard = ({ club, onEdit, onDelete }) => {
     >
       <div className="club-image-wrapper">
         <img 
-          src={club.image ? `http://127.0.0.1:8000${club.image}` : "https://via.placeholder.com/400x250"} 
+          src={getMediaUrl(club.image) || "https://via.placeholder.com/400x250"}
           alt={club.name} 
           className="club-image" 
         />
@@ -19,7 +20,7 @@ const ClubCard = ({ club, onEdit, onDelete }) => {
         <div className="club-overlay">
           <div className="club-content">
             <h3>{club.name}</h3>
-            <p>{club.description}</p>
+            <p>{club.tagline}</p>
             <button 
               className="club-join-btn" 
               onClick={(e) => {

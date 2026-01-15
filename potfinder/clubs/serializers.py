@@ -56,7 +56,7 @@ class ClubDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Club
-        fields = ['id', 'name', 'description', 'image', 'events']
+        fields = ['id', 'name', 'description', 'image', 'events','tagline','interest']
 
 class ClubMiniSerializer(serializers.ModelSerializer):
     class Meta:
