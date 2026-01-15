@@ -12,3 +12,6 @@ frontend/build/
 
 # VSCode
 .vscode/
+
+/staticfiles
+/static
