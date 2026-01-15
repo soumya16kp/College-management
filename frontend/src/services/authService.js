@@ -5,20 +5,22 @@ const apiClient = axios.create({
   baseURL: `${process.env.REACT_APP_BACKEND_URL}/api`,
 });
 
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers['Authorization'] = `Token ${token}`;
-    } else {
-      console.log('Request does not have a token.');
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  const authFreeEndpoints = ["/login/", "/signup/"];
+
+  const isAuthFree = authFreeEndpoints.some((url) =>
+    config.url.includes(url)
+  );
+
+  if (token && !isAuthFree) {
+    config.headers.Authorization = `Token ${token}`;
   }
-);
+
+  return config;
+});
+
 
 const login = async (username, password) => {
   const response = await apiClient.post('/login/', { username, password });
