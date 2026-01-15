@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Create a dedicated Axios instance with a base URL
+
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
+  baseURL: `${process.env.REACT_APP_BACKEND_URL}/api`,
 });
 
 apiClient.interceptors.request.use(
@@ -25,11 +25,17 @@ const login = async (username, password) => {
   
   if (response.data.token) {
     const token = response.data.token;
-    localStorage.setItem("token", token);  
+    localStorage.setItem("token", token);
     apiClient.defaults.headers.common['Authorization'] = `Token ${token}`;
-    const userResponse = await getCurrentUser();
-    return { token: token, user: userResponse };
+
+    try {
+      const userResponse = await getCurrentUser();
+      return { token, user: userResponse };
+    } catch {
+      return { token, user: null };
+    }
   }
+
   return response.data;
 };
 
@@ -58,11 +64,13 @@ const getCurrentUser = async () => {
     const response = await apiClient.get('/protected/');
     return response.data.user_details;
   } catch (error) {
-    console.error("Failed to fetch user:", error);
-    localStorage.removeItem("token");
+    if (error.response?.status === 401) {
+      console.warn("Token invalid or expired");
+    }
     return null;
   }
 };
+
 
 
 const authService = {
