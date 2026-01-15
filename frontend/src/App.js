@@ -13,18 +13,27 @@ function App() {
   const login_page = location.pathname === "/login";
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-    useEffect(() => {
-      authService.getCurrentUser()
-        .then((userData) => {
-          if (userData) {
-            dispatch(login({ userData }));
-          } else {
-            dispatch(logout());
-          }
-        })
-        .finally(() => setLoading(false));
-    }, [dispatch]);
+    if (!token) {
+      dispatch(logout());
+      setLoading(false);
+      return;
+    }
+
+    authService.getCurrentUser()
+      .then((userData) => {
+        if (userData) {
+          dispatch(login({ userData }));
+        } else {
+          dispatch(logout());
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [dispatch]);
+
 
   return !loading ? (
 
