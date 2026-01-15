@@ -46,8 +46,8 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1",'*']
-
+ALLOWED_HOSTS = ["localhost", "127.0.0.1",'https://college-management-61dd.onrender.com']
+CSRF_TRUSTED_ORIGINS=['https://college-management-61dd.onrender.com']
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
