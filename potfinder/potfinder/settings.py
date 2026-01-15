@@ -46,7 +46,11 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1","college-management-silk.vercel.app"]
+ALLOWED_HOSTS = [
+    "college-management-61dd.onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 CHANNEL_LAYERS = {
     "default": {
@@ -148,9 +152,13 @@ CORS_ALLOW_CREDENTIALS = True
 from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + ['Authorization']
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://college-management-silk.vercel.app",
+]
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://college-management-silk.vercel.app", 
+    "https://college-management-silk.vercel.app", 
 ]
 STATIC_ROOT=BASE_DIR/'staticfiles'
 
