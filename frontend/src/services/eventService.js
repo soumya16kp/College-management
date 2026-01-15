@@ -14,12 +14,27 @@ export const getEvents = async (clubId) => {
 
 // 🔹 Create a new event under a specific club
 export const createEvent = async (clubId, eventData) => {
-  console.log("This is eventData", eventData);
-  console.log("The ClubId is ",clubId)
-  const payload = { ...eventData  }; 
-  const response = await authService.apiClient.post(`/clubs/${clubId}/events/`, payload);
+  const formData = new FormData();
+
+  // Append all fields
+  for (const key in eventData) {
+    if (eventData[key] !== null) {
+      formData.append(key, eventData[key]);
+    }
+  }
+  const response = await authService.apiClient.post(
+    `/clubs/${clubId}/events/`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  );
+
   return response.data;
 };
+
 
 // 🔹 Get details of a single event
 export const getEventDetail = async (eventId) => {
