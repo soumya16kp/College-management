@@ -21,7 +21,7 @@ def signup_view(request):
 
         return Response({
             "message": "User created successfully",
-            "token": token.key,          # 👈 return token directly
+            "token": token.key,          
             "user": {
                 "id": user.id,
                 "username": user.username,
