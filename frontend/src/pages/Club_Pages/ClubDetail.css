@@ -1,14 +1,18 @@
 :root {
   /* --- Glass Variables --- */
-  --glass-bg: rgba(255, 255, 255, 0.15); /* Low opacity white */
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  /* Low opacity white */
   --glass-border: rgba(23, 107, 159, 0.3);
   --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   --glass-blur: blur(12px);
-  
+
   /* --- Blue Theme Variables --- */
-  --theme-blue: #2563eb;       /* Royal Blue */
-  --theme-dark: #0f172a;       /* Deep Navy for text */
-  --active-glass: rgba(37, 99, 235, 0.15); /* Blue tint for active state */
+  --theme-blue: #2563eb;
+  /* Royal Blue */
+  --theme-dark: #0f172a;
+  /* Deep Navy for text */
+  --active-glass: rgba(37, 99, 235, 0.15);
+  /* Blue tint for active state */
   --active-border: #2563eb;
 }
 
@@ -16,30 +20,35 @@
 .club-glass-layout {
   display: flex;
   position: relative;
-  min-height: 80vh; /* Adjust based on your needs */
+  min-height: 80vh;
+  /* Adjust based on your needs */
   margin-left: 20px;
-  padding-top: 20px; /* Spacing from your main header */
+  padding-top: 20px;
+  /* Spacing from your main header */
 }
 
 /* --- The Glass Sidebar --- */
 .glass-sidebar {
   width: 280px;
   flex-shrink: 0;
-  border-radius: 8px; /* Smooth corners */
+  border-radius: 8px;
+  /* Smooth corners */
   padding: 24px;
-  
+
   /* The Glassmorphism Magic */
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur); /* Safari support */
+  -webkit-backdrop-filter: var(--glass-blur);
+  /* Safari support */
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  
+
   display: flex;
   flex-direction: column;
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 100;
-  height: 150vh ; /* Only takes up necessary space */
+  height: 150vh;
+  /* Only takes up necessary space */
 }
 
 /* Sidebar Header */
@@ -115,7 +124,8 @@
 
 /* Active State */
 .glass-link.active {
-  background: var(--active-glass); /* Subtle blue tint */
+  background: var(--active-glass);
+  /* Subtle blue tint */
   color: var(--theme-blue);
   border: 1px solid rgba(37, 99, 235, 0.3);
   box-shadow: 0 4px 15px rgba(37, 99, 235, 0.1);
@@ -134,7 +144,7 @@
 .glass-content {
   flex-grow: 1;
   /* Optional: Make content area distinct or let it blend */
-  padding: 10px; 
+  padding: 10px;
 }
 
 /* --- Mobile Controls & Responsive --- */
@@ -156,14 +166,14 @@
 @media (max-width: 900px) {
   .club-glass-layout {
     flex-direction: column;
-    padding-top: 60px; /* Space for the floating button */
   }
 
   /* Floating Hamburger Button */
   .mobile-glass-trigger {
     display: block;
     position: fixed;
-    top: 80px; /* Adjust based on your main header height */
+    top: 80px;
+    /* Adjust based on your main header height */
     right: 20px;
     z-index: 110;
   }
@@ -181,10 +191,10 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
   }
-  
+
   .glass-toggle-btn:active {
     transform: scale(0.95);
   }
@@ -197,9 +207,11 @@
     height: 100vh;
     width: 280px;
     transform: translateX(-120%);
-    border-radius: 0 20px 20px 0; /* Only round right side */
-    background: rgba(255, 255, 255, 0.85); /* More opacity for legibility on mobile */
-    box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+    border-radius: 0 20px 20px 0;
+    /* Only round right side */
+    background: rgba(255, 255, 255, 0.85);
+    /* More opacity for legibility on mobile */
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
   }
 
   .glass-sidebar.mobile-open {

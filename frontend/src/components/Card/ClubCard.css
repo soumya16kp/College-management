@@ -5,12 +5,14 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.4s ease;
   height: 400px;
-  max-width: 350px;
+  width: 100%;
+  /* Fluid width */
   cursor: pointer;
 }
 
 .club-card:hover {
-  transform: translateY(-30px);
+  transform: translateY(-10px);
+  /* Reduced movement */
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 

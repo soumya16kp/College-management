@@ -7,27 +7,57 @@
 
 .event-header {
   text-align: center;
-  margin-bottom: 2rem;
-  display:flex;
-  flex-direction: column;
+  margin-bottom: 3rem;
+  padding: 3rem 1.5rem;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background circle */
+.event-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.event-header::after {
+  content: '';
+  position: absolute;
+  bottom: -40%;
+  right: -5%;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
 }
 
 .event-header h1 {
-  font-size: 4rem;
-  color: #2c5282;
-}
-.clubs-header h2 {
-  font-size: 2rem;
+  font-size: 3.5rem;
   font-weight: 800;
-  color: #2c5282;
-  margin-bottom: 0.5rem;
+  color: white;
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+  position: relative;
+  z-index: 1;
 }
 
 .event-header p {
-  font-size: 1.1rem;
-  color: #4a5568;
-  max-width: 600px;
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 700px;
   margin: 0 auto;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
 }
 
 .tab-buttons {
@@ -98,13 +128,36 @@
   gap: 2rem;
 }
 
-.loading-spinner {
+/* Loading State */
+.loading-state {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 200px;
-  font-size: 1.2rem;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  min-height: 400px;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
   color: #64748b;
+  font-size: 1rem;
 }
 
 .no-events-container {
@@ -132,12 +185,12 @@
   .event-page {
     padding: 1rem;
   }
-  
+
   .tab-buttons ul {
     flex-direction: column;
     border-radius: 12px;
   }
-  
+
   .events-grid {
     grid-template-columns: 1fr;
   }

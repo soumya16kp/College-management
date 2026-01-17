@@ -7,8 +7,8 @@ import "./Event.css";
 function Event() {
   const [activeTab, setActiveTab] = useState("live");
   const { events, fetchAllEvents, loading } = useEvents();
-  
-  const clubId = 1; 
+
+  const clubId = 1;
 
   useEffect(() => {
     fetchAllEvents(clubId);
@@ -36,7 +36,7 @@ function Event() {
   });
 
   const getEventsByType = () => {
-    switch(activeTab) {
+    switch (activeTab) {
       case "live": return liveEvents;
       case "upcoming": return upcomingEvents;
       case "past": return pastEvents;
@@ -87,19 +87,22 @@ function Event() {
 
       <div className="events-container">
         {loading ? (
-          <div className="loading-spinner">Loading events...</div>
+          <div className="loading-state">
+            <div className="loading-spinner"></div>
+            <p className="loading-text">Loading events...</p>
+          </div>
         ) : currentEvents.length > 0 ? (
           <div className="events-grid">
             {currentEvents.map(event => (
-              
+
               <EventCard key={event.id} event={event} type={activeTab} />
             ))}
           </div>
         ) : (
           <div className="no-events-container">
-            <img 
+            <img
               src={NoEvents}
-              alt="No events" 
+              alt="No events"
               className="no-events-image"
             />
             <p>No {activeTab} events found</p>

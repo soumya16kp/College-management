@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
-import { useMembers } from '../../context/MemberContext'; 
+import { useMembers } from '../../context/MemberContext';
 import { useParams } from "react-router-dom";
 import { FiMail, FiPhone, FiUsers, FiUser, FiUserCheck, FiUserX, FiArrowUp, FiArrowDown } from "react-icons/fi";
 import { MdGroups, MdAdminPanelSettings, MdPerson, MdEvent } from "react-icons/md";
-import {FaCrown } from "react-icons/fa";
+import { FaCrown } from "react-icons/fa";
 import "./Member.css";
+import Loader from "../../components/Loader";
 
 const MembersPage = () => {
   const { id } = useParams();
   const { members, userRole, userMembership, loading, fetchMembers, joinClub, manageMembership, leaveClub } = useMembers();
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [leaveReason, setLeaveReason] = useState('');
-  const [filter, setFilter] = useState('all'); 
+  const [filter, setFilter] = useState('all');
   const [actionLoading, setActionLoading] = useState(null);
 
   useEffect(() => {
@@ -69,8 +70,8 @@ const MembersPage = () => {
   };
 
   const getInitials = (user) => {
-    return `${user?.first_name?.[0] || ''}${user?.last_name?.[0] || ''}`.toUpperCase() || 
-           user?.username?.[0]?.toUpperCase() || 'U';
+    return `${user?.first_name?.[0] || ''}${user?.last_name?.[0] || ''}`.toUpperCase() ||
+      user?.username?.[0]?.toUpperCase() || 'U';
   };
 
   const filteredMembers = members.filter(member => {
@@ -85,15 +86,15 @@ const MembersPage = () => {
   const canManageMember = (targetMember) => {
     if (!userRole) return false;
     if (targetMember.user.id === userMembership?.user.id) return false;
-    
+
     const roleHierarchy = { president: 4, admin: 3, secretary: 2, member: 1 };
     const userWeight = roleHierarchy[userRole] || 0;
     const targetWeight = roleHierarchy[targetMember.role] || 0;
-    
+
     return userWeight >= targetWeight;
   };
 
-  if (loading) return <div className="members-loading">Loading members...</div>;
+  if (loading) return <Loader />;
 
   return (
     <div className="members-page-container">
@@ -114,23 +115,27 @@ const MembersPage = () => {
           <div>
             <p className="membership-status-text">
               {userRole ? (
-                <>You are currently a <span className="membership-role-badge">{userRole}</span> of this club</>
+                userMembership?.status === 'pending' ? (
+                  <>Your membership request is currently <span className="membership-role-badge pending">Pending Approval</span></>
+                ) : (
+                  <>You are currently a <span className="membership-role-badge">{userRole}</span> of this club</>
+                )
               ) : (
                 "You are not a member of this club yet"
               )}
             </p>
           </div>
           {userRole ? (
-            <button 
+            <button
               className={`membership-action-btn leave-club-btn ${actionLoading === 'leave' ? 'loading' : ''}`}
               onClick={handleLeaveRequest}
               disabled={actionLoading}
             >
               <FiUserX className="members-btn-icon" />
-              {actionLoading === 'leave' ? 'Leaving...' : 'Leave Club'}
+              {actionLoading === 'leave' ? 'Leaving...' : (userMembership?.status === 'pending' ? 'Cancel Request' : 'Leave Club')}
             </button>
           ) : (
-            <button 
+            <button
               className={`membership-action-btn join-club-btn ${actionLoading === 'join' ? 'loading' : ''}`}
               onClick={handleJoinClub}
               disabled={actionLoading}
@@ -145,8 +150,8 @@ const MembersPage = () => {
       {/* Members List with Filtering */}
       <div className="members-filter-section">
         <h2 className="members-filter-title">Members Directory</h2>
-        <select 
-          value={filter} 
+        <select
+          value={filter}
           onChange={(e) => setFilter(e.target.value)}
           className="members-filter-select"
         >
@@ -215,7 +220,7 @@ const MembersPage = () => {
                   <div className="member-detail-item">
                     <span className="detail-label">Designation:</span>
                     <span className="detail-value">{member.user.designation}</span>
-                    
+
                   </div>
                 )}
                 {member.user.bio && (
@@ -231,15 +236,15 @@ const MembersPage = () => {
                 <div className="admin-actions">
                   {member.status === 'pending' && (
                     <>
-                      <button 
+                      <button
                         className="action-btn approve-btn"
                         onClick={() => handleMembershipAction(member.id, 'approve')}
                         disabled={actionLoading === member.id}
                       >
-                        <FiUserCheck /> 
+                        <FiUserCheck />
                         {actionLoading === member.id ? 'Approving...' : 'Approve'}
                       </button>
-                      <button 
+                      <button
                         className="action-btn reject-btn"
                         onClick={() => handleMembershipAction(member.id, 'reject')}
                         disabled={actionLoading === member.id}
@@ -249,11 +254,11 @@ const MembersPage = () => {
                       </button>
                     </>
                   )}
-                  
+
                   {member.status === 'approved' && (
                     <>
                       {member.role !== 'president' && (
-                        <button 
+                        <button
                           className="action-btn promote-btn"
                           onClick={() => handleMembershipAction(member.id, 'promote')}
                           disabled={actionLoading === member.id}
@@ -262,9 +267,9 @@ const MembersPage = () => {
                           {actionLoading === member.id ? 'Promoting...' : 'Promote'}
                         </button>
                       )}
-                      
+
                       {(member.role === 'admin' || member.role === 'secretary') && member.role !== 'president' && (
-                        <button 
+                        <button
                           className="action-btn demote-btn"
                           onClick={() => handleMembershipAction(member.id, 'demote')}
                           disabled={actionLoading === member.id}
@@ -273,8 +278,8 @@ const MembersPage = () => {
                           {actionLoading === member.id ? 'Demoting...' : 'Demote'}
                         </button>
                       )}
-                      
-                      <button 
+
+                      <button
                         className="action-btn remove-btn"
                         onClick={() => handleMembershipAction(member.id, 'remove')}
                         disabled={actionLoading === member.id}
@@ -311,14 +316,14 @@ const MembersPage = () => {
               className="reason-textarea"
             />
             <div className="modal-actions">
-              <button 
+              <button
                 onClick={() => setShowLeaveModal(false)}
                 className="cancel-btn"
                 disabled={actionLoading}
               >
                 Cancel
               </button>
-              <button 
+              <button
                 onClick={confirmLeave}
                 className="confirm-btn"
                 disabled={actionLoading}

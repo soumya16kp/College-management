@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useClubs } from "../../context/ClubContext";
+import ClubCard from "../Card/ClubCard";
 import "./ClubSlideShow.css";
 import Searching from "../sreach/sreaching";
 const clubs = [
@@ -37,7 +40,7 @@ const clubs = [
     description:
       "Hands-on learning with robotics, electronics, and AI-driven projects.",
     image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&w=1200&q=80"
-    
+
 
   },
   {
@@ -52,75 +55,65 @@ const clubs = [
 ];
 
 function ClubsList({ classes }) {
+  const navigate = useNavigate();
+  const { clubs: realClubs } = useClubs();
 
-  const sorting = (info) =>{
+  // Combine static and real clubs
+  const displayClubs = [...clubs, ...realClubs];
+
+  const sorting = (info) => {
     console.log(info);
-    console.log("Hello")
   }
 
   const [activeCard, setActiveCard] = useState(null);
 
   return (
     <section className="clubs-section">
-      {classes === 1? (
+      {classes === 1 ? (
         <>
-      <div className="clubs-header">
-        <h2>Explore Our Clubs</h2>
-        <p>Join vibrant student communities and discover your passion.</p>
-      </div>
+          <div className="clubs-header">
+            <h2>Explore Our Clubs</h2>
+            <p>Join vibrant student communities and discover your passion.</p>
+            <button className="view-all-btn" onClick={() => navigate("/clubs")}>
+              View All Clubs <i className="fas fa-arrow-right"></i>
+            </button>
+          </div>
 
-      <div className="clubs-grid">
-        {clubs.map((club, index) => (
-          <div 
-            className={`club-card ${activeCard === index ? 'active' : ''}`} 
-            key={index}
-            onMouseEnter={() => setActiveCard(index)}
-            onMouseLeave={() => setActiveCard(null)}
-          >
-            <div className="club-image-wrapper">
-              <img src={club.image} alt={club.name} className="club-image" />
-              <div className="club-overlay">
-                <div className="club-content">
-                  <h3>{club.name}</h3>
-                  <p>{club.description}</p>
-                  <button className="club-join-btn">Learn More</button>
-                </div>
-              </div>
-              <div className="club-badge">{club.name}</div>
-            </div>
+          <div className="clubs-grid">
+            {displayClubs.map((club, index) => (
+              <ClubCard key={index} club={club} />
+            ))}
           </div>
-        ))}
-      </div>
-      </>
-      ):(
+        </>
+      ) : (
         <>
-              <div className="clubs-header">
-        <h2>Explore Our Clubs</h2>
-        <p>Join vibrant student communities and discover your passion.</p>
-      </div>
-      <Searching sort={sorting} />
-      <div className="clubs-grid">
-        {clubs.map((club, index) => (
-          <div 
-            className={`club-card ${activeCard === index ? 'active' : ''}`} 
-            key={index}
-            onMouseEnter={() => setActiveCard(index)}
-            onMouseLeave={() => setActiveCard(null)}
-          >
-            <div className="club-image-wrapper">
-              <img src={club.image} alt={club.name} className="club-image" />
-              <div className="club-overlay">
-                <div className="club-content">
-                  <h3>{club.name}</h3>
-                  <p>{club.description}</p>
-                  <button className="club-join-btn">Learn More</button>
+          <div className="clubs-header">
+            <h2>Explore Our Clubs</h2>
+            <p>Join vibrant student communities and discover your passion.</p>
+          </div>
+          <Searching sort={sorting} />
+          <div className="clubs-grid">
+            {clubs.map((club, index) => (
+              <div
+                className={`club-card ${activeCard === index ? 'active' : ''}`}
+                key={index}
+                onMouseEnter={() => setActiveCard(index)}
+                onMouseLeave={() => setActiveCard(null)}
+              >
+                <div className="club-image-wrapper">
+                  <img src={club.image} alt={club.name} className="club-image" />
+                  <div className="club-overlay">
+                    <div className="club-content">
+                      <h3>{club.name}</h3>
+                      <p>{club.description}</p>
+                      <button className="club-join-btn">Learn More</button>
+                    </div>
+                  </div>
+                  <div className="club-badge">{club.name}</div>
                 </div>
               </div>
-              <div className="club-badge">{club.name}</div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
         </>
       )}
     </section>

@@ -24,18 +24,35 @@ background-size: 40px 70px;
 background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
 } */
 
-body{
-background-color: #f0f8ff;
-background-image: linear-gradient(#e6f2ff 1px, transparent 1px),
-                  linear-gradient(90deg, #e6f2ff 1px, transparent 1px);
-background-size: 25px 25px;
+body {
+  background-color: #f0f8ff;
+  background-image: linear-gradient(#e6f2ff 1px, transparent 1px),
+    linear-gradient(90deg, #e6f2ff 1px, transparent 1px);
+  background-size: 25px 25px;
 }
+
 .scroll-container {
   overflow: auto;
-  scrollbar-width: none;        /* Firefox */
-  -ms-overflow-style: none;     /* IE & Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE & Edge */
 }
 
 .scroll-container::-webkit-scrollbar {
-  display: none;                /* Chrome, Safari */
+  display: none;
+  /* Chrome, Safari */
+}
+
+/* Global scrollbar hiding as requested */
+* {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none;
+  /* Chrome/Safari/Webkit */
 }

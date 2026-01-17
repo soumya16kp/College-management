@@ -4,12 +4,12 @@ import { useClubs } from "../../context/ClubContext";
 import { useParams } from 'react-router-dom';
 import ClubEditForm from '../../forms/ClubEditForm'; // Import the new component
 import { getMediaUrl } from '../../services/media';
+
 const ClubAbout = () => {
   const { id } = useParams();
   const { clubs, editClub, removeClub } = useClubs();
   const [club, setClub] = useState(null);
 
-  const [photosize , setphotosize] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -18,18 +18,11 @@ const ClubAbout = () => {
     const found = clubs.find((c) => String(c.id) === String(id));
     if (found) {
       setClub(found);
-      console.log("Club found:", found);
-      console.log("club logo",found.image);
-      console.log("club coursol",found.coursol);
     }
   }, [id, clubs]);
 
   if (!club) {
     return <p>Loading club...</p>;
-  }
-  
-  const togglephotosize = () => {
-    setphotosize(!photosize);
   }
 
   const toggleMenu = () => {
@@ -52,18 +45,16 @@ const ClubAbout = () => {
 
   const handleSaveEdit = async (formData) => {
     try {
-      // Create FormData for file uploads
       const uploadData = new FormData();
       Object.keys(formData).forEach(key => {
         if (formData[key]) {
           uploadData.append(key, formData[key]);
         }
       });
-      
+
       await editClub(club.id, uploadData);
       setIsEditModalOpen(false);
-      
-      // Refresh the club data
+
       const updatedClub = clubs.find((c) => String(c.id) === String(id));
       if (updatedClub) {
         setClub(updatedClub);
@@ -77,7 +68,6 @@ const ClubAbout = () => {
     try {
       await removeClub(club.id);
       setIsDeleteModalOpen(false);
-      // Navigate away or show success message
     } catch (error) {
       console.error("Failed to delete club:", error);
     }
@@ -86,11 +76,10 @@ const ClubAbout = () => {
   return (
     <div className="club-about-container" onClick={closeMenu}>
       <div className="club-header">
-        {console.log(club)}
-        <img 
-          src={getMediaUrl(club.coursol) || "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
-          alt="Club Banner" 
-          className="club-banner" 
+        <img
+          src={getMediaUrl(club.coursol) || "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"}
+          alt="Club Banner"
+          className="club-banner"
         />
       </div>
 
@@ -115,46 +104,35 @@ const ClubAbout = () => {
 
         {/* Club Title and Logo */}
         <div className="club-title">
-          <img 
-            src={getMediaUrl(club.image) || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
-            alt="Club Logo" 
-            className="club-logo" 
-            onClick={togglephotosize}
+          <img
+            src={getMediaUrl(club.image) || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"}
+            alt="Club Logo"
+            className="club-logo"
+          /* onClick handler removed */
           />
           <div>
             <h1 className="club-name">{club.name}</h1>
             <span className="club-category">{club.tagline}</span>
           </div>
         </div>
-        {
-          photosize && <div className='logo-big'>
-            <i class="fa-solid fa-xmark" onClick={togglephotosize}></i>
-            <img 
-              src={club.image? `http://localhost:8000${club.image}`: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"} 
-              alt="Club Logo" 
-              className="club-logo" 
-              onClick={togglephotosize}
-            />
-          </div>
-        }
-        {/* Club Stats */}
+        {/* Lightbox block removed */}
+
         <div className="club-stats">
           <div className="stat">
+            <i className="fas fa-users stat-icon"></i>
             <div className="stat-number">{club.members_count}</div>
             <div className="stat-label">Members</div>
           </div>
           <div className="stat">
+            <i className="fas fa-calendar-check stat-icon"></i>
             <div className="stat-number">{club.events_count}</div>
             <div className="stat-label">Events</div>
           </div>
           <div className="stat">
+            <i className="fas fa-flag stat-icon"></i>
             <div className="stat-number">{new Date(club.founded).getFullYear()}</div>
             <div className="stat-label">Founded</div>
           </div>
-          {/* <div className="stat">
-            <div className="stat-number">16</div>
-            <div className="stat-label">Books/Month</div>
-          </div> */}
         </div>
 
         {/* About Section */}
@@ -165,47 +143,50 @@ const ClubAbout = () => {
           </p>
         </div>
 
-        {/* Club Details */}
-        <div className="club-details">
+        {/* Club Details Grid (Kept the 3-box improvement as it was accepted earlier, but removing extra layout bits if needed) */}
+        <div className="club-details-grid">
           <div className="detail-card">
-            <div className="detail-title">
-              <i className="fas fa-users"></i> Interest
+            <div className="detail-header">
+              <div className="detail-icon">
+                <i className="fas fa-users"></i>
+              </div>
+              <h3 className="detail-label">Interest</h3>
             </div>
-            <div className="detail-content">
-              {club.interest}
-            </div>
+            <p className="detail-value">{club.interest}</p>
           </div>
+
           <div className="detail-card">
-            <div className="detail-title">
-              <i className="fas fa-map-marker-alt"></i> Location
+            <div className="detail-header">
+              <div className="detail-icon">
+                <i className="fas fa-map-marker-alt"></i>
+              </div>
+              <h3 className="detail-label">Location</h3>
             </div>
-            <div className="detail-content">
-              {club.location}
-            </div>
+            <p className="detail-value">{club.location}</p>
           </div>
+
           <div className="detail-card">
-            <div className="detail-title">
-              <i className="fas fa-calendar-alt"></i> Meeting Schedule
+            <div className="detail-header">
+              <div className="detail-icon">
+                <i className="fas fa-calendar-alt"></i>
+              </div>
+              <h3 className="detail-label">Meeting Schedule</h3>
             </div>
-            <div className="detail-content">
-             {club.schedule}
-            </div>
+            <p className="detail-value">{club.schedule}</p>
           </div>
         </div>
 
-
       </div>
 
-      {/* Edit Modal using ClubEditForm component */}
+      {/* Modals */}
       {isEditModalOpen && (
-        <ClubEditForm 
-          club={club} 
-          onSave={handleSaveEdit} 
-          onCancel={() => setIsEditModalOpen(false)} 
+        <ClubEditForm
+          club={club}
+          onSave={handleSaveEdit}
+          onCancel={() => setIsEditModalOpen(false)}
         />
       )}
 
-      {/* Delete Modal */}
       {isDeleteModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -217,16 +198,16 @@ const ClubAbout = () => {
             </div>
             <p>Are you sure you want to delete "{club.name}"? This action cannot be undone.</p>
             <div className="modal-actions">
-              <button 
-                type="button" 
-                className="btn btn-cancel" 
+              <button
+                type="button"
+                className="btn btn-cancel"
                 onClick={() => setIsDeleteModalOpen(false)}
               >
                 Cancel
               </button>
-              <button 
-                type="button" 
-                className="btn btn-danger" 
+              <button
+                type="button"
+                className="btn btn-danger"
                 onClick={confirmDelete}
               >
                 Delete Club

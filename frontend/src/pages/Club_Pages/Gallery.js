@@ -1,19 +1,23 @@
 import { useEffect, useState, useRef } from "react";
 import { useEvents } from "../../context/EventContext";
+import { useClubs } from "../../context/ClubContext"; // Added import
 import { useParams } from "react-router-dom";
 import authService from "../../services/authService";
 import GalleryForm from "../../forms/GalleryForm";
-import { FiCalendar, FiClock, FiMapPin, FiImage, FiUpload, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiCalendar, FiClock, FiMapPin, FiImage, FiUpload, FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
 import { MdEvent, MdPhotoLibrary } from "react-icons/md";
 import "./Gallery.css";
+import Loader from "../../components/Loader";
 
 function Gallery() {
   const { id } = useParams();
   const { events, fetchEvents } = useEvents();
+  const { clubGalleries, fetchClubGallery } = useClubs(); // Use context
   const [galleries, setGalleries] = useState({});
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentSlideIndexes, setCurrentSlideIndexes] = useState({});
+  const [selectedImage, setSelectedImage] = useState(null); // Lightbox state
   const sliderRefs = useRef({});
 
   useEffect(() => {
@@ -22,9 +26,16 @@ function Gallery() {
     }
   }, [id]);
 
+  // Process data when clubGalleries changes or id changes
+  useEffect(() => {
+    if (clubGalleries[id]) {
+      processGalleryData(clubGalleries[id]);
+    }
+  }, [clubGalleries, id]);
+
   useEffect(() => {
     const intervals = {};
-    
+
     Object.keys(galleries).forEach(eventId => {
       if (galleries[eventId]?.length > 1) {
         intervals[eventId] = setInterval(() => {
@@ -32,7 +43,7 @@ function Gallery() {
             ...prev,
             [eventId]: (prev[eventId] + 1) % galleries[eventId].length
           }));
-        }, 4000); 
+        }, 4000);
       }
     });
 
@@ -45,8 +56,13 @@ function Gallery() {
   const fetchClubData = async () => {
     try {
       setLoading(true);
-      await fetchEvents(id);
-      await fetchClubGalleries(id);
+
+      // Parallel fetch if needed, but context handles caching
+      await Promise.all([
+        fetchEvents(id),
+        fetchClubGallery(id)
+      ]);
+
     } catch (error) {
       console.error("Error fetching club data:", error);
     } finally {
@@ -54,31 +70,31 @@ function Gallery() {
     }
   };
 
-  const fetchClubGalleries = async (clubId) => {
-    try {
-      const res = await authService.apiClient.get(`/gallery/club/${clubId}/`);
-      const data = res.data;
+  const processGalleryData = (data) => {
+    const grouped = data.reduce((acc, g) => {
+      if (!acc[g.event]) acc[g.event] = [];
+      acc[g.event].push(g);
+      return acc;
+    }, {});
+    setGalleries(grouped);
 
-      const grouped = data.reduce((acc, g) => {
-        if (!acc[g.event]) acc[g.event] = [];
-        acc[g.event].push(g);
-        return acc;
-      }, {});
-      setGalleries(grouped);
-      
-      // Initialize slide indexes
-      const indexes = {};
+    // Initialize slide indexes if not already set (preserve existing state if possible)
+    // Only set for new keys or if empty
+    setCurrentSlideIndexes(prev => {
+      const next = { ...prev };
       Object.keys(grouped).forEach(eventId => {
-        indexes[eventId] = 0;
+        if (next[eventId] === undefined) {
+          next[eventId] = 0;
+        }
       });
-      setCurrentSlideIndexes(indexes);
-    } catch (err) {
-      console.error("Error fetching galleries:", err);
-    }
+      return next;
+    });
   };
 
-  const handleImageUpload = () => {
-    fetchClubGalleries(id);
+  const handleImageUpload = async () => {
+    setLoading(true);
+    await fetchClubGallery(id, true); // Force refresh context
+    setLoading(false);
     setSelectedEvent(null);
   };
 
@@ -103,18 +119,26 @@ function Gallery() {
     }));
   };
 
-  if (loading) return <div className="gallery-loading">Loading gallery...</div>;
+  const openLightbox = (image) => {
+    setSelectedImage(image);
+  };
+
+  const closeLightbox = () => {
+    setSelectedImage(null);
+  };
+
+  if (loading) return <Loader />;
 
   return (
     <div className="gallery-container">
       {/* Header */}
       <div className="gallery-header">
         <div className="gallery-header-content">
-        <MdPhotoLibrary className="gallery-header-icon" />
-        <div>
-        <h1 className="gallery-title">Club Gallery</h1>
-        <p>Discover the vibrant moments of our club </p>
-        </div>
+          <MdPhotoLibrary className="gallery-header-icon" />
+          <div>
+            <h1 className="gallery-title">Club Gallery</h1>
+            <p>Discover the vibrant moments of our club </p>
+          </div>
         </div>
       </div>
 
@@ -140,23 +164,23 @@ function Gallery() {
                   {selectedEvent === event.id ? "Cancel" : "Upload Images"}
                 </button>
               </div>
-              
+
               <div className="gallery-event-details">
                 <div className="event-detail-item-nav">
-                <div className="event-detail-item">
-                  <FiCalendar className="detail-icon" />
-                  <span>{event.date}</span>
-                </div>
-                <div className="event-detail-item">
-                  <FiClock className="detail-icon" />
-                  <span>{event.time}</span>
-                </div>
-                {event.location && (
                   <div className="event-detail-item">
-                    <FiMapPin className="detail-icon" />
-                    <span>{event.location}</span>
+                    <FiCalendar className="detail-icon" />
+                    <span>{event.date}</span>
                   </div>
-                )}
+                  <div className="event-detail-item">
+                    <FiClock className="detail-icon" />
+                    <span>{event.time}</span>
+                  </div>
+                  {event.location && (
+                    <div className="event-detail-item">
+                      <FiMapPin className="detail-icon" />
+                      <span>{event.location}</span>
+                    </div>
+                  )}
                 </div>
                 {event.description && (
                   <p className="gallery-event-description">{event.description}</p>
@@ -164,8 +188,8 @@ function Gallery() {
               </div>
 
               {selectedEvent === event.id && (
-                <GalleryForm 
-                  eventId={event.id} 
+                <GalleryForm
+                  eventId={event.id}
                   onUploadSuccess={handleImageUpload}
                 />
               )}
@@ -181,10 +205,10 @@ function Gallery() {
                     {/* Image Slider */}
                     <div className="gallery-slider">
                       <div className="slider-container">
-                        <div 
+                        <div
                           className="slider-track"
-                          style={{ 
-                            transform: `translateX(-${currentSlideIndexes[event.id] * 100}%)` 
+                          style={{
+                            transform: `translateX(-${currentSlideIndexes[event.id] * 100}%)`
                           }}
                         >
                           {galleries[event.id].map((gallery, index) => (
@@ -193,30 +217,31 @@ function Gallery() {
                                 src={gallery.image}
                                 alt={`Gallery ${index + 1}`}
                                 className="slider-image"
+                                onClick={() => openLightbox(gallery.image)}
                               />
                             </div>
                           ))}
                         </div>
-                        
+
                         {galleries[event.id].length > 1 && (
                           <>
-                            <button 
+                            <button
                               className="slider-nav slider-prev"
                               onClick={() => prevSlide(event.id)}
                             >
                               <FiChevronLeft />
                             </button>
-                            <button 
+                            <button
                               className="slider-nav slider-next"
                               onClick={() => nextSlide(event.id)}
                             >
                               <FiChevronRight />
                             </button>
-                            
+
                             <div className="slider-counter">
                               {currentSlideIndexes[event.id] + 1} / {galleries[event.id].length}
                             </div>
-                            
+
                             <div className="slider-indicators">
                               {galleries[event.id].map((_, index) => (
                                 <button
@@ -234,7 +259,11 @@ function Gallery() {
                     {/* Thumbnail Grid */}
                     <div className="gallery-grid">
                       {galleries[event.id].map((gallery) => (
-                        <div key={gallery.id} className="gallery-item">
+                        <div
+                          key={gallery.id}
+                          className="gallery-item"
+                          onClick={() => openLightbox(gallery.image)}
+                        >
                           <img
                             src={gallery.image}
                             alt={`Gallery ${gallery.id}`}
@@ -253,6 +282,18 @@ function Gallery() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Lightbox Overlay */}
+      {selectedImage && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <div className="lightbox-content" onClick={e => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={closeLightbox}>
+              <FiX />
+            </button>
+            <img src={selectedImage} alt="Full view" className="lightbox-image" />
+          </div>
         </div>
       )}
     </div>

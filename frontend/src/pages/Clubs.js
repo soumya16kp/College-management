@@ -5,7 +5,7 @@ import ClubForm from "../forms/ClubForm";
 import "./Clubs.css";
 
 const Clubs = () => {
-  const { clubs, addClub, editClub, removeClub } = useClubs();
+  const { clubs, addClub, editClub, removeClub, loading } = useClubs();
   const [showClubForm, setShowClubForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterInterest, setFilterInterest] = useState("all");
@@ -22,39 +22,50 @@ const Clubs = () => {
     const clubName = club.name || "";
     const clubDescription = club.description || "";
     const clubInterest = club.interest || "";
-    
+
     // Convert to lowercase only after ensuring it's a string
     const searchTermLower = searchTerm.toLowerCase();
-    
-    const matchesSearch = 
-      clubName.toLowerCase().includes(searchTermLower) || 
+
+    const matchesSearch =
+      clubName.toLowerCase().includes(searchTermLower) ||
       clubDescription.toLowerCase().includes(searchTermLower);
-    
+
     const matchesInterest = filterInterest === "all" || clubInterest === filterInterest;
-    
+
     return matchesSearch && matchesInterest;
   });
 
   const handleEdit = (club) => {
     const updatedName = prompt("Enter new name:", club.name || "");
-    if (updatedName === null) return; 
-    
+    if (updatedName === null) return;
+
     const updatedDesc = prompt("Enter new description:", club.description || "");
     if (updatedName !== null && updatedDesc !== null) {
-      editClub(club.id, { 
-        name: updatedName, 
+      editClub(club.id, {
+        name: updatedName,
         description: updatedDesc,
         interest: club.interest || ""
       });
     }
   };
 
+  if (loading) {
+    return (
+      <div className="club-page">
+        <div className="loading-state">
+          <div className="loading-spinner"></div>
+          <p className="loading-text">Loading clubs...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="club-page">
       <div className="club-headerr">
         <h1 className="club-heading">College Clubs</h1>
         <p className="club-subheading">Clubs bring students together to share interests, learn, and collaborate.
-           They create space for growth, creativity, and teamwork while making college life engaging and memorable..</p>
+          They create space for growth, creativity, and teamwork while making college life engaging and memorable..</p>
       </div>
 
       <div className="club-controls">
@@ -69,10 +80,10 @@ const Clubs = () => {
               className="search-input"
             />
           </div>
-          
+
           <div className="filter-dropdown">
-            <select 
-              value={filterInterest} 
+            <select
+              value={filterInterest}
               onChange={(e) => setFilterInterest(e.target.value)}
               className="interest-filter"
             >
@@ -85,7 +96,7 @@ const Clubs = () => {
           </div>
         </div>
 
-        <button 
+        <button
           className="btn create-club-btn"
           onClick={() => setShowClubForm(!showClubForm)}
         >

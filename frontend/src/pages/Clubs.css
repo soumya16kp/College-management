@@ -7,25 +7,60 @@
 }
 
 /* Header Styles */
+/* Header Styles */
 .club-headerr {
   text-align: center;
   margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #4a6cf7 0%, #8e44ad 100%);
-  border-radius: 12px;
+  padding: 3rem 1.5rem;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  border-radius: 20px;
   color: white;
+  box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.25);
+  position: relative;
+  overflow: hidden;
+}
 
+/* Decorative background circle */
+.club-headerr::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.club-headerr::after {
+  content: '';
+  position: absolute;
+  bottom: -40%;
+  right: -5%;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
 }
 
 .club-heading {
   font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+  position: relative;
+  z-index: 1;
 }
 
 .club-subheading {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
+  font-weight: 400;
   opacity: 0.9;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
 }
 
 /* Controls Section */
@@ -34,18 +69,23 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 .search-filter-container {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .search-box {
@@ -56,124 +96,145 @@
 
 .search-box i {
   position: absolute;
-  left: 1rem;
-  color: #718096;
+  left: 1.25rem;
+  color: #94a3b8;
+  pointer-events: none;
 }
 
 .search-input {
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  padding: 0.875rem 1rem 0.875rem 3rem;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
-  width: 250px;
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  width: 280px;
+  background: white;
+  transition: all 0.2s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #4a6cf7;
-  box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 .interest-filter {
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 2.5rem 0.875rem 1.25rem;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: white;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  background-color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  min-width: 160px;
 }
 
 .interest-filter:focus {
   outline: none;
-  border-color: #4a6cf7;
-  box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 .create-club-btn {
-  background: #4a6cf7;
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
   color: white;
   border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  padding: 0.875rem 2rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.75rem;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
 }
 
 .create-club-btn:hover {
-  background: #3b5bdb;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(74, 108, 247, 0.3);
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
 }
 
 /* Form Container */
 .form-container {
   margin-bottom: 2rem;
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Club Stats */
 .club-stats {
   display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1rem;
+  margin-bottom: 2rem;
   padding: 0 0.5rem;
+  flex-wrap: wrap;
 }
 
 .stat {
-  background: #f1f5f9;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+  background: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: 50px;
   font-size: 0.9rem;
+  font-weight: 500;
   color: #64748b;
+  border: 1px solid #f1f5f9;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .stat strong {
-  color: #4a6cf7;
+  color: #4f46e5;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 /* Club Grid */
 .club-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
 }
 
 /* No Clubs Message */
 .no-clubs-message {
   text-align: center;
-  padding: 3rem;
+  padding: 4rem 2rem;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   color: #64748b;
+  border: 1px solid #f8fafc;
 }
 
 .no-clubs-message i {
-  font-size: 3rem;
-  color: #cbd5e1;
-  margin-bottom: 1rem;
+  font-size: 4rem;
+  color: #e2e8f0;
+  margin-bottom: 1.5rem;
+  display: block;
 }
 
 .no-clubs-message h3 {
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: #475569;
+  margin-bottom: 0.75rem;
+  color: #1e293b;
+  font-weight: 700;
 }
 
 /* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -181,44 +242,108 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .club-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
+  .club-page {
+    padding: 1rem;
+  }
+
+  .club-headerr {
+    padding: 3rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .club-heading {
+    font-size: 2.5rem;
+  }
+
   .club-controls {
     flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem;
     align-items: stretch;
   }
-  
+
   .search-filter-container {
     flex-direction: column;
+    width: 100%;
+    gap: 1rem;
   }
-  
-  .search-input {
+
+  .search-box {
     width: 100%;
   }
-  
+
+  .search-input {
+    width: 100%;
+    /* Full width on mobile */
+  }
+
+  .interest-filter {
+    width: 100%;
+    /* Full width on mobile */
+  }
+
+  .create-club-btn {
+    width: 100%;
+    /* Full width on mobile */
+  }
+
   .club-grid {
     grid-template-columns: 1fr;
-  }
-  
-  .club-heading {
-    font-size: 2rem;
+    /* Single column on mobile */
+    gap: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .club-page {
-    padding: 0.5rem;
+  .club-headerr {
+    padding: 2.5rem 1rem;
+    border-radius: 16px;
   }
-  
-  .club-header {
-    padding: 1rem;
+
+  .club-heading {
+    font-size: 2rem;
   }
-  
-  .club-controls {
-    padding: 1rem;
+
+  .club-subheading {
+    font-size: 1rem;
   }
-  
-  .club-stats {
-    flex-direction: column;
-    gap: 0.5rem;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  min-height: 400px;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #4a6cf7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
+}
+
+.loading-text {
+  color: #64748b;
+  font-size: 1rem;
 }

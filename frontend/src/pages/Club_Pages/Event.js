@@ -5,9 +5,10 @@ import { useParams } from "react-router-dom";
 import { FiCalendar, FiClock, FiMapPin, FiTrash2, FiPlus, FiEdit } from "react-icons/fi";
 import { MdEvent, MdGroups } from "react-icons/md";
 import "./ClubEvent.css";
+import Loader from "../../components/Loader";
 
 function ClubEvent() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const { events, fetchEvents, addEvent, removeEvent, loading, error } = useEvents();
   const [showForm, setShowForm] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -55,7 +56,7 @@ function ClubEvent() {
     });
   };
 
-  if (loading) return <div className="club-event-loading">Loading events...</div>;
+  if (loading) return <Loader />;
   if (error) return <div className="club-event-error">Error: {error}</div>;
 
   return (
@@ -69,7 +70,7 @@ function ClubEvent() {
             <p>Manage and organize your club's events</p>
           </div>
         </div>
-        <button 
+        <button
           className="club-event-toggle-form-btn"
           onClick={() => setShowForm(!showForm)}
         >
@@ -95,7 +96,7 @@ function ClubEvent() {
             <h3>No Events Scheduled</h3>
             <p>Get started by creating your first event for the club!</p>
             {!showForm && (
-              <button 
+              <button
                 className="club-event-cta-button"
                 onClick={() => setShowForm(true)}
               >
@@ -116,7 +117,7 @@ function ClubEvent() {
                       {formatDate(event.date)}
                     </span>
                   </div>
-                  <button 
+                  <button
                     className="club-event-delete-btn"
                     onClick={() => handleRemoveEvent(event.id)}
                     title="Delete event"
@@ -124,10 +125,10 @@ function ClubEvent() {
                     <FiTrash2 />
                   </button>
                 </div>
-                
+
                 {/* Event Description */}
                 <p className="club-event-description">{event.description}</p>
-                
+
                 {/* Event Details */}
                 <div className="club-event-details-grid">
                   <div className="club-event-detail-item">
@@ -137,7 +138,7 @@ function ClubEvent() {
                       <span className="club-event-detail-value">{formatDate(event.date)}</span>
                     </div>
                   </div>
-                  
+
                   <div className="club-event-detail-item">
                     <FiClock className="club-event-detail-icon" />
                     <div>
@@ -145,7 +146,7 @@ function ClubEvent() {
                       <span className="club-event-detail-value">{formatTime(event.time)}</span>
                     </div>
                   </div>
-                  
+
                   <div className="club-event-detail-item">
                     <FiMapPin className="club-event-detail-icon" />
                     <div>
@@ -154,7 +155,7 @@ function ClubEvent() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Organized By */}
                 {event.club && (
                   <div className="club-event-organizer-section">
