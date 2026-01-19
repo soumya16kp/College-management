@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useClubs } from "../context/ClubContext";
 import ClubCard from "../components/Card/ClubCard";
 import ClubForm from "../forms/ClubForm";
+import authService from "../services/authService";
+import PermissionModal from "../components/PermissionModal";
 import "./Clubs.css";
 
 const Clubs = () => {
@@ -9,6 +11,16 @@ const Clubs = () => {
   const [showClubForm, setShowClubForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterInterest, setFilterInterest] = useState("all");
+  const [currentUser, setCurrentUser] = useState(null);
+  const [permissionModal, setPermissionModal] = useState({ isOpen: false, message: "" });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await authService.getCurrentUser();
+      setCurrentUser(user);
+    };
+    fetchUser();
+  }, []);
 
   // Get unique interests for filter dropdown
   const interests = ["all", ...new Set(clubs
@@ -16,14 +28,11 @@ const Clubs = () => {
     .filter(interest => interest !== null && interest !== undefined)
   )];
 
-  // Filter clubs based on search term and interest - FIXED NULL VALUES
+  // Filter clubs based on search term and interest
   const filteredClubs = clubs.filter(club => {
-    // Safely handle potential null/undefined values with fallbacks
     const clubName = club.name || "";
     const clubDescription = club.description || "";
     const clubInterest = club.interest || "";
-
-    // Convert to lowercase only after ensuring it's a string
     const searchTermLower = searchTerm.toLowerCase();
 
     const matchesSearch =
@@ -34,6 +43,17 @@ const Clubs = () => {
 
     return matchesSearch && matchesInterest;
   });
+
+  const handleCreateClick = () => {
+    if (currentUser?.is_staff || currentUser?.is_superuser) {
+      setShowClubForm(!showClubForm);
+    } else {
+      setPermissionModal({
+        isOpen: true,
+        message: "Only System Administrators have permission to create new clubs. Please contact the administration."
+      });
+    }
+  };
 
   const handleEdit = (club) => {
     const updatedName = prompt("Enter new name:", club.name || "");
@@ -98,7 +118,7 @@ const Clubs = () => {
 
         <button
           className="btn create-club-btn"
-          onClick={() => setShowClubForm(!showClubForm)}
+          onClick={handleCreateClick}
         >
           {showClubForm ? "Cancel" : "Create New Club"}
           <i className={`fas ${showClubForm ? "fa-times" : "fa-plus"}`}></i>
@@ -107,9 +127,19 @@ const Clubs = () => {
 
       {showClubForm && (
         <div className="form-container">
-          <ClubForm onSuccess={() => setShowClubForm(false)} />
+          <ClubForm
+            onSuccess={() => setShowClubForm(false)}
+            onCancel={() => setShowClubForm(false)}
+          />
         </div>
       )}
+
+      {/* Permission Modal */}
+      <PermissionModal
+        isOpen={permissionModal.isOpen}
+        onClose={() => setPermissionModal({ ...permissionModal, isOpen: false })}
+        message={permissionModal.message}
+      />
 
       {filteredClubs.length === 0 ? (
         <div className="no-clubs-message">

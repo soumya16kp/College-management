@@ -9,6 +9,7 @@ urlpatterns = [
     path("<int:club_id>/events/", views.event_list, name="event-list"),
     path("events/<int:pk>/", views.event_detail, name="event-detail"),
     path("events/", views.all_event, name="all-event"),
+    path("home-data/", views.get_home_data, name="home-data"),
  
 ]
 

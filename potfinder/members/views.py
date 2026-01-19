@@ -70,31 +70,33 @@ def manage_membership(request, membership_id):
         if not current_user_membership:
             return Response({"detail": "You are not a member of this club"}, status=status.HTTP_403_FORBIDDEN)
         
-        role_hierarchy = {"president": 4, "admin": 3, "secretary": 2, "member": 1}
+        role_hierarchy = {"admin": 5, "president": 4, "secretary": 2, "member": 1}
         current_user_weight = role_hierarchy.get(current_user_membership.role, 0)
         target_user_weight = role_hierarchy.get(membership.role, 0)
         
-        if target_user_weight > current_user_weight:
-            return Response({"detail": "Cannot manage users with higher role"}, status=status.HTTP_403_FORBIDDEN)
+        if target_user_weight >= current_user_weight:
+            return Response({"detail": "Cannot manage users with higher or equal role"}, status=status.HTTP_403_FORBIDDEN)
         
         if action == "approve":
             if current_user_membership.role not in ["admin", "president"]:
-                return Response({"detail": "Only admins can approve members"}, status=status.HTTP_403_FORBIDDEN)
+                return Response({"detail": "Only admins and presidents can approve members"}, status=status.HTTP_403_FORBIDDEN)
             membership.status = "approved"
             
         elif action == "reject":
             if current_user_membership.role not in ["admin", "president"]:
-                return Response({"detail": "Only admins can reject members"}, status=status.HTTP_403_FORBIDDEN)
+                return Response({"detail": "Only admins and presidents can reject members"}, status=status.HTTP_403_FORBIDDEN)
             membership.status = "rejected"
             
         elif action == "promote":
-            if current_user_membership.role not in ["admin", "president"]:
-                return Response({"detail": "Only admins can promote members"}, status=status.HTTP_403_FORBIDDEN)
-            
-            promotion_path = {"member": "secretary", "secretary": "admin", "admin": "president"}
+            # promotion_path = {"member": "secretary", "secretary": "admin", "admin": "president"}
+            promotion_path = {"member": "secretary", "secretary": "president"}
             new_role = promotion_path.get(membership.role)
             
-            if new_role and role_hierarchy[new_role] <= current_user_weight:
+            # Special check: Only Admin can promote to President
+            if new_role == "president" and current_user_membership.role != "admin":
+                 return Response({"detail": "Only admins can promote to president"}, status=status.HTTP_403_FORBIDDEN)
+
+            if new_role and role_hierarchy[new_role] < current_user_weight:
                 membership.role = new_role
             else:
                 return Response({"detail": "Cannot promote to this role"}, status=status.HTTP_400_BAD_REQUEST)
@@ -104,7 +106,7 @@ def manage_membership(request, membership_id):
                 return Response({"detail": "Only admins can demote members"}, status=status.HTTP_403_FORBIDDEN)
             
             # Define demotion path
-            demotion_path = {"president": "admin", "admin": "secretary", "secretary": "member"}
+            demotion_path = {"president": "secretary", "secretary": "member"}
             new_role = demotion_path.get(membership.role)
             
             if new_role:

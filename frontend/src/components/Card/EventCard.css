@@ -1,140 +1,203 @@
 /* EventCard.css */
+/* Modern Professional Card Design */
 .event-card {
-  background: white;
+  background: #ffffff;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   height: 100%;
+  border: 1px solid rgba(226, 232, 240, 0.8);
   display: flex;
   flex-direction: column;
 }
 
 .event-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: rgba(226, 232, 240, 0.8);
+  /* Explicitly prevent color change */
+  outline: none;
 }
 
+/* Image Section */
 .event-image {
   position: relative;
-  height: 200px;
+  height: 220px;
   overflow: hidden;
+  background-color: #f1f5f9;
 }
 
 .event-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .event-card:hover .event-image img {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
+/* Status Badge - Floating Glass Effect */
 .status-badge {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  /* Slightly squared for professional look */
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .status-badge.live {
-  background: #ef4444;
-  color: white;
+  color: #dc2626;
+  /* Red for text only */
+  border-left: 3px solid #dc2626;
+  padding-left: 0.6rem;
 }
 
 .status-badge.upcoming {
-  background: #3b82f6;
-  color: white;
+  color: #2563eb;
+  border-left: 3px solid #2563eb;
+  padding-left: 0.6rem;
 }
 
 .status-badge.past {
-  background: #6b7280;
-  color: white;
+  color: #64748b;
+  border-left: 3px solid #64748b;
+  padding-left: 0.6rem;
 }
 
+/* Content Section */
+/* Content Section */
 .event-content {
-  padding: 1.5rem;
+  padding: 1.25rem;
+  /* Reduced from 1.5rem */
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
 .event-title {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  margin: 0 0 0.75rem;
-  color: #1f2937;
+  color: #1e293b;
+  margin: 0 0 0.5rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
 }
 
 .event-description {
   color: #64748b;
-  margin: 0 0 1.25rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1rem;
+  display: block;
 }
 
+.read-more-btn {
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 6px;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+
+.read-more-btn:hover {
+  text-decoration: underline;
+  color: #1d4ed8;
+}
+
+/* Metadata Grid */
 .event-details {
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  /* Reduced margin */
+  margin-top: auto;
+  /* Push to bottom */
+  padding-top: 0.75rem;
+  /* Reduced padding */
+  border-top: 1px solid #f1f5f9;
 }
 
 .event-detail {
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
   color: #475569;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .detail-icon {
-  margin-right: 0.5rem;
-  font-size: 1rem;
+  margin-right: 0.6rem;
+  opacity: 0.7;
 }
 
+/* Action Buttons */
 .event-actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  /* Register takes more space */
   gap: 0.75rem;
-  margin-top: auto;
+  margin-top: 1rem;
+  /* Reduced from 1.5rem */
 }
 
 .event-btn {
-  flex: 1;
   padding: 0.75rem 1rem;
   border: none;
   border-radius: 8px;
+  /* Slightly squared */
   font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-family: inherit;
 }
 
 .event-btn.primary {
-  background: #3b82f6;
+  background: #1e293b;
+  /* Dark, professional slate */
   color: white;
 }
 
 .event-btn.primary:hover {
-  background: #2563eb;
+  background: #0f172a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .event-btn.secondary {
   background: #f1f5f9;
   color: #475569;
+  border: 1px solid transparent;
 }
 
 .event-btn.secondary:hover {
-  background: #e2e8f0;
+  background: white;
+  border-color: #cbd5e1;
+  color: #1e293b;
 }
 
+/* Mobile Adjustments */
 @media (max-width: 480px) {
   .event-actions {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    /* Stack buttons on very small screens */
   }
 }

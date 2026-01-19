@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useClubs } from "../context/ClubContext";
 import "./ClubForm.css";
-const ClubForm = () => {
+const ClubForm = ({ onSuccess, onCancel }) => {
   const { addClub } = useClubs();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -24,33 +24,33 @@ const ClubForm = () => {
 
   const validateForm = () => {
     const errors = {};
-    
+
     if (!formData.name.trim()) {
       errors.name = "Club name is required";
     }
-    
+
     if (!formData.description.trim()) {
       errors.description = "Description is required";
     }
-    
+
     if (!formData.interest.trim()) {
       errors.interest = "Interest category is required";
     }
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    
+
     if (files && files[0]) {
       const file = files[0];
       setFormData((prev) => ({
         ...prev,
         [name]: file,
       }));
-      
+
       // Create preview for images
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -67,7 +67,7 @@ const ClubForm = () => {
         [name]: value,
       }));
     }
-    
+
     // Clear error when user starts typing
     if (formErrors[name]) {
       setFormErrors(prev => ({
@@ -89,17 +89,17 @@ const ClubForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (isSubmitting) return;
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setIsSubmitting(true);
     setSubmitError("");
     setSubmitSuccess(false);
-    
+
     try {
       const uploadData = new FormData();
       Object.keys(formData).forEach((key) => {
@@ -126,11 +126,13 @@ const ClubForm = () => {
       setCoursolPreview(null);
       setSubmitSuccess(true);
       e.target.reset();
-      
+
       // Clear success message after 3 seconds
+      // Clear success message after 1.5 seconds and close
       setTimeout(() => {
         setSubmitSuccess(false);
-      }, 3000);
+        if (onSuccess) onSuccess();
+      }, 1500);
     } catch (error) {
       setSubmitError(error.message || "Failed to create club. Please try again.");
     } finally {
@@ -141,10 +143,17 @@ const ClubForm = () => {
   return (
     <div className="club-form-container">
       <div className="club-form-header">
-        <h2>Create a New Club</h2>
-        <p>Fill out the form below to establish your club community</p>
+        <div>
+          <h2>Create a New Club</h2>
+          <p>Fill out the form below to establish your club community</p>
+        </div>
+        {onCancel && (
+          <button type="button" className="close-btn" onClick={onCancel}>
+            <i className="fas fa-times"></i>
+          </button>
+        )}
       </div>
-      
+
       <form onSubmit={handleSubmit} className="club-form" encType="multipart/form-data">
         <div className="form-group full-width">
           <label htmlFor="name">Club Name *</label>
@@ -256,8 +265,8 @@ const ClubForm = () => {
               <div className="preview-item">
                 <img src={imagePreview} alt="Club preview" />
                 {console.log(imagePreview)}
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="remove-btn"
                   onClick={() => removeImage("image")}
                 >
@@ -283,8 +292,8 @@ const ClubForm = () => {
               <div className="preview-item">
                 <img src={coursolPreview} alt="Cover preview" />
                 {console.log(coursolPreview)}
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="remove-btn"
                   onClick={() => removeImage("coursol")}
                 >
@@ -295,8 +304,8 @@ const ClubForm = () => {
           )}
         </div>
 
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className={isSubmitting ? "submit-btn loading" : "submit-btn"}
           disabled={isSubmitting}
         >

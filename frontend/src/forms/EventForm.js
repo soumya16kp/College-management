@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { FiImage, FiPlus } from "react-icons/fi";
 import "./EventForm.css";
 
-const EventForm = ({ clubId, onAddEvent }) => {
+const EventForm = ({ clubId, onAddEvent, onCancel }) => {
   const [eventData, setEventData] = useState({
     title: "",
     date: "",
@@ -56,7 +57,19 @@ const EventForm = ({ clubId, onAddEvent }) => {
 
   return (
     <form className="event-form" onSubmit={handleSubmit}>
-      <h2>Add New Event</h2>
+      <div className="form-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Add New Event</h2>
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="event-form-close-btn"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        )}
+      </div>
 
       {/* --- Image Upload Section --- */}
       <div className="form-group image-upload-group">
@@ -65,7 +78,8 @@ const EventForm = ({ clubId, onAddEvent }) => {
             <img src={imagePreview} alt="Preview" className="image-preview" />
           ) : (
             <div className="upload-placeholder">
-              <span>📷 Upload Event Cover</span>
+              <FiImage className="upload-icon" size={24} />
+              <span>Upload Event Cover</span>
             </div>
           )}
           <input
@@ -121,7 +135,9 @@ const EventForm = ({ clubId, onAddEvent }) => {
         rows="4"
       />
 
-      <button type="submit" className="btn">➕ Add Event</button>
+      <button type="submit" className="btn">
+        <FiPlus style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} /> Add Event
+      </button>
     </form>
   );
 };

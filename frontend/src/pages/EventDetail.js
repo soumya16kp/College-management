@@ -1,23 +1,27 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEvents } from "../context/EventContext";
-import { 
-  FiMoreVertical, 
-  FiEdit, 
-  FiTrash2, 
+import {
+  FiMoreVertical,
+  FiEdit,
+  FiTrash2,
   FiArrowLeft,
   FiCalendar,
   FiClock,
   FiMapPin,
   FiUsers,
   FiShare2,
-  FiBookmark
+  FiBookmark,
+  FiCheckCircle,
+  FiAlertCircle
 } from "react-icons/fi";
 import { TbBuildingCommunity } from "react-icons/tb";
 import EventEditForm from "../forms/EventEditForm";
 import "./EventDetail.css";
 import { getMediaUrl } from '../services/media';
 import authService from "../services/authService";
+import EventTimeline from "../components/Event/EventTimeline";
+import EventPrizes from "../components/Event/EventPrizes";
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -28,13 +32,25 @@ export default function EventDetail() {
   const [isSaved, setIsSaved] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
   const [participantsCount, setParticipantsCount] = useState(0);
+  const [notification, setNotification] = useState({ show: false, message: '', type: '' });
 
+  // Fetch event details
   useEffect(() => {
-    fetchEventDetail(id).then((event) => {
-      setParticipantsCount(event?.total_participants || 0);
-      if (event?.user_registered) setIsRegistered(true);
-    });
+    fetchEventDetail(id);
   }, [id, fetchEventDetail]);
+
+  // Sync local state with selectedEvent when it loads
+  useEffect(() => {
+    if (selectedEvent) {
+      setParticipantsCount(selectedEvent.total_participants || 0);
+      setIsRegistered(!!selectedEvent.user_registered);
+    }
+  }, [selectedEvent]);
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ show: true, message, type });
+    setTimeout(() => setNotification({ show: false, message: '', type: '' }), 4000);
+  };
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this event?")) {
@@ -50,7 +66,7 @@ export default function EventDetail() {
   const registerForEvent = async (eventId) => {
     try {
       const res = await authService.apiClient.post(`/events/${eventId}/register/`);
-      alert(res.data.detail);
+      showNotification("Registration successful! You're in.", "success");
 
       if (!isRegistered) {
         setIsRegistered(true);
@@ -58,7 +74,7 @@ export default function EventDetail() {
       }
     } catch (err) {
       console.error(err.response?.data);
-      alert(err.response?.data?.detail || "Failed to register");
+      showNotification(err.response?.data?.detail || "Failed to register. Please try again.", "error");
     }
   };
 
@@ -78,13 +94,14 @@ export default function EventDetail() {
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
-    alert("Event link copied to clipboard!");
+    showNotification("Event link copied to clipboard!", "success");
   };
 
   const handleSaveEvent = () => {
     setIsSaved(!isSaved);
+    showNotification(isSaved ? "Event removed from saved." : "Event saved to your list!", "success");
   };
-  
+
   if (loading) return (
     <div className="cause">
       <div className="event-detail-loading">
@@ -113,16 +130,24 @@ export default function EventDetail() {
     day: 'numeric'
   });
 
-  const formattedTime = selectedEvent.time 
+  const formattedTime = selectedEvent.time
     ? new Date(`2000-01-01T${selectedEvent.time}`).toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      })
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    })
     : "TBA";
 
   return (
     <div className="cause">
+      {/* Notification Toast */}
+      {notification.show && (
+        <div className={`notification-toast ${notification.type}`}>
+          {notification.type === 'success' ? <FiCheckCircle /> : <FiAlertCircle />}
+          <span>{notification.message}</span>
+        </div>
+      )}
+
       {/* Edit Form Modal */}
       {isEditing && (
         <EventEditForm
@@ -139,9 +164,9 @@ export default function EventDetail() {
             <FiArrowLeft />
             <span>Back to Events</span>
           </button>
-          
+
           <div className="event-detail-actions">
-            <button 
+            <button
               className={`event-action-btn save-btn ${isSaved ? 'saved' : ''}`}
               onClick={handleSaveEvent}
               aria-label={isSaved ? "Remove from saved" : "Save event"}
@@ -149,8 +174,8 @@ export default function EventDetail() {
               <FiBookmark />
               <span>{isSaved ? "Saved" : "Save"}</span>
             </button>
-            
-            <button 
+
+            <button
               className="event-action-btn share-btn"
               onClick={handleShare}
               aria-label="Share event"
@@ -161,163 +186,158 @@ export default function EventDetail() {
           </div>
         </div>
 
-        {/* Event Header */}
-        <div className="event-detail-header">
-          <div className="event-image-container">
+        {/* Event Header Card */}
+        <div className="event-detail-header-card">
+          <div className="header-image-section">
             {selectedEvent.image ? (
-              <img 
-                src={getMediaUrl(selectedEvent.image)} 
+              <img
+                src={getMediaUrl(selectedEvent.image)}
                 alt={selectedEvent.title}
-                className="event-detail-image"
+                className="event-header-image"
               />
             ) : (
-              <div className="event-image-placeholder">
+              <div className="event-header-placeholder">
                 <TbBuildingCommunity />
               </div>
             )}
-            <div className="event-image-overlay">
-              <div className="event-club-badge">
-                <TbBuildingCommunity />
-                <span>{selectedEvent.club?.name}</span>
-              </div>
+            <div className="header-overlay">
+              <span className="event-category-badge">{selectedEvent.club?.name || "Event"}</span>
             </div>
           </div>
 
-          <div className="event-title-section">
-            <h1 className="event-detail-title">{selectedEvent.title}</h1>
-            <p className="event-detail-subtitle">
-              Organized by <strong>{selectedEvent.club?.name}</strong>
-            </p>
-            
-            {/* Action Menu */}
-            <div className="event-detail-menu">
-              <button 
-                className="event-menu-trigger"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                aria-label="Event options"
-              >
-                <FiMoreVertical />
-              </button>
-              
-              {isMenuOpen && (
-                <div className="event-menu-dropdown">
-                  <button onClick={handleEdit} className="menu-dropdown-item">
-                    <FiEdit />
-                    <span>Edit Event</span>
-                  </button>
-                  <button onClick={handleDelete} className="menu-dropdown-item delete">
-                    <FiTrash2 />
-                    <span>Delete Event</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+          <div className="header-content-section">
+            <div className="header-title-row">
+              <h1 className="event-main-title">{selectedEvent.title}</h1>
+              <div className="event-detail-menu">
+                <button
+                  className="event-menu-trigger"
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  aria-label="Event options"
+                >
+                  <FiMoreVertical />
+                </button>
 
-        <div className="event-detail-content">
-          <div className="event-detail-main">
-            {/* Event Info Cards */}
-            <div className="event-info-cards">
-              <div className="info-card">
-                <div className="info-card-icon">
-                  <FiCalendar />
-                </div>
-                <div className="info-card-content">
-                  <h3>Date</h3>
-                  <p>{formattedDate}</p>
-                </div>
-              </div>
-
-              <div className="info-card">
-                <div className="info-card-icon">
-                  <FiClock />
-                </div>
-                <div className="info-card-content">
-                  <h3>Time</h3>
-                  <p>{formattedTime}</p>
-                </div>
-              </div>
-
-              <div className="info-card">
-                <div className="info-card-icon">
-                  <FiMapPin />
-                </div>
-                <div className="info-card-content">
-                  <h3>Location</h3>
-                  <p>{selectedEvent.location || "To be announced"}</p>
-                </div>
-              </div>
-
-              <div className="info-card">
-                <div className="info-card-icon">
-                  <FiUsers />
-                </div>
-                <div className="info-card-content">
-                  <h3>Participants</h3>
-                  <p>{participantsCount} attending</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Event Description */}
-            <div className="event-description-section">
-              <h2>About This Event</h2>
-              <div className="event-description-content">
-                {selectedEvent.description || (
-                  <p className="no-description">
-                    No description provided for this event.
-                  </p>
+                {isMenuOpen && (
+                  <div className="event-menu-dropdown">
+                    <button onClick={handleEdit} className="menu-dropdown-item">
+                      <FiEdit />
+                      <span>Edit Event</span>
+                    </button>
+                    <button onClick={handleDelete} className="menu-dropdown-item delete">
+                      <FiTrash2 />
+                      <span>Delete Event</span>
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
-          </div>
 
-          {/* Sidebar - Action Buttons */}
-          <div className="event-detail-sidebar">
-            <div className="action-card">
-              <h3>Event Status</h3>
-              <div className="event-status-badge upcoming">
-                Upcoming
+            <p className="event-organizer">
+              Organized by <span className="organizer-name">{selectedEvent.club?.name}</span>
+            </p>
+
+            <div className="header-meta-grid">
+              <div className="meta-item">
+                <FiCalendar className="meta-icon" />
+                <div>
+                  <span className="meta-label">Date</span>
+                  <span className="meta-value">{formattedDate}</span>
+                </div>
               </div>
-              
-              <button 
-                className="primary-action-btn" 
-                onClick={() => registerForEvent(selectedEvent.id)}
-                disabled={isRegistered}
-              >
-                {isRegistered ? "Registered" : "Register Now"}
-              </button>
-              
-              <div className="event-meta">
-                <p><strong>Category:</strong> Club Event</p>
-                <p><strong>Access:</strong> {selectedEvent.club?.is_private ? "Members Only" : "Open to All"}</p>
+              <div className="meta-item">
+                <FiClock className="meta-icon" />
+                <div>
+                  <span className="meta-label">Time</span>
+                  <span className="meta-value">{formattedTime}</span>
+                </div>
+              </div>
+              <div className="meta-item">
+                <FiMapPin className="meta-icon" />
+                <div>
+                  <span className="meta-label">Location</span>
+                  <span className="meta-value">{selectedEvent.location || "TBA"}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Additional Info */}
-        <div className="event-additional-info">
-          <h3>Additional Information</h3>
-          <ul className="event-info-list">
-            <li>
-              <strong>Dress Code:</strong> Smart Casual
-            </li>
-            <li>
-              <strong>Registration Required:</strong> Yes
-            </li>
-            <li>
-              <strong>Refreshments:</strong> Will be provided
-            </li>
-            <li>
-              <strong>Contact:</strong> events@{selectedEvent.club?.name?.toLowerCase().replace(/\s+/g, '')}.edu
-            </li>
-          </ul>
+        <div className="event-detail-layout">
+          {/* Main Content Column */}
+          <div className="event-main-column">
+            <div className="content-section">
+              <h2 className="section-heading">About This Event</h2>
+              <div className="description-text">
+                {selectedEvent.description ? (
+                  selectedEvent.description.split('\n').map((para, index) => (
+                    <p key={index}>{para}</p>
+                  ))
+                ) : (
+                  <p className="no-description">No description provided for this event.</p>
+                )}
+              </div>
+            </div>
+
+            {/* Timeline Section */}
+            {selectedEvent.timeline && selectedEvent.timeline.length > 0 && (
+              <div className="content-section">
+                <h2 className="section-heading">Stages and Timelines</h2>
+                <EventTimeline timelineData={selectedEvent.timeline} />
+              </div>
+            )}
+
+            {/* Prizes Section */}
+            {selectedEvent.prizes && selectedEvent.prizes.length > 0 && (
+              <div className="content-section">
+                <h2 className="section-heading">Rewards and Prizes</h2>
+                <EventPrizes prizesData={selectedEvent.prizes} />
+              </div>
+            )}
+
+            <div className="content-section">
+              <h2 className="section-heading">Additional Information</h2>
+              <ul className="info-list">
+                <li><strong>Dress Code:</strong> Smart Casual</li>
+                <li><strong>Eligibility:</strong> {selectedEvent.club?.is_private ? "Members Only" : "Open to All Students"}</li>
+                <li><strong>Contact:</strong> events@{selectedEvent.club?.name?.toLowerCase().replace(/\s+/g, '')}.edu</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Sidebar Column */}
+          <div className="event-sidebar-column">
+            <div className="registration-card">
+              <div className="registration-header">
+                <h3>Registration</h3>
+                {isRegistered && <span className="registered-badge"><FiCheckCircle /> Registered</span>}
+              </div>
+
+              <div className="participants-info">
+                <div className="participants-count">
+                  <FiUsers />
+                  <span>{participantsCount}</span>
+                </div>
+                <span className="participants-label">people attending</span>
+              </div>
+
+              <button
+                className={`registration-btn ${isRegistered ? 'registered' : ''} ${new Date(selectedEvent.date) < new Date().setHours(0, 0, 0, 0) ? 'completed' : ''}`}
+                onClick={() => !isRegistered && !(new Date(selectedEvent.date) < new Date().setHours(0, 0, 0, 0)) && registerForEvent(selectedEvent.id)}
+                disabled={isRegistered || (new Date(selectedEvent.date) < new Date().setHours(0, 0, 0, 0))}
+              >
+                {new Date(selectedEvent.date) < new Date().setHours(0, 0, 0, 0) ? "Event Completed" : isRegistered ? "You are Registered" : "Register Now"}
+              </button>
+
+              <p className="registration-note">
+                {new Date(selectedEvent.date) < new Date().setHours(0, 0, 0, 0)
+                  ? "This event has already taken place."
+                  : isRegistered
+                    ? "You are all set! We look forward to seeing you there."
+                    : "Secure your spot now directly through the portal."}
+              </p>
+            </div>
+          </div>
         </div>
-        <button className="register-btn">
-          Register Now
-        </button>
       </div>
     </div>
   );

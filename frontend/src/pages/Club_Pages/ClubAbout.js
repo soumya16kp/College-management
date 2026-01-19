@@ -1,25 +1,36 @@
 import { useState, useEffect } from 'react';
 import './ClubAbout.css';
 import { useClubs } from "../../context/ClubContext";
+import { useMembers, roleWeights } from "../../context/MemberContext"; // Imported useMembers
 import { useParams } from 'react-router-dom';
 import ClubEditForm from '../../forms/ClubEditForm'; // Import the new component
 import { getMediaUrl } from '../../services/media';
 
+import PermissionModal from '../../components/PermissionModal'; // Import
+
 const ClubAbout = () => {
   const { id } = useParams();
   const { clubs, editClub, removeClub } = useClubs();
+  const { userRole, fetchMembers } = useMembers(); // Get userRole and fetchMembers
   const [club, setClub] = useState(null);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  // Permission Modal State
+  const [permissionModal, setPermissionModal] = useState({ isOpen: false, message: "" });
+
   useEffect(() => {
     const found = clubs.find((c) => String(c.id) === String(id));
     if (found) {
       setClub(found);
     }
-  }, [id, clubs]);
+    // Fetch members to determine userRole for permission checks
+    if (id) {
+      fetchMembers(id);
+    }
+  }, [id, clubs, fetchMembers]);
 
   if (!club) {
     return <p>Loading club...</p>;
@@ -34,13 +45,33 @@ const ClubAbout = () => {
   };
 
   const handleEdit = () => {
-    setIsEditModalOpen(true);
-    closeMenu();
+    const roleWeight = roleWeights[userRole] || 0;
+    // Secretary (2) or higher can edit
+    if (roleWeight >= roleWeights.secretary) {
+      setIsEditModalOpen(true);
+      closeMenu();
+    } else {
+      setPermissionModal({
+        isOpen: true,
+        message: "You do not have permission to edit this club. Only the Secretary, President, or Admin can make changes."
+      });
+      closeMenu();
+    }
   };
 
   const handleDelete = () => {
-    setIsDeleteModalOpen(true);
-    closeMenu();
+    const roleWeight = roleWeights[userRole] || 0;
+    // President (4) only can delete
+    if (roleWeight >= roleWeights.president) {
+      setIsDeleteModalOpen(true);
+      closeMenu();
+    } else {
+      setPermissionModal({
+        isOpen: true,
+        message: "Only the President can delete this club."
+      });
+      closeMenu();
+    }
   };
 
   const handleSaveEdit = async (formData) => {
@@ -108,14 +139,12 @@ const ClubAbout = () => {
             src={getMediaUrl(club.image) || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"}
             alt="Club Logo"
             className="club-logo"
-          /* onClick handler removed */
           />
           <div>
             <h1 className="club-name">{club.name}</h1>
             <span className="club-category">{club.tagline}</span>
           </div>
         </div>
-        {/* Lightbox block removed */}
 
         <div className="club-stats">
           <div className="stat">
@@ -143,7 +172,7 @@ const ClubAbout = () => {
           </p>
         </div>
 
-        {/* Club Details Grid (Kept the 3-box improvement as it was accepted earlier, but removing extra layout bits if needed) */}
+        {/* Club Details Grid */}
         <div className="club-details-grid">
           <div className="detail-card">
             <div className="detail-header">
@@ -216,6 +245,12 @@ const ClubAbout = () => {
           </div>
         </div>
       )}
+      {/* Permission Modal */}
+      <PermissionModal
+        isOpen={permissionModal.isOpen}
+        onClose={() => setPermissionModal({ ...permissionModal, isOpen: false })}
+        message={permissionModal.message}
+      />
     </div>
   );
 };

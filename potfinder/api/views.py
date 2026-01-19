@@ -85,6 +85,8 @@ def protected_view(request):
         'user_details': {
             'id': user.id,
             'username': user.username,
-            'email': user.email
+            'email': user.email,
+            'is_staff': user.is_staff,
+            'is_superuser': user.is_superuser
         }
     })

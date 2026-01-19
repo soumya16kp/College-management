@@ -13,7 +13,6 @@ export const UserProvider = ({ children }) => {
     setLoading(true);
     try {
       const data = await userService.getProfile();
-      // 'data' contains { user: {...}, designation: "...", participated_events: [...] }
       setProfile(data);
     } catch (error) {
       console.error("Failed to load profile", error);

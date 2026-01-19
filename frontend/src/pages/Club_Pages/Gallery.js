@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useEvents } from "../../context/EventContext";
-import { useClubs } from "../../context/ClubContext"; // Added import
+import { useClubs } from "../../context/ClubContext";
 import { useParams } from "react-router-dom";
 import authService from "../../services/authService";
 import GalleryForm from "../../forms/GalleryForm";
@@ -8,16 +8,31 @@ import { FiCalendar, FiClock, FiMapPin, FiImage, FiUpload, FiChevronLeft, FiChev
 import { MdEvent, MdPhotoLibrary } from "react-icons/md";
 import "./Gallery.css";
 import Loader from "../../components/Loader";
+import { useMembers, roleWeights } from "../../context/MemberContext";
+import PermissionModal from "../../components/PermissionModal";
 
 function Gallery() {
   const { id } = useParams();
   const { events, fetchEvents } = useEvents();
-  const { clubGalleries, fetchClubGallery } = useClubs(); // Use context
+  const { clubGalleries, fetchClubGallery } = useClubs();
+  const { userRole } = useMembers(); // Get userRole
   const [galleries, setGalleries] = useState({});
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentSlideIndexes, setCurrentSlideIndexes] = useState({});
   const [selectedImage, setSelectedImage] = useState(null); // Lightbox state
+  const [mobileDetailsOpen, setMobileDetailsOpen] = useState({}); // Mobile details toggle state
+
+  const toggleMobileDetails = (eventId) => {
+    setMobileDetailsOpen(prev => ({
+      ...prev,
+      [eventId]: !prev[eventId]
+    }));
+  };
+
+  // Permission Modal State
+  const [permissionModal, setPermissionModal] = useState({ isOpen: false, message: "" });
+
   const sliderRefs = useRef({});
 
   useEffect(() => {
@@ -158,7 +173,17 @@ function Gallery() {
                 </div>
                 <button
                   className="upload-btn"
-                  onClick={() => setSelectedEvent(selectedEvent === event.id ? null : event.id)}
+                  onClick={() => {
+                    const roleWeight = roleWeights[userRole] || 0;
+                    if (roleWeight >= roleWeights.secretary) {
+                      setSelectedEvent(selectedEvent === event.id ? null : event.id);
+                    } else {
+                      setPermissionModal({
+                        isOpen: true,
+                        message: "You do not have permission to upload photos to this gallery. (Secretary+ required)"
+                      });
+                    }
+                  }}
                 >
                   <FiUpload className="btn-icon" />
                   {selectedEvent === event.id ? "Cancel" : "Upload Images"}
@@ -166,7 +191,15 @@ function Gallery() {
               </div>
 
               <div className="gallery-event-details">
-                <div className="event-detail-item-nav">
+                <button
+                  className="mobile-details-toggle"
+                  onClick={() => toggleMobileDetails(event.id)}
+                >
+                  <span>Event Info</span>
+                  <FiChevronRight className={`toggle-icon ${mobileDetailsOpen[event.id] ? 'open' : ''}`} />
+                </button>
+
+                <div className={`event-detail-item-nav ${mobileDetailsOpen[event.id] ? 'mobile-open' : ''}`}>
                   <div className="event-detail-item">
                     <FiCalendar className="detail-icon" />
                     <span>{event.date}</span>
@@ -182,15 +215,13 @@ function Gallery() {
                     </div>
                   )}
                 </div>
-                {event.description && (
-                  <p className="gallery-event-description">{event.description}</p>
-                )}
               </div>
 
               {selectedEvent === event.id && (
                 <GalleryForm
                   eventId={event.id}
                   onUploadSuccess={handleImageUpload}
+                  onCancel={() => setSelectedEvent(null)}
                 />
               )}
 
@@ -296,6 +327,13 @@ function Gallery() {
           </div>
         </div>
       )}
+
+      {/* Permission Modal */}
+      <PermissionModal
+        isOpen={permissionModal.isOpen}
+        onClose={() => setPermissionModal({ ...permissionModal, isOpen: false })}
+        message={permissionModal.message}
+      />
     </div>
   );
 }

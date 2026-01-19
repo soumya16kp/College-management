@@ -67,20 +67,26 @@
 }
 
 /* Form Section */
+/* Form Section (Modal Overlay) */
 .club-event-form-section {
-  margin-bottom: 3rem;
-  animation: club-event-slideDown 0.4s ease-out;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  overflow-y: auto;
+  padding: 2rem 1rem;
+  animation: club-event-fadeIn 0.3s ease-out;
+  display: block;
 }
 
-@keyframes club-event-slideDown {
+@keyframes club-event-fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-30px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

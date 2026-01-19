@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import AccountForm from "../forms/AccountForm";
 import authService from "../services/authService";
@@ -6,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../store/AuthSlice";
 import "./Account.css";
 
-import { 
+import {
   FiUser, FiMail, FiPhone, FiBriefcase, FiCalendar,
   FiLogOut, FiEdit2, FiChevronRight, FiCheckCircle,
   FiClock, FiUsers, FiMapPin, FiGlobe
@@ -16,6 +17,7 @@ import { TbBuildingCommunity } from "react-icons/tb";
 const AccountPage = () => {
   const { profile, loading } = useUser();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
 
@@ -74,7 +76,37 @@ const AccountPage = () => {
     totalEvents: profile.participated_events?.length || 0,
     registeredEvents: profile.participated_events?.filter(e => e.status === "registered").length || 0,
     attendedEvents: profile.participated_events?.filter(e => e.status === "attended").length || 0,
+    joinedClubs: profile.joined_clubs?.length || 0,
   };
+
+  // Determine primary role based on club memberships
+  const getPrimaryRole = () => {
+    if (!profile.joined_clubs?.length) return profile.designation || "Member";
+
+    // Priority: President > Secretary > Admin > Member
+    const rolePriority = { president: 4, secretary: 3, admin: 2, member: 1 };
+    let primaryRole = "member";
+    let maxPriority = 0;
+
+    profile.joined_clubs.forEach(club => {
+      // Normalize role to lowercase just in case
+      const r = (club.role || "").toLowerCase();
+      const priority = rolePriority[r] || 0;
+      if (priority > maxPriority) {
+        maxPriority = priority;
+        primaryRole = r;
+      }
+    });
+
+    // If user has a special role (priority > 1), use it. 
+    // Otherwise fallback to designation or "Member"
+    if (maxPriority > 1) {
+      return primaryRole.charAt(0).toUpperCase() + primaryRole.slice(1);
+    }
+    return profile.designation || "Member";
+  };
+
+  const displayRole = getPrimaryRole();
 
   return (
     <div className="account-page">
@@ -109,7 +141,7 @@ const AccountPage = () => {
                     <FiUser size={40} />
                   </div>
                 )}
-                <button 
+                <button
                   className="edit-avatar-button"
                   onClick={() => setIsEditing(true)}
                   aria-label="Edit profile"
@@ -117,24 +149,25 @@ const AccountPage = () => {
                   <FiEdit2 size={14} />
                 </button>
               </div>
-              
+
               <div className="profile-info">
                 <h2 className="profile-name">
                   {profile.user?.first_name} {profile.user?.last_name}
                 </h2>
-                <p className="profile-role">{profile.designation || "Member"}</p>
+                <p className="profile-role">{displayRole}</p>
                 <p className="profile-handle">@{profile.user?.username}</p>
+                <p className="profile-email">{profile.user?.email}</p>
               </div>
             </div>
 
             <div className="profile-stats">
               <div className="stat-item">
                 <div className="stat-value">{stats.totalEvents}</div>
-                <div className="stat-label">Total Events</div>
+                <div className="stat-label">Events</div>
               </div>
               <div className="stat-item">
-                <div className="stat-value">{stats.registeredEvents}</div>
-                <div className="stat-label">Registered</div>
+                <div className="stat-value">{stats.joinedClubs}</div>
+                <div className="stat-label">Clubs</div>
               </div>
               <div className="stat-item">
                 <div className="stat-value">{stats.attendedEvents}</div>
@@ -143,7 +176,7 @@ const AccountPage = () => {
             </div>
 
             <div className="profile-actions">
-              <button 
+              <button
                 className="edit-profile-button"
                 onClick={() => setIsEditing(true)}
               >
@@ -166,7 +199,7 @@ const AccountPage = () => {
                   <div className="contact-value">{profile.user?.email}</div>
                 </div>
               </div>
-              
+
               <div className="contact-item">
                 <div className="contact-icon">
                   <FiPhone />
@@ -176,7 +209,7 @@ const AccountPage = () => {
                   <div className="contact-value">{profile.phone || "Not provided"}</div>
                 </div>
               </div>
-              
+
               {profile.location && (
                 <div className="contact-item">
                   <div className="contact-icon">
@@ -211,6 +244,14 @@ const AccountPage = () => {
               Event History
               <span className="tab-badge">{stats.totalEvents}</span>
             </button>
+            <button
+              className={`tab-button ${activeTab === "clubs" ? "active" : ""}`}
+              onClick={() => setActiveTab("clubs")}
+            >
+              <TbBuildingCommunity size={18} />
+              Joined Clubs
+              <span className="tab-badge">{stats.joinedClubs}</span>
+            </button>
           </div>
 
           {/* Tab Content */}
@@ -219,7 +260,7 @@ const AccountPage = () => {
               <div className="profile-details-section">
                 <div className="section-header">
                   <h2>Profile Information</h2>
-                  <button 
+                  <button
                     className="edit-section-button"
                     onClick={() => setIsEditing(true)}
                   >
@@ -227,7 +268,7 @@ const AccountPage = () => {
                     Edit
                   </button>
                 </div>
-                
+
                 <div className="details-grid">
                   <div className="detail-card">
                     <div className="detail-header">
@@ -310,7 +351,10 @@ const AccountPage = () => {
                               <FiCheckCircle size={16} />
                               <span>Registered on {formatDate(eventItem.registered_at)}</span>
                             </div>
-                            <button className="event-action-button">
+                            <button
+                              className="event-action-button"
+                              onClick={() => navigate(`/events/${eventItem.event?.id}`)}
+                            >
                               View Details
                               <FiChevronRight size={16} />
                             </button>
@@ -329,13 +373,69 @@ const AccountPage = () => {
               </div>
             )}
 
+            {activeTab === "clubs" && (
+              <div className="events-section">
+                <div className="section-header">
+                  <h2>Joined Clubs</h2>
+                  <span className="events-count">
+                    {stats.joinedClubs} memberships
+                  </span>
+                </div>
+
+                {profile.joined_clubs && profile.joined_clubs.length > 0 ? (
+                  <div className="events-list">
+                    {profile.joined_clubs.map((membership) => (
+                      <div key={membership.id} className="event-card">
+                        <div className="event-header">
+                          <div className="event-title-group">
+                            <h3>{membership.club?.name}</h3>
+                            <div className={`status-badge status-${membership.status}`}>
+                              {membership.status}
+                            </div>
+                          </div>
+                          <div className="event-club">
+                            <span className="role-tag" style={{ textTransform: 'capitalize', fontWeight: 600 }}>
+                              {membership.role}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="event-details">
+                          <div className="event-info">
+                            <FiCalendar size={16} />
+                            <span>Joined {formatDate(membership.date_joined)}</span>
+                          </div>
+                        </div>
+
+                        <div className="event-footer">
+                          <button
+                            className="event-action-button"
+                            onClick={() => navigate(`/clubs/${membership.club?.id}`)}
+                          >
+                            View Club
+                            <FiChevronRight size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="empty-state">
+                    <TbBuildingCommunity size={64} className="empty-icon" />
+                    <h3>No Clubs Joined</h3>
+                    <p>You haven't joined any clubs yet. Explore and join!</p>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Edit Form Overlay */}
             {isEditing && (
               <div className="edit-overlay">
                 <div className="edit-modal">
                   <div className="modal-header">
                     <h2>Edit Profile</h2>
-                    <button 
+                    <button
                       className="modal-close"
                       onClick={() => setIsEditing(false)}
                     >
@@ -343,7 +443,7 @@ const AccountPage = () => {
                     </button>
                   </div>
                   <div className="modal-content">
-                    <AccountForm 
+                    <AccountForm
                       onSuccess={() => {
                         setIsEditing(false);
                         // Optionally refresh profile data here

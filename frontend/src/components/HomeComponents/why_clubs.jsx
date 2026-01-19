@@ -37,18 +37,6 @@ function Clubs() {
         "Encourages creativity, innovation, and problem-solving.\n\nHelps you manage stress by balancing academics with fun and engaging activities.\n\nMakes you more adaptable and open to new ideas.",
       image: skill,
     },
-    {
-      title: "Access to Resources",
-      description:
-        "Clubs often have access to workshops, seminars, and industry experts.\n\nMay provide funding for projects, hackathons, or competitions.",
-      image: skill,
-    },
-    {
-      title: "Fun & Social Life",
-      description:
-        "Provides opportunities to make friends and socialize.\n\nMakes college life more enjoyable and memorable.\n\nIncludes trips, cultural events, and extracurricular excitement.",
-      image: skill,
-    },
   ];
 
   return (
@@ -70,8 +58,6 @@ function Clubs() {
             C 25 20, 75 40, 50 60
             C 25 80, 75 100, 50 120
             C 25 140, 75 160, 50 180
-            C 25 200, 75 220, 50 230
-            C 25 210, 75 230, 50 240
           " />
         </svg>
 

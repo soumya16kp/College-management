@@ -1,11 +1,28 @@
 /* GalleryForm.css */
 
+.gallery-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
 .gallery-form {
   background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
   padding: 2rem;
   border-radius: 16px;
   border: 2px dashed #cbd5e0;
-  margin: 1.5rem 0;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 

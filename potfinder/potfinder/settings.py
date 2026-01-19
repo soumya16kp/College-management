@@ -22,26 +22,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = '/media/'
 
-if ENVIRONMENT=='development':
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-else:
-    DEFAULT_FILE_STORAGE= 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    CLOUDINARY_STORAGE={
-        'CLOUDINARY_URL': env('CLOUDINARY_URL')
-    }
-
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
+# Define MEDIA_ROOT globally (fallback for Cloudinary/Debug)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 if ENVIRONMENT=='development':
-    DEBUG= True
+    # Local development settings
+    pass
 else:
-    DEBUG=False
+    # Production / Cloudinary settings
+    DEFAULT_FILE_STORAGE= 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    CLOUDINARY_STORAGE={
+        'CLOUDINARY_URL': env('CLOUDINARY_URL')
+    }
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

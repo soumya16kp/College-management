@@ -1,6 +1,6 @@
 /* EventSlideShow.css */
 .carousel-container {
-    
+
   width: 100%;
   height: 550px;
   position: relative;
@@ -210,20 +210,20 @@
     height: 450px;
     border-radius: 16px;
   }
-  
+
   .carousel-overlay {
     padding: 35px;
     padding-top: 80px;
   }
-  
+
   .carousel-overlay h2 {
     font-size: 2rem;
   }
-  
+
   .event-description {
     font-size: 1.05rem;
   }
-  
+
   .carousel-arrow {
     width: 48px;
     height: 48px;
@@ -233,49 +233,49 @@
 @media (max-width: 600px) {
   .carousel-container {
     height: 400px;
-    border-radius: 14px;
+    border-radius: 0;
   }
-  
+
   .carousel-overlay {
     padding: 25px;
     padding-top: 70px;
   }
-  
+
   .carousel-overlay h2 {
     font-size: 1.7rem;
   }
-  
+
   .event-date {
     font-size: 1rem;
   }
-  
+
   .event-description {
     font-size: 1rem;
     margin-bottom: 20px;
   }
-  
+
   .event-button {
     padding: 12px 24px;
     font-size: 0.95rem;
   }
-  
+
   .carousel-arrow {
     width: 42px;
     height: 42px;
   }
-  
+
   .carousel-arrow-left {
     left: 15px;
   }
-  
+
   .carousel-arrow-right {
     right: 15px;
   }
-  
+
   .carousel-dots {
     bottom: 20px;
   }
-  
+
   .dot {
     width: 12px;
     height: 12px;
@@ -286,15 +286,15 @@
   .carousel-container {
     height: 380px;
   }
-  
+
   .carousel-overlay h2 {
     font-size: 1.5rem;
   }
-  
+
   .event-date {
     font-size: 0.9rem;
   }
-  
+
   .event-description {
     font-size: 0.9rem;
   }

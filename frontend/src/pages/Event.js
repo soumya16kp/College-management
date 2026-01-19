@@ -8,12 +8,11 @@ function Event() {
   const [activeTab, setActiveTab] = useState("live");
   const { events, fetchAllEvents, loading } = useEvents();
 
-  const clubId = 1;
+  // const clubId = 1;
 
   useEffect(() => {
-    fetchAllEvents(clubId);
-    console.log(events);
-  }, [fetchAllEvents, clubId]);
+    fetchAllEvents();
+  }, [fetchAllEvents]);
 
 
   const time = new Date();
@@ -46,6 +45,19 @@ function Event() {
 
   const currentEvents = getEventsByType();
 
+  const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
+
+  // Close dropdown when clicking outside (simple implementation)
+  useEffect(() => {
+    const closeDropdown = (e) => {
+      if (!e.target.closest('.mobile-tabs')) {
+        setIsMobileDropdownOpen(false);
+      }
+    };
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
+  }, []);
+
   return (
     <div className="event-page">
       <div className="event-header">
@@ -54,7 +66,8 @@ function Event() {
       </div>
 
       <div className='tab-buttons'>
-        <ul>
+        {/* Desktop View */}
+        <ul className="desktop-tabs">
           <li>
             <button
               className={activeTab === "live" ? "active" : ""}
@@ -83,6 +96,60 @@ function Event() {
             </button>
           </li>
         </ul>
+
+        {/* Mobile View - Custom Dropdown */}
+        <div className="mobile-tabs">
+          <button
+            className={`custom-dropdown-trigger ${isMobileDropdownOpen ? 'open' : ''}`}
+            onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
+          >
+            <span className="selected-text">
+              {activeTab === 'live' ? 'Live Events' : activeTab === 'upcoming' ? 'Upcoming Events' : 'Past Events'}
+              <span className="mobile-count">
+                ({activeTab === 'live' ? liveEvents.length : activeTab === 'upcoming' ? upcomingEvents.length : pastEvents.length})
+              </span>
+            </span>
+            <svg
+              className="dropdown-arrow"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+
+          {isMobileDropdownOpen && (
+            <ul className="custom-dropdown-menu">
+              <li
+                className={activeTab === 'live' ? 'selected' : ''}
+                onClick={() => { setActiveTab('live'); setIsMobileDropdownOpen(false); }}
+              >
+                <span>Live Events</span>
+                {liveEvents.length > 0 && <span className="option-count">{liveEvents.length}</span>}
+              </li>
+              <li
+                className={activeTab === 'upcoming' ? 'selected' : ''}
+                onClick={() => { setActiveTab('upcoming'); setIsMobileDropdownOpen(false); }}
+              >
+                <span>Upcoming Events</span>
+                {upcomingEvents.length > 0 && <span className="option-count">{upcomingEvents.length}</span>}
+              </li>
+              <li
+                className={activeTab === 'past' ? 'selected' : ''}
+                onClick={() => { setActiveTab('past'); setIsMobileDropdownOpen(false); }}
+              >
+                <span>Past Events</span>
+                {pastEvents.length > 0 && <span className="option-count">{pastEvents.length}</span>}
+              </li>
+            </ul>
+          )}
+        </div>
       </div>
 
       <div className="events-container">
@@ -94,7 +161,6 @@ function Event() {
         ) : currentEvents.length > 0 ? (
           <div className="events-grid">
             {currentEvents.map(event => (
-
               <EventCard key={event.id} event={event} type={activeTab} />
             ))}
           </div>
@@ -105,7 +171,6 @@ function Event() {
               alt="No events"
               className="no-events-image"
             />
-            <p>No {activeTab} events found</p>
           </div>
         )}
       </div>

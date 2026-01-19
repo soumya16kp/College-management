@@ -87,11 +87,13 @@ const MembersPage = () => {
     if (!userRole) return false;
     if (targetMember.user.id === userMembership?.user.id) return false;
 
-    const roleHierarchy = { president: 4, admin: 3, secretary: 2, member: 1 };
+    // Admin > President > Secretary > Member
+    const roleHierarchy = { admin: 5, president: 4, secretary: 2, member: 1 };
     const userWeight = roleHierarchy[userRole] || 0;
     const targetWeight = roleHierarchy[targetMember.role] || 0;
 
-    return userWeight >= targetWeight;
+    // Strict hierarchy: Can only manage those BELOW you
+    return userWeight > targetWeight;
   };
 
   if (loading) return <Loader />;
@@ -196,10 +198,6 @@ const MembersPage = () => {
 
               {/* Contact Information */}
               <div className="member-contact">
-                <div className="contact-item">
-                  <FiMail className="contact-icon" />
-                  <span>{member.user.email}</span>
-                </div>
                 {member.user.phone && (
                   <div className="contact-item">
                     <FiPhone className="contact-icon" />
@@ -257,16 +255,18 @@ const MembersPage = () => {
 
                   {member.status === 'approved' && (
                     <>
-                      {member.role !== 'president' && (
-                        <button
-                          className="action-btn promote-btn"
-                          onClick={() => handleMembershipAction(member.id, 'promote')}
-                          disabled={actionLoading === member.id}
-                        >
-                          <FiArrowUp />
-                          {actionLoading === member.id ? 'Promoting...' : 'Promote'}
-                        </button>
-                      )}
+                      {member.role !== 'president' &&
+                        // Only show Promote if user is Admin OR target is NOT Secretary (meaning President can promote Member, but not Secretary)
+                        (userRole === 'admin' || member.role !== 'secretary') && (
+                          <button
+                            className="action-btn promote-btn"
+                            onClick={() => handleMembershipAction(member.id, 'promote')}
+                            disabled={actionLoading === member.id}
+                          >
+                            <FiArrowUp />
+                            {actionLoading === member.id ? 'Promoting...' : 'Promote'}
+                          </button>
+                        )}
 
                       {(member.role === 'admin' || member.role === 'secretary') && member.role !== 'president' && (
                         <button
@@ -292,10 +292,10 @@ const MembersPage = () => {
                 </div>
               )}
 
-              {/* Role Hierarchy Info for Admins */}
-              {userRole && ['admin', 'president'].includes(userRole) && member.role === 'president' && (
+              {/* Role Hierarchy Info */}
+              {userRole === 'president' && member.role === 'president' && (
                 <div className="role-hierarchy">
-                  <p>⚠️ Only the president can manage other presidents</p>
+                  <p>⚠️ Only Admins can manage Presidents</p>
                 </div>
               )}
             </div>

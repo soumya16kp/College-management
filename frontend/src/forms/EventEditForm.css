@@ -18,7 +18,8 @@
   border-radius: 12px;
   padding: 30px;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
+  /* Increased width for better layout */
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -64,7 +65,7 @@
 .event-edit-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .event-edit-form-group {
@@ -73,7 +74,7 @@
 }
 
 .event-edit-form-label {
-  font-weight: 500;
+  font-weight: 600;
   color: #374151;
   margin-bottom: 8px;
   font-size: 0.95rem;
@@ -114,6 +115,89 @@
   gap: 16px;
 }
 
+/* Sections for Timeline & Prizes */
+.event-edit-section {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9fafb;
+}
+
+.event-edit-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.event-edit-section-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #111827;
+  font-weight: 600;
+}
+
+.event-edit-add-btn {
+  background: none;
+  border: 1px dashed #3b82f6;
+  color: #3b82f6;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.event-edit-add-btn:hover {
+  background-color: #eff6ff;
+}
+
+.event-edit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.event-edit-list-item {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  position: relative;
+  display: grid;
+  gap: 12px;
+}
+
+.event-edit-remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-edit-remove-btn:hover {
+  background-color: #fee2e2;
+}
+
+.event-edit-item-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+
+/* Actions */
 .event-edit-form-actions {
   display: flex;
   justify-content: flex-end;
@@ -163,20 +247,21 @@
   .event-edit-modal-overlay {
     padding: 10px;
   }
-  
+
   .event-edit-modal-content {
     padding: 20px;
   }
-  
-  .event-edit-form-row {
+
+  .event-edit-form-row,
+  .event-edit-item-row {
     grid-template-columns: 1fr;
-    gap: 0;
+    gap: 12px;
   }
-  
+
   .event-edit-form-actions {
     flex-direction: column-reverse;
   }
-  
+
   .event-edit-btn {
     width: 100%;
     min-width: auto;

@@ -7,17 +7,26 @@ import { MdEvent, MdGroups } from "react-icons/md";
 import "./ClubEvent.css";
 import Loader from "../../components/Loader";
 
+import { useMembers, roleWeights } from "../../context/MemberContext"; // Added imports
+import PermissionModal from "../../components/PermissionModal"; // Import
+
 function ClubEvent() {
   const { id } = useParams();
   const { events, fetchEvents, addEvent, removeEvent, loading, error } = useEvents();
+  const { userRole, fetchMembers } = useMembers(); // Get userRole
+
   const [showForm, setShowForm] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+
+  // Permission Modal State
+  const [permissionModal, setPermissionModal] = useState({ isOpen: false, message: "" });
 
   useEffect(() => {
     if (id) {
       fetchEvents(id);
+      fetchMembers(id);
     }
-  }, [id, fetchEvents]);
+  }, [id, fetchEvents, fetchMembers]);
 
   const handleAddEvent = async (clubId, eventData) => {
     try {
@@ -72,7 +81,17 @@ function ClubEvent() {
         </div>
         <button
           className="club-event-toggle-form-btn"
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+            const roleWeight = roleWeights[userRole] || 0;
+            if (roleWeight >= roleWeights.secretary) {
+              setShowForm(!showForm);
+            } else {
+              setPermissionModal({
+                isOpen: true,
+                message: "You do not have permission to add events. Only Secretaries, Presidents, and Admins can add new events."
+              });
+            }
+          }}
         >
           <FiPlus className="club-event-btn-icon" />
           {showForm ? "Cancel" : "Add New Event"}
@@ -82,7 +101,7 @@ function ClubEvent() {
       {/* Event Form */}
       {showForm && (
         <div className="club-event-form-section">
-          <EventForm clubId={id} onAddEvent={handleAddEvent} />
+          <EventForm clubId={id} onAddEvent={handleAddEvent} onCancel={() => setShowForm(false)} />
         </div>
       )}
 
@@ -119,7 +138,17 @@ function ClubEvent() {
                   </div>
                   <button
                     className="club-event-delete-btn"
-                    onClick={() => handleRemoveEvent(event.id)}
+                    onClick={() => {
+                      const roleWeight = roleWeights[userRole] || 0;
+                      if (roleWeight >= roleWeights.president) {
+                        handleRemoveEvent(event.id);
+                      } else {
+                        setPermissionModal({
+                          isOpen: true,
+                          message: "Only the President can delete events."
+                        });
+                      }
+                    }}
                     title="Delete event"
                   >
                     <FiTrash2 />
@@ -170,6 +199,13 @@ function ClubEvent() {
           </div>
         )}
       </div>
+
+      {/* Permission Modal */}
+      <PermissionModal
+        isOpen={permissionModal.isOpen}
+        onClose={() => setPermissionModal({ ...permissionModal, isOpen: false })}
+        message={permissionModal.message}
+      />
     </div>
   );
 }

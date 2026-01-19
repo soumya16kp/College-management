@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useRef } from "react";
 import {
   getEvents,
   getAllEvents,
@@ -13,19 +13,26 @@ const EventContext = createContext();
 export const useEvents = () => useContext(EventContext);
 
 export const EventProvider = ({ children }) => {
-  const [events, setEvents] = useState([]);        // club-specific or global, depending on fetch
-  const [eventCache, setEventCache] = useState({}); // Cache for events: { clubId: [events] }
-  const [selectedEvent, setSelectedEvent] = useState(null); // single event detail
+  const [events, setEvents] = useState([]);  
+  const eventCache = useRef({}); 
+  const [selectedEvent, setSelectedEvent] = useState(null); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
 
-  const fetchAllEvents = useCallback(async () => {
+  const fetchAllEvents = useCallback(async (forceRefresh = false) => {
+    if (!forceRefresh && eventCache.current['ALL']) {
+      setEvents(eventCache.current['ALL']);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
       const data = await getAllEvents();
       setEvents(data);
+      eventCache.current['ALL'] = data;
     } catch (error) {
       console.error("Error fetching all events:", error);
       setError("Failed to fetch all events");
@@ -36,9 +43,10 @@ export const EventProvider = ({ children }) => {
 
   // 🔹 Fetch events for a specific club
   const fetchEvents = useCallback(async (clubId, forceRefresh = false) => {
-    if (!forceRefresh && eventCache[clubId]) {
+    if (!forceRefresh && eventCache.current[clubId]) {
       // Use cached data
-      setEvents(eventCache[clubId]);
+      setEvents(eventCache.current[clubId]);
+      setLoading(false);
       return;
     }
 
@@ -48,25 +56,33 @@ export const EventProvider = ({ children }) => {
       const data = await getEvents(clubId);
       setEvents(data);
       // Update cache
-      setEventCache(prev => ({
-        ...prev,
-        [clubId]: data
-      }));
+      eventCache.current[clubId] = data;
     } catch (error) {
       console.error("Error fetching club events:", error);
       setError("Failed to fetch events");
     } finally {
       setLoading(false);
     }
-  }, [eventCache]);
+  }, []);
 
   // 🔹 Fetch single event
-  const fetchEventDetail = useCallback(async (eventId) => {
+  const fetchEventDetail = useCallback(async (eventId, forceRefresh = false) => {
+    const cacheKey = `detail_${eventId}`;
+
+    if (!forceRefresh && eventCache.current[cacheKey]) {
+      setSelectedEvent(eventCache.current[cacheKey]);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
       const data = await getEventDetail(eventId);
       setSelectedEvent(data);
+
+      // Cache the detail
+      eventCache.current[cacheKey] = data;
     } catch (error) {
       console.error("Error fetching event detail:", error);
       setError("Failed to fetch event detail");
@@ -82,12 +98,16 @@ export const EventProvider = ({ children }) => {
       console.log(eventData);
       const newEvent = await createEvent(clubId, eventData);
 
-      // Update current list and cache
+      // Update current list
       setEvents((prev) => [...prev, newEvent]);
-      setEventCache(prev => ({
-        ...prev,
-        [clubId]: [...(prev[clubId] || []), newEvent]
-      }));
+
+      // Update cache
+      if (eventCache.current[clubId]) {
+        eventCache.current[clubId] = [...eventCache.current[clubId], newEvent];
+      }
+      if (eventCache.current['ALL']) {
+        eventCache.current['ALL'] = [...eventCache.current['ALL'], newEvent];
+      }
 
       return newEvent;
     } catch (error) {
@@ -108,14 +128,16 @@ export const EventProvider = ({ children }) => {
         prev.map((event) => (event.id === eventId ? updatedEvent : event))
       );
 
-      // Update cache if clubId is provided
-      if (clubId) {
-        setEventCache(prev => ({
-          ...prev,
-          [clubId]: (prev[clubId] || []).map(event =>
-            event.id === eventId ? updatedEvent : event
-          )
-        }));
+      eventCache.current[`detail_${eventId}`] = updatedEvent;
+
+      const updateList = (list) => list.map(event => event.id === eventId ? updatedEvent : event);
+
+      if (clubId && eventCache.current[clubId]) {
+        eventCache.current[clubId] = updateList(eventCache.current[clubId]);
+      }
+
+      if (eventCache.current['ALL']) {
+        eventCache.current['ALL'] = updateList(eventCache.current['ALL']);
       }
 
       return updatedEvent;
@@ -136,21 +158,25 @@ export const EventProvider = ({ children }) => {
       setEvents((prev) => prev.filter((event) => event.id !== eventId));
 
       // Update cache
-      // Note: We need to know which club this event belonged to efficiently update cache.
-      // If clubId is passed, we can update specific cache key. 
-      // If not, we might scan all keys or just invalidate. Scanning is safer here.
-      setEventCache(prev => {
-        const newCache = { ...prev };
-        // If clubId is known, update only that. Otherwise iterate.
-        if (clubId) {
-          newCache[clubId] = newCache[clubId].filter(e => e.id !== eventId);
-        } else {
-          Object.keys(newCache).forEach(key => {
-            newCache[key] = newCache[key].filter(e => e.id !== eventId);
-          });
+      delete eventCache.current[`detail_${eventId}`];
+
+      const removeFromList = (list) => list.filter(e => e.id !== eventId);
+
+      if (eventCache.current['ALL']) {
+        eventCache.current['ALL'] = removeFromList(eventCache.current['ALL']);
+      }
+
+      if (clubId) {
+        if (eventCache.current[clubId]) {
+          eventCache.current[clubId] = removeFromList(eventCache.current[clubId]);
         }
-        return newCache;
-      });
+      } else {
+        Object.keys(eventCache.current).forEach(key => {
+          if (Array.isArray(eventCache.current[key])) {
+            eventCache.current[key] = removeFromList(eventCache.current[key]);
+          }
+        });
+      }
 
     } catch (error) {
       console.error("Error deleting event:", error);
