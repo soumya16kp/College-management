@@ -35,307 +35,308 @@ function Gallery() {
 
 
 
-  if (id) {
-    fetchClubData();
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [id]);
-
-// Process data when clubGalleries changes or id changes
-useEffect(() => {
-  if (clubGalleries[id]) {
-    processGalleryData(clubGalleries[id]);
-  }
-}, [clubGalleries, id]);
-
-useEffect(() => {
-  const intervals = {};
-
-  Object.keys(galleries).forEach(eventId => {
-    if (galleries[eventId]?.length > 1) {
-      intervals[eventId] = setInterval(() => {
-        setCurrentSlideIndexes(prev => ({
-          ...prev,
-          [eventId]: (prev[eventId] + 1) % galleries[eventId].length
-        }));
-      }, 4000);
+  useEffect(() => {
+    if (id) {
+      fetchClubData();
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
-  return () => {
-    // Clean up intervals on component unmount
-    Object.values(intervals).forEach(interval => clearInterval(interval));
-  };
-}, [galleries]);
+  // Process data when clubGalleries changes or id changes
+  useEffect(() => {
+    if (clubGalleries[id]) {
+      processGalleryData(clubGalleries[id]);
+    }
+  }, [clubGalleries, id]);
 
-const fetchClubData = async () => {
-  try {
-    setLoading(true);
+  useEffect(() => {
+    const intervals = {};
 
-    // Parallel fetch if needed, but context handles caching
-    await Promise.all([
-      fetchEvents(id),
-      fetchClubGallery(id)
-    ]);
-
-  } catch (error) {
-    console.error("Error fetching club data:", error);
-  } finally {
-    setLoading(false);
-  }
-};
-
-const processGalleryData = (data) => {
-  const grouped = data.reduce((acc, g) => {
-    if (!acc[g.event]) acc[g.event] = [];
-    acc[g.event].push(g);
-    return acc;
-  }, {});
-  setGalleries(grouped);
-
-  // Initialize slide indexes if not already set (preserve existing state if possible)
-  // Only set for new keys or if empty
-  setCurrentSlideIndexes(prev => {
-    const next = { ...prev };
-    Object.keys(grouped).forEach(eventId => {
-      if (next[eventId] === undefined) {
-        next[eventId] = 0;
+    Object.keys(galleries).forEach(eventId => {
+      if (galleries[eventId]?.length > 1) {
+        intervals[eventId] = setInterval(() => {
+          setCurrentSlideIndexes(prev => ({
+            ...prev,
+            [eventId]: (prev[eventId] + 1) % galleries[eventId].length
+          }));
+        }, 4000);
       }
     });
-    return next;
-  });
-};
 
-const handleImageUpload = async () => {
-  setLoading(true);
-  await fetchClubGallery(id, true); // Force refresh context
-  setLoading(false);
-  setSelectedEvent(null);
-};
+    return () => {
+      // Clean up intervals on component unmount
+      Object.values(intervals).forEach(interval => clearInterval(interval));
+    };
+  }, [galleries]);
 
-const nextSlide = (eventId) => {
-  setCurrentSlideIndexes(prev => ({
-    ...prev,
-    [eventId]: (prev[eventId] + 1) % galleries[eventId].length
-  }));
-};
+  const fetchClubData = async () => {
+    try {
+      setLoading(true);
 
-const prevSlide = (eventId) => {
-  setCurrentSlideIndexes(prev => ({
-    ...prev,
-    [eventId]: (prev[eventId] - 1 + galleries[eventId].length) % galleries[eventId].length
-  }));
-};
+      // Parallel fetch if needed, but context handles caching
+      await Promise.all([
+        fetchEvents(id),
+        fetchClubGallery(id)
+      ]);
 
-const goToSlide = (eventId, index) => {
-  setCurrentSlideIndexes(prev => ({
-    ...prev,
-    [eventId]: index
-  }));
-};
+    } catch (error) {
+      console.error("Error fetching club data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-const openLightbox = (image) => {
-  setSelectedImage(image);
-};
+  const processGalleryData = (data) => {
+    const grouped = data.reduce((acc, g) => {
+      if (!acc[g.event]) acc[g.event] = [];
+      acc[g.event].push(g);
+      return acc;
+    }, {});
+    setGalleries(grouped);
 
-const closeLightbox = () => {
-  setSelectedImage(null);
-};
+    // Initialize slide indexes if not already set (preserve existing state if possible)
+    // Only set for new keys or if empty
+    setCurrentSlideIndexes(prev => {
+      const next = { ...prev };
+      Object.keys(grouped).forEach(eventId => {
+        if (next[eventId] === undefined) {
+          next[eventId] = 0;
+        }
+      });
+      return next;
+    });
+  };
 
-if (loading) return <Loader />;
+  const handleImageUpload = async () => {
+    setLoading(true);
+    await fetchClubGallery(id, true); // Force refresh context
+    setLoading(false);
+    setSelectedEvent(null);
+  };
 
-return (
-  <div className="gallery-container">
-    {/* Header */}
-    <div className="gallery-header">
-      <div className="gallery-header-content">
-        <MdPhotoLibrary className="gallery-header-icon" />
-        <div>
-          <h1 className="gallery-title">Club Gallery</h1>
-          <p>Discover the vibrant moments of our club </p>
+  const nextSlide = (eventId) => {
+    setCurrentSlideIndexes(prev => ({
+      ...prev,
+      [eventId]: (prev[eventId] + 1) % galleries[eventId].length
+    }));
+  };
+
+  const prevSlide = (eventId) => {
+    setCurrentSlideIndexes(prev => ({
+      ...prev,
+      [eventId]: (prev[eventId] - 1 + galleries[eventId].length) % galleries[eventId].length
+    }));
+  };
+
+  const goToSlide = (eventId, index) => {
+    setCurrentSlideIndexes(prev => ({
+      ...prev,
+      [eventId]: index
+    }));
+  };
+
+  const openLightbox = (image) => {
+    setSelectedImage(image);
+  };
+
+  const closeLightbox = () => {
+    setSelectedImage(null);
+  };
+
+  if (loading) return <Loader />;
+
+  return (
+    <div className="gallery-container">
+      {/* Header */}
+      <div className="gallery-header">
+        <div className="gallery-header-content">
+          <MdPhotoLibrary className="gallery-header-icon" />
+          <div>
+            <h1 className="gallery-title">Club Gallery</h1>
+            <p>Discover the vibrant moments of our club </p>
+          </div>
         </div>
       </div>
-    </div>
 
-    {events.length === 0 ? (
-      <div className="no-gallery">
-        <MdPhotoLibrary className="gallery-icon" />
-        <p>No events yet.</p>
-      </div>
-    ) : (
-      <div className="events-list">
-        {events.map((event) => (
-          <div key={event.id} className="event-card">
-            <div className="gallery-event-header">
-              <div className="event-title-section">
-                <MdEvent className="event-icon" />
-                <h2 className="event-title">{event.title}</h2>
+      {events.length === 0 ? (
+        <div className="no-gallery">
+          <MdPhotoLibrary className="gallery-icon" />
+          <p>No events yet.</p>
+        </div>
+      ) : (
+        <div className="events-list">
+          {events.map((event) => (
+            <div key={event.id} className="event-card">
+              <div className="gallery-event-header">
+                <div className="event-title-section">
+                  <MdEvent className="event-icon" />
+                  <h2 className="event-title">{event.title}</h2>
+                </div>
+                <button
+                  className="upload-btn"
+                  onClick={() => {
+                    const roleWeight = roleWeights[userRole] || 0;
+                    if (roleWeight >= roleWeights.secretary) {
+                      setSelectedEvent(selectedEvent === event.id ? null : event.id);
+                    } else {
+                      setPermissionModal({
+                        isOpen: true,
+                        message: "You do not have permission to upload photos to this gallery. (Secretary+ required)"
+                      });
+                    }
+                  }}
+                >
+                  <FiUpload className="btn-icon" />
+                  {selectedEvent === event.id ? "Cancel" : "Upload Images"}
+                </button>
               </div>
-              <button
-                className="upload-btn"
-                onClick={() => {
-                  const roleWeight = roleWeights[userRole] || 0;
-                  if (roleWeight >= roleWeights.secretary) {
-                    setSelectedEvent(selectedEvent === event.id ? null : event.id);
-                  } else {
-                    setPermissionModal({
-                      isOpen: true,
-                      message: "You do not have permission to upload photos to this gallery. (Secretary+ required)"
-                    });
-                  }
-                }}
-              >
-                <FiUpload className="btn-icon" />
-                {selectedEvent === event.id ? "Cancel" : "Upload Images"}
-              </button>
-            </div>
 
-            <div className="gallery-event-details">
-              <button
-                className="mobile-details-toggle"
-                onClick={() => toggleMobileDetails(event.id)}
-              >
-                <span>Event Info</span>
-                <FiChevronRight className={`toggle-icon ${mobileDetailsOpen[event.id] ? 'open' : ''}`} />
-              </button>
+              <div className="gallery-event-details">
+                <button
+                  className="mobile-details-toggle"
+                  onClick={() => toggleMobileDetails(event.id)}
+                >
+                  <span>Event Info</span>
+                  <FiChevronRight className={`toggle-icon ${mobileDetailsOpen[event.id] ? 'open' : ''}`} />
+                </button>
 
-              <div className={`event-detail-item-nav ${mobileDetailsOpen[event.id] ? 'mobile-open' : ''}`}>
-                <div className="event-detail-item">
-                  <FiCalendar className="detail-icon" />
-                  <span>{event.date}</span>
-                </div>
-                <div className="event-detail-item">
-                  <FiClock className="detail-icon" />
-                  <span>{event.time}</span>
-                </div>
-                {event.location && (
+                <div className={`event-detail-item-nav ${mobileDetailsOpen[event.id] ? 'mobile-open' : ''}`}>
                   <div className="event-detail-item">
-                    <FiMapPin className="detail-icon" />
-                    <span>{event.location}</span>
+                    <FiCalendar className="detail-icon" />
+                    <span>{event.date}</span>
                   </div>
+                  <div className="event-detail-item">
+                    <FiClock className="detail-icon" />
+                    <span>{event.time}</span>
+                  </div>
+                  {event.location && (
+                    <div className="event-detail-item">
+                      <FiMapPin className="detail-icon" />
+                      <span>{event.location}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {selectedEvent === event.id && (
+                <GalleryForm
+                  eventId={event.id}
+                  onUploadSuccess={handleImageUpload}
+                  onCancel={() => setSelectedEvent(null)}
+                />
+              )}
+
+              <div className="gallery-section">
+                <div className="gallery-section-header">
+                  <FiImage className="gallery-icon" />
+                  <h3 className="gallery-subtitle">Event Gallery</h3>
+                </div>
+
+                {galleries[event.id]?.length ? (
+                  <>
+                    {/* Image Slider */}
+                    <div className="gallery-slider">
+                      <div className="slider-container">
+                        <div
+                          className="slider-track"
+                          style={{
+                            transform: `translateX(-${currentSlideIndexes[event.id] * 100}%)`
+                          }}
+                        >
+                          {galleries[event.id].map((gallery, index) => (
+                            <div key={gallery.id} className="slider-slide">
+                              <img
+                                src={gallery.image}
+                                alt={`Gallery ${index + 1}`}
+                                className="slider-image"
+                                onClick={() => openLightbox(gallery.image)}
+                              />
+                            </div>
+                          ))}
+                        </div>
+
+                        {galleries[event.id].length > 1 && (
+                          <>
+                            <button
+                              className="slider-nav slider-prev"
+                              onClick={() => prevSlide(event.id)}
+                            >
+                              <FiChevronLeft />
+                            </button>
+                            <button
+                              className="slider-nav slider-next"
+                              onClick={() => nextSlide(event.id)}
+                            >
+                              <FiChevronRight />
+                            </button>
+
+                            <div className="slider-counter">
+                              {currentSlideIndexes[event.id] + 1} / {galleries[event.id].length}
+                            </div>
+
+                            <div className="slider-indicators">
+                              {galleries[event.id].map((_, index) => (
+                                <button
+                                  key={index}
+                                  className={`slider-indicator ${index === currentSlideIndexes[event.id] ? 'active' : ''}`}
+                                  onClick={() => goToSlide(event.id, index)}
+                                />
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Thumbnail Grid */}
+                    <div className="gallery-grid">
+                      {galleries[event.id].map((gallery) => (
+                        <div
+                          key={gallery.id}
+                          className="gallery-item"
+                          onClick={() => openLightbox(gallery.image)}
+                        >
+                          <img
+                            src={gallery.image}
+                            alt={`Gallery ${gallery.id}`}
+                            className="gallery-image"
+                          />
+                          {gallery.title && (
+                            <p className="gallery-caption">{gallery.title}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <p className="no-gallery">No images for this event yet.</p>
                 )}
               </div>
             </div>
-
-            {selectedEvent === event.id && (
-              <GalleryForm
-                eventId={event.id}
-                onUploadSuccess={handleImageUpload}
-                onCancel={() => setSelectedEvent(null)}
-              />
-            )}
-
-            <div className="gallery-section">
-              <div className="gallery-section-header">
-                <FiImage className="gallery-icon" />
-                <h3 className="gallery-subtitle">Event Gallery</h3>
-              </div>
-
-              {galleries[event.id]?.length ? (
-                <>
-                  {/* Image Slider */}
-                  <div className="gallery-slider">
-                    <div className="slider-container">
-                      <div
-                        className="slider-track"
-                        style={{
-                          transform: `translateX(-${currentSlideIndexes[event.id] * 100}%)`
-                        }}
-                      >
-                        {galleries[event.id].map((gallery, index) => (
-                          <div key={gallery.id} className="slider-slide">
-                            <img
-                              src={gallery.image}
-                              alt={`Gallery ${index + 1}`}
-                              className="slider-image"
-                              onClick={() => openLightbox(gallery.image)}
-                            />
-                          </div>
-                        ))}
-                      </div>
-
-                      {galleries[event.id].length > 1 && (
-                        <>
-                          <button
-                            className="slider-nav slider-prev"
-                            onClick={() => prevSlide(event.id)}
-                          >
-                            <FiChevronLeft />
-                          </button>
-                          <button
-                            className="slider-nav slider-next"
-                            onClick={() => nextSlide(event.id)}
-                          >
-                            <FiChevronRight />
-                          </button>
-
-                          <div className="slider-counter">
-                            {currentSlideIndexes[event.id] + 1} / {galleries[event.id].length}
-                          </div>
-
-                          <div className="slider-indicators">
-                            {galleries[event.id].map((_, index) => (
-                              <button
-                                key={index}
-                                className={`slider-indicator ${index === currentSlideIndexes[event.id] ? 'active' : ''}`}
-                                onClick={() => goToSlide(event.id, index)}
-                              />
-                            ))}
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Thumbnail Grid */}
-                  <div className="gallery-grid">
-                    {galleries[event.id].map((gallery) => (
-                      <div
-                        key={gallery.id}
-                        className="gallery-item"
-                        onClick={() => openLightbox(gallery.image)}
-                      >
-                        <img
-                          src={gallery.image}
-                          alt={`Gallery ${gallery.id}`}
-                          className="gallery-image"
-                        />
-                        {gallery.title && (
-                          <p className="gallery-caption">{gallery.title}</p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <p className="no-gallery">No images for this event yet.</p>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    )}
-
-    {/* Lightbox Overlay */}
-    {selectedImage && (
-      <div className="lightbox-overlay" onClick={closeLightbox}>
-        <div className="lightbox-content" onClick={e => e.stopPropagation()}>
-          <button className="lightbox-close" onClick={closeLightbox}>
-            <FiX />
-          </button>
-          <img src={selectedImage} alt="Full view" className="lightbox-image" />
+          ))}
         </div>
-      </div>
-    )}
+      )}
 
-    {/* Permission Modal */}
-    <PermissionModal
-      isOpen={permissionModal.isOpen}
-      onClose={() => setPermissionModal({ ...permissionModal, isOpen: false })}
-      message={permissionModal.message}
-    />
-  </div>
-);
+      {/* Lightbox Overlay */}
+      {selectedImage && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <div className="lightbox-content" onClick={e => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={closeLightbox}>
+              <FiX />
+            </button>
+            <img src={selectedImage} alt="Full view" className="lightbox-image" />
+          </div>
+        </div>
+      )}
+
+      {/* Permission Modal */}
+      <PermissionModal
+        isOpen={permissionModal.isOpen}
+        onClose={() => setPermissionModal({ ...permissionModal, isOpen: false })}
+        message={permissionModal.message}
+      />
+    </div>
+  );
 }
 
 export default Gallery;
