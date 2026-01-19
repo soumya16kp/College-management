@@ -65,7 +65,7 @@ export default function EventDetail() {
 
   const registerForEvent = async (eventId) => {
     try {
-      const res = await authService.apiClient.post(`/events/${eventId}/register/`);
+      await authService.apiClient.post(`/events/${eventId}/register/`);
       showNotification("Registration successful! You're in.", "success");
 
       if (!isRegistered) {

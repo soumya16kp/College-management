@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMembers } from '../../context/MemberContext';
 import { useParams } from "react-router-dom";
-import { FiMail, FiPhone, FiUsers, FiUser, FiUserCheck, FiUserX, FiArrowUp, FiArrowDown } from "react-icons/fi";
+import { FiPhone, FiUsers, FiUserCheck, FiUserX, FiArrowUp, FiArrowDown } from "react-icons/fi";
 import { MdGroups, MdAdminPanelSettings, MdPerson, MdEvent } from "react-icons/md";
 import { FaCrown } from "react-icons/fa";
 import "./Member.css";

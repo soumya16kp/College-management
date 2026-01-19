@@ -31,15 +31,7 @@ function Home() {
     fetchData();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await authService.logout();
-      dispatch(authLogout());
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
+
 
   return (
     <div className="home-container">

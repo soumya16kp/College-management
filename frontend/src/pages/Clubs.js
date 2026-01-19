@@ -7,7 +7,7 @@ import PermissionModal from "../components/PermissionModal";
 import "./Clubs.css";
 
 const Clubs = () => {
-  const { clubs, addClub, editClub, removeClub, loading } = useClubs();
+  const { clubs, editClub, removeClub, loading } = useClubs();
   const [showClubForm, setShowClubForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterInterest, setFilterInterest] = useState("all");

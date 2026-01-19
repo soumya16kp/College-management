@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiAward, FiGift, FiTarget } from 'react-icons/fi'; // Icons
+import { FiAward, FiGift } from 'react-icons/fi'; // Icons
 import { FaTrophy, FaMedal } from 'react-icons/fa'; // More specific icons
 import './EventPrizes.css';
 
