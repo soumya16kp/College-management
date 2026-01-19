@@ -7,7 +7,7 @@ import GalleryForm from "../../forms/GalleryForm";
 import { FiCalendar, FiClock, FiMapPin, FiImage, FiUpload, FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
 import { MdEvent, MdPhotoLibrary } from "react-icons/md";
 import "./Gallery.css";
-import Loader from "../../components/Loader";
+import Loader from "../../components/PageLoader";
 import { useMembers, roleWeights } from "../../context/MemberContext";
 import PermissionModal from "../../components/PermissionModal";
 

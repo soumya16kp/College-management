@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { FiCalendar, FiClock, FiMapPin, FiTrash2, FiPlus, FiEdit } from "react-icons/fi";
 import { MdEvent, MdGroups } from "react-icons/md";
 import "./ClubEvent.css";
-import Loader from "../../components/Loader";
+import Loader from "../../components/PageLoader";
 
 import { useMembers, roleWeights } from "../../context/MemberContext"; // Added imports
 import PermissionModal from "../../components/PermissionModal"; // Import

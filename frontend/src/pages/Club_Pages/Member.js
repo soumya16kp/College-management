@@ -5,7 +5,7 @@ import { FiMail, FiPhone, FiUsers, FiUser, FiUserCheck, FiUserX, FiArrowUp, FiAr
 import { MdGroups, MdAdminPanelSettings, MdPerson, MdEvent } from "react-icons/md";
 import { FaCrown } from "react-icons/fa";
 import "./Member.css";
-import Loader from "../../components/Loader";
+import Loader from "../../components/PageLoader";
 
 const MembersPage = () => {
   const { id } = useParams();
