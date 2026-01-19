@@ -11,7 +11,6 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  padding: 0.5rem 0;
 }
 
 nav {
@@ -33,11 +32,11 @@ nav {
 .logo img {
   height: 70px;
   width: auto;
-  margin-right: 12px;
+  margin-right: 30px;
 }
 
 .logo span {
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: 700;
   font-size: 40px;
   letter-spacing: 0.7px;
@@ -147,9 +146,11 @@ nav {
     transition: left 0.4s ease;
     z-index: 999;
   }
-  .header{
+
+  .header {
     padding: 1rem 0;
   }
+
   .nav_content.active {
     left: 0;
   }
@@ -170,11 +171,12 @@ nav {
 
 @media (max-width: 600px) {
   nav {
-    padding: 0 1rem;
+    padding: 0.5rem;
   }
 
   .logo img {
     height: 40px;
+    margin-right: 10px;
   }
 
   .logo span {

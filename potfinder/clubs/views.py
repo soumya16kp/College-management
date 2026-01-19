@@ -136,6 +136,19 @@ def get_home_data(request):
     calendar_events = Event.objects.filter(date__gte=first_day_of_month, date__lte=last_day_of_month)
     calendar_events_serializer = EventSerializer(calendar_events, many=True, context={'request': request})
 
+    # Check permissions for notice creation
+    can_create_notice = False
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            can_create_notice = True
+        else:
+            from members.models import Membership
+            can_create_notice = Membership.objects.filter(
+                user=request.user,
+                status='approved',
+                role__in=['admin', 'president']
+            ).exists()
+
     return Response({
         "stats": {
             "total_clubs": total_clubs,
@@ -145,5 +158,96 @@ def get_home_data(request):
         },
         "highlights": today_events_serializer.data,
         "notices": notices_serializer.data,
-        "calendar_events": calendar_events_serializer.data
+        "calendar_events": calendar_events_serializer.data,
+        "can_create_notice": can_create_notice
     })
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def notice_list_create(request):
+    """
+    GET: List all notices
+    POST: Create a new notice (admin/president only)
+    """
+    if request.method == 'GET':
+        notices = Notice.objects.all().order_by('-is_important', '-date_posted')
+        serializer = NoticeSerializer(notices, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+        # Check if user is admin or president
+        from members.models import Membership
+        try:
+            membership = Membership.objects.filter(
+                user=request.user,
+                status='approved',
+                role__in=['admin', 'president']
+            ).first()
+            
+            if not membership:
+                return Response(
+                    {"detail": "Only administrators and presidents can create notices"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        except:
+            return Response(
+                {"detail": "Permission denied"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        serializer = NoticeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def notice_detail(request, pk):
+    """
+    GET: Retrieve a notice
+    PUT: Update a notice (admin/president only)
+    DELETE: Delete a notice (admin/president only)
+    """
+    try:
+        notice = Notice.objects.get(pk=pk)
+    except Notice.DoesNotExist:
+        return Response({"error": "Notice not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == 'GET':
+        serializer = NoticeSerializer(notice)
+        return Response(serializer.data)
+    
+    elif request.method in ['PUT', 'DELETE']:
+        # Check permissions
+        from members.models import Membership
+        try:
+            membership = Membership.objects.filter(
+                user=request.user,
+                status='approved',
+                role__in=['admin', 'president']
+            ).first()
+            
+            if not membership:
+                return Response(
+                    {"detail": "Only administrators and presidents can modify notices"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        except:
+            return Response(
+                {"detail": "Permission denied"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        if request.method == 'PUT':
+            serializer = NoticeSerializer(notice, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        elif request.method == 'DELETE':
+            notice.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)

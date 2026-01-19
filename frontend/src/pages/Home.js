@@ -8,7 +8,7 @@ import WelcomingEvents from "../components/HomeComponents/welcoming_events.jsx";
 import Clubs from "../components/HomeComponents/why_clubs.jsx";
 import ClubsList from "../components/HomeComponents/ClubSlideShow.js";
 import CalendarOverview from "../components/Calendar.js";
-import { FiActivity, FiCalendar, FiBell, FiInfo } from "react-icons/fi";
+import { FiActivity, FiCalendar, FiBell, FiInfo, FiArrowRight } from "react-icons/fi";
 import "./Home.css";
 
 function Home() {
@@ -145,6 +145,19 @@ function Home() {
                 ))
               ) : (
                 <p style={{ textAlign: 'center', color: '#94a3b8' }}>No new notices.</p>
+              )}
+
+              {/* Admin/President Create Notice Button */}
+              {data.can_create_notice && (
+                <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}>
+                  <button
+                    onClick={() => navigate('/notices')}
+                    className="admin-notice-arrow bottom"
+                    title="Manage Notices"
+                  >
+                    <FiArrowRight size={20} />
+                  </button>
+                </div>
               )}
             </div>
 

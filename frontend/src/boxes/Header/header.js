@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import "./Header.css";
 import logo from "../../assets/collage.png";
@@ -21,12 +21,12 @@ function Header() {
               <span>Campus Connect</span>
             </Link>
           </div>
-          
+
           <div className={`nav_content ${isMenuOpen ? 'active' : ''}`}>
             <ul>
               <li>
-                <NavLink 
-                  to="/" 
+                <NavLink
+                  to="/"
                   className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -34,8 +34,8 @@ function Header() {
                 </NavLink>
               </li>
               <li>
-                <NavLink 
-                  to="/clubs" 
+                <NavLink
+                  to="/clubs"
                   className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -43,8 +43,8 @@ function Header() {
                 </NavLink>
               </li>
               <li>
-                <NavLink 
-                  to="/events" 
+                <NavLink
+                  to="/events"
                   className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -52,23 +52,23 @@ function Header() {
                 </NavLink>
               </li>
               <li>
-                <NavLink 
-                  to="/about" 
+                <NavLink
+                  to="/profile"
                   className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  About
+                  Account
                 </NavLink>
               </li>
             </ul>
           </div>
-          
-          <div className="login">
+
+          {/* <div className="login">
             <NavLink to="/profile">
               <button className="login-btn">Account</button>
             </NavLink>
-          </div>
-          
+          </div> */}
+
           <div className="hamburger" onClick={toggleMenu}>
             <span></span>
             <span></span>

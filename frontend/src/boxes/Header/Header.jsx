@@ -1,14 +1,14 @@
 import React from "react";
 import logo from "../../assets/collage.png"
 import "./Header.css"
-import {Link,NavLink} from 'react-router-dom';
-function Header(){
-    return(
+import { Link, NavLink } from 'react-router-dom';
+function Header() {
+    return (
         <>
-                        <header>
+            <header>
                 <nav>
                     <div className="logo">
-                         <img src={logo} alt="Logo" />
+                        <img src={logo} alt="Logo" />
                     </div>
                     <div className="nav_content">
                         <ul>
@@ -20,6 +20,9 @@ function Header(){
                             </li>
                             <li>
                                 <NavLink to="/events" onClick={() => Active("Events")}>Events</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/notices">Notices</NavLink>
                             </li>
                             <li>
                                 <NavLink to="/about" onClick={() => Active("About")}>About</NavLink>

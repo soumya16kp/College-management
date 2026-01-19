@@ -1,9 +1,9 @@
 import React from 'react';
 import store from './store/store.js';
 import { Provider } from 'react-redux';
-import ReactDOM from 'react-dom/client'; 
+import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { AuthLayout} from './components/index.js'
+import { AuthLayout } from './components/index.js'
 import './index.css';
 import App from './App';
 import Event from './pages/Event.js';
@@ -20,10 +20,11 @@ import ClubEvent from './pages/Club_Pages/Event.js';
 import Member from './pages/Club_Pages/Member.js'
 import Gallery from './pages/Club_Pages/Gallery.js'
 import ClubDetail from "./pages/Club_Pages/ClubDetail.js";
+import Notices from "./pages/Notices.js";
 
 
 import { UserProvider } from "./context/UserContext";
-import { MemberProvider} from './context/MemberContext.js';
+import { MemberProvider } from './context/MemberContext.js';
 import { ClubProvider } from "./context/ClubContext";
 import { EventProvider } from "./context/EventContext";
 import { ChatProvider } from './context/ChatContext.js';
@@ -31,27 +32,27 @@ import { ChatProvider } from './context/ChatContext.js';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
+    element: <App />,
     children: [
       {
-        path:"/",
-        element: <HomePage/>,
+        path: "/",
+        element: <HomePage />,
       },
       {
-        path:"/login",
+        path: "/login",
         element: (
           <AuthLayout authentication={false}>
-            <Login/>
+            <Login />
           </AuthLayout>
         )
       },
       {
-          path: "/signup",
-          element: (
-              <AuthLayout authentication={false}>
-                  <Signup />
-              </AuthLayout>
-          ),
+        path: "/signup",
+        element: (
+          <AuthLayout authentication={false}>
+            <Signup />
+          </AuthLayout>
+        ),
       },
       {
         path: "/events",
@@ -68,6 +69,14 @@ const router = createBrowserRouter([
           <AuthLayout authentication>
             {" "}
             <Clubs />
+          </AuthLayout>
+        )
+      },
+      {
+        path: "/notices",
+        element: (
+          <AuthLayout authentication>
+            <Notices />
           </AuthLayout>
         )
       },
@@ -108,49 +117,49 @@ const router = createBrowserRouter([
       //     ),
       // },
       {
-          path: "/logout",
-          element: (
-              <AuthLayout authentication>
-                  {" "}
-                  <Gallery/>
-              </AuthLayout>
-          ),
+        path: "/logout",
+        element: (
+          <AuthLayout authentication>
+            {" "}
+            <Gallery />
+          </AuthLayout>
+        ),
       },
       {
-          path: "/events/:id",
-          element: (
-              <AuthLayout authentication>
-                  {" "}
-                  <EventDetail/>
-              </AuthLayout>
-          ),
+        path: "/events/:id",
+        element: (
+          <AuthLayout authentication>
+            {" "}
+            <EventDetail />
+          </AuthLayout>
+        ),
       },
-        {
-            path:"/clubs/:id",
-            element:(
-                <AuthLayout authentication>
-                     {" "}
-                     <ClubDetail/>
-                </AuthLayout>
-            ),
-            children: [
-              { index: true, element: <ClubAbout /> }, 
-              { path: "about", element: <ClubAbout/> },
-              { path: "contact", element: <Contact/> },
-              { path: "gallery", element: <Gallery/>},
-              { path: "members", element: <Member/> },
-              { path: "events", element: <ClubEvent/> },
-            ]
-        },
-        {
-            path:"/profile",
-            element:(
-                <AuthLayout authentication>
-                     {" "}
-                     <Account/>
-                </AuthLayout>
-            ),
-        },
+      {
+        path: "/clubs/:id",
+        element: (
+          <AuthLayout authentication>
+            {" "}
+            <ClubDetail />
+          </AuthLayout>
+        ),
+        children: [
+          { index: true, element: <ClubAbout /> },
+          { path: "about", element: <ClubAbout /> },
+          { path: "contact", element: <Contact /> },
+          { path: "gallery", element: <Gallery /> },
+          { path: "members", element: <Member /> },
+          { path: "events", element: <ClubEvent /> },
+        ]
+      },
+      {
+        path: "/profile",
+        element: (
+          <AuthLayout authentication>
+            {" "}
+            <Account />
+          </AuthLayout>
+        ),
+      },
     ]
   },
 ])
@@ -160,13 +169,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <UserProvider>
         <MemberProvider>
-        <ClubProvider>
-          <ChatProvider>
-          <EventProvider>
-            <RouterProvider router={router} />
-          </EventProvider>
-          </ChatProvider>
-        </ClubProvider>
+          <ClubProvider>
+            <ChatProvider>
+              <EventProvider>
+                <RouterProvider router={router} />
+              </EventProvider>
+            </ChatProvider>
+          </ClubProvider>
         </MemberProvider>
       </UserProvider>
     </Provider>

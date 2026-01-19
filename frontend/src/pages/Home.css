@@ -486,3 +486,40 @@
         gap: 0.5rem;
     }
 }
+
+/* Admin Notice Arrow */
+.admin-notice-arrow {
+    background: rgba(102, 126, 234, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #667eea;
+    margin-top: 0;
+}
+
+.admin-notice-arrow:hover {
+    background: #667eea;
+    color: white;
+    transform: translateX(4px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+}
+
+.admin-notice-arrow.bottom {
+    width: 48px;
+    height: 48px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.admin-notice-arrow.bottom:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
