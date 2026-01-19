@@ -1,11 +1,8 @@
 import React from "react";
 import './welcoming_events.css'
 import front from "../../assets/front_photo.png";
-let i = 0;
-function WelcomingEvents() {
-    function Change(direction) {
 
-    }
+function WelcomingEvents() {
     return (
         <>
             <div className="main">
