@@ -1,5 +1,6 @@
 
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 import { getClubs, createClub, updateClub, deleteClub } from "../services/clubService";
 import authService from "../services/authService";
 
@@ -10,12 +11,13 @@ export const useClubs = () => useContext(ClubContext);
 export const ClubProvider = ({ children }) => {
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { status } = useSelector((state) => state.auth);
   const [clubGalleries, setClubGalleries] = useState({}); // Cache for galleries: { clubId: [galleryItems] }
 
 
   useEffect(() => {
     fetchClubs();
-  }, []);
+  }, [status]);
 
   const fetchClubs = async () => {
     try {

@@ -1,139 +1,147 @@
-.front_image img {
-    width: 210%;
-    height: 300%;
-    position: relative;
-    top: -27%;
-    transition: 0.3s;
-}
+/* WelcomingEvents.css */
 
-.front_image {
-    margin-left: -20%;
-    width: 300px;
-    height: 300px;
-    flex-shrink: 0;
-}
-
-.text {
+.main {
+    margin: 2rem auto;
     display: flex;
-    flex-direction: column;
     justify-content: center;
+    padding: 0 5%;
+    max-width: 1400px;
 }
 
 .welcome-card {
-    padding: 3%;
-    margin-top: 2%;
-    overflow: hidden;
-    justify-content: space-around;
     display: flex;
     flex-direction: row;
-    width: 80%;
-    border-radius: 50px;
-    background-color: #EBEBEB;
-    border: 0.5px solid rgba(128, 128, 128, 0.169);
-    box-shadow: 0px 1.5px 1px rgb(103, 103, 103);
-    transition: 0.3s;
-}
-
-.welcome-card:hover img {
-    transform: scale(1.07);
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 1.5rem 3rem;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 250px;
 }
 
 .welcome-card:hover {
-    box-shadow: 0px 5px 1px rgb(103, 103, 103);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
 }
 
-.welcome-card:hover h1 {
-    color: #FF6700;
-    transform: translatey(-4%);
+.front_image {
+    width: 300px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    margin-right: -30px;
+    align-self: flex-end;
+    margin-bottom: -40px;
+    /* Push down but ensure sufficient height to show upper part */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.front_image img {
+    width: 100%;
+    height: auto;
+    object-position: top center;
+    object-fit: cover;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+}
+
+.welcome-card:hover .front_image {
+    transform: scale(1.15);
+}
+
+.text {
+    flex: 1;
+    color: white;
+    padding-left: 2rem;
+    z-index: 2;
 }
 
 .welcome-card h1 {
-    margin-top: 10%;
-    font-size: 30px;
-    color: #004E98;
-    font-weight: 700;
-    transition: transform 0.1s ease, color 0.1s ease;
+    font-size: 2.75rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: white;
+    line-height: 1.1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-card p {
-    font-size: 30px;
-    color: #004E98;
+    font-size: 1.35rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 500;
+    margin-bottom: 0;
 }
 
-.main {
-    margin: 0% 1% 2% 1%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+/* Decorative background circle (Glass Sphere) */
+.welcome-card::after {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -5%;
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 50%;
+    z-index: 1;
 }
 
-/* Mobile Responsive Styles */
-@media (max-width: 768px) {
-    .main {
-        margin: 0 2%;
-        padding: 1rem 0;
-    }
-
+/* Responsive Design */
+@media (max-width: 900px) {
     .welcome-card {
-        flex-direction: column !important;
-        width: 95% !important;
-        padding: 1.5rem !important;
-        border-radius: 25px !important;
-        margin-top: 1rem !important;
+        padding: 2rem;
     }
 
     .front_image {
-        margin-left: 0 !important;
-        width: 100% !important;
-        height: 200px !important;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        border-radius: 15px;
-        margin-bottom: 1rem;
+        width: 250px;
+        margin-bottom: -20px;
     }
 
-    .front_image img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        position: static !important;
-        top: 0 !important;
+    .welcome-card h1 {
+        font-size: 2.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-card {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 1.5rem;
+        gap: 1.5rem;
     }
 
     .text {
-        width: 100%;
-        text-align: center;
-    }
-
-    .welcome-card h1 {
-        font-size: 1.5rem !important;
-        margin-top: 0 !important;
-    }
-
-    .welcome-card p {
-        font-size: 1rem !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .welcome-card {
-        width: 100% !important;
-        padding: 1rem !important;
-        border-radius: 20px !important;
+        padding-left: 0;
     }
 
     .front_image {
-        height: 150px !important;
+        width: 220px;
+        margin-right: 0;
+        margin-bottom: 0;
+        align-self: center;
     }
 
     .welcome-card h1 {
-        font-size: 1.3rem !important;
+        font-size: 1.75rem;
     }
 
     .welcome-card p {
-        font-size: 0.9rem !important;
+        font-size: 1.1rem;
+    }
+
+    .welcome-card::after {
+        width: 300px;
+        height: 300px;
+        top: -20%;
+        right: -10%;
     }
 }

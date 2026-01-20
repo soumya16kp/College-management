@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHome } from "../context/HomeContext";
 import { logout as authLogout } from "../store/AuthSlice.js";
 import authService from "../services/authService.js";
 import { useNavigate } from "react-router-dom";
@@ -14,22 +14,7 @@ import "./Home.css";
 function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await authService.apiClient.get("/clubs/home-data/");
-        setData(response.data);
-      } catch (error) {
-        console.error("Failed to fetch home data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  const { data, loading } = useHome();
 
 
 

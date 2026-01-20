@@ -1,4 +1,4 @@
-import './App.css'; 
+import './App.css';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import authService from "./services/authService";
@@ -7,13 +7,14 @@ import { Footer, Header } from './components';
 import { Outlet, useLocation } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ClubProvider } from "./context/ClubContext";
+import { HomeProvider } from "./context/HomeContext";
 
 function App() {
   const location = useLocation();
   const login_page = location.pathname === "/login";
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -37,7 +38,8 @@ function App() {
 
   return !loading ? (
 
-     <ClubProvider>  
+    <ClubProvider>
+      <HomeProvider>
         <div className="app-container">
           <div className="content-wrapper">
             {!login_page && <Header />}
@@ -47,6 +49,7 @@ function App() {
             {!login_page && <Footer />}
           </div>
         </div>
+      </HomeProvider>
     </ClubProvider>
   ) : null;
 }

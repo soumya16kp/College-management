@@ -166,6 +166,8 @@
 @media (max-width: 900px) {
   .club-glass-layout {
     flex-direction: column;
+    margin-left: 0px;
+
   }
 
   /* Floating Hamburger Button */

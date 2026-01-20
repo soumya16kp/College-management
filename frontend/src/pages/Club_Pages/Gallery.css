@@ -229,8 +229,9 @@
 
 .slider-nav {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  bottom: 0;
+  margin: auto;
   background: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
@@ -247,7 +248,7 @@
 
 .slider-nav:hover {
   background: white;
-  transform: translateY(-50%) scale(1.1);
+  transform: scale(1.1);
 }
 
 .slider-prev {

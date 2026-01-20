@@ -10,6 +10,7 @@ import "./Gallery.css";
 import Loader from "../../components/PageLoader";
 import { useMembers, roleWeights } from "../../context/MemberContext";
 import PermissionModal from "../../components/PermissionModal";
+import { getMediaUrl } from '../../services/media';
 
 function Gallery() {
   const { id } = useParams();
@@ -246,10 +247,10 @@ function Gallery() {
                           {galleries[event.id].map((gallery, index) => (
                             <div key={gallery.id} className="slider-slide">
                               <img
-                                src={gallery.image}
+                                src={getMediaUrl(gallery.image)}
                                 alt={`Gallery ${index + 1}`}
                                 className="slider-image"
-                                onClick={() => openLightbox(gallery.image)}
+                                onClick={() => openLightbox(getMediaUrl(gallery.image))}
                               />
                             </div>
                           ))}
@@ -294,10 +295,10 @@ function Gallery() {
                         <div
                           key={gallery.id}
                           className="gallery-item"
-                          onClick={() => openLightbox(gallery.image)}
+                          onClick={() => openLightbox(getMediaUrl(gallery.image))}
                         >
                           <img
-                            src={gallery.image}
+                            src={getMediaUrl(gallery.image)}
                             alt={`Gallery ${gallery.id}`}
                             className="gallery-image"
                           />
