@@ -16,6 +16,7 @@ export const ChatProvider = ({ children }) => {
   };
 
   const fetchMessages = async (groupId) => {
+    setMessages([]); // Clear previous messages to avoid flickering/mixing
     const res = await authService.apiClient.get(`/groups/${groupId}/messages/`);
     setMessages(res.data);
   };
@@ -66,7 +67,7 @@ export const ChatProvider = ({ children }) => {
     // Dynamically determine the host and port
     const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
     const host = isLocal
-      ? `${window.location.hostname}:8002`
+      ? `${window.location.hostname}:8000`
       : window.location.host; // In production, use the same host/port as the page (often managed by Nginx/proxy)
 
     const wsUrl = `${baseWs}://${host}/ws/chat/groups/${groupId}/?token=${token}`;

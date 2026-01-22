@@ -1,20 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
+import { useClubs } from "../../context/ClubContext";
+import Loader from "../../components/PageLoader";
 // Icons
 import { FiMenu, FiX, FiInfo, FiPhone, FiImage, FiUsers, FiCalendar, FiChevronRight } from "react-icons/fi";
 import "./ClubDetail.css";
 
 const ClubDetail = () => {
   const { id } = useParams();
+  const { loading } = useClubs();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="club-glass-layout">
-      
+
       {/* Mobile Toggle (Floating Glass Button) */}
       <div className="mobile-glass-trigger">
-        <button 
-          className={`glass-toggle-btn ${isMobileMenuOpen ? "active" : ""}`} 
+        <button
+          className={`glass-toggle-btn ${isMobileMenuOpen ? "active" : ""}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <FiX /> : <FiMenu />}
@@ -43,8 +50,8 @@ const ClubDetail = () => {
       </div>
 
       {/* Mobile Overlay (Click to close) */}
-      <div 
-        className={`glass-overlay ${isMobileMenuOpen ? "show" : ""}`} 
+      <div
+        className={`glass-overlay ${isMobileMenuOpen ? "show" : ""}`}
         onClick={() => setIsMobileMenuOpen(false)}
       />
     </div>
@@ -53,8 +60,8 @@ const ClubDetail = () => {
 
 // Helper component to keep code clean
 const NavItem = ({ to, icon, label, closeMenu }) => (
-  <NavLink 
-    to={to} 
+  <NavLink
+    to={to}
     className={({ isActive }) => (isActive ? "glass-link active" : "glass-link")}
     onClick={closeMenu}
   >

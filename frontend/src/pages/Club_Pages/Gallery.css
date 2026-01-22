@@ -47,6 +47,47 @@
   font-size: 1.1rem;
 }
 
+/* Search Container */
+.gallery-search-container {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 300px;
+  transition: all 0.3s ease;
+}
+
+.gallery-search-container:hover,
+.gallery-search-container:focus-within {
+  background: rgba(255, 255, 255, 0.3);
+  width: 320px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-search-icon {
+  color: white;
+  font-size: 1.2rem;
+  margin-right: 0.75rem;
+  opacity: 0.8;
+}
+
+.gallery-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 1rem;
+  width: 100%;
+  font-family: inherit;
+}
+
+.gallery-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 /* Event Card */
 .gallery-container .event-card {
   background: white;

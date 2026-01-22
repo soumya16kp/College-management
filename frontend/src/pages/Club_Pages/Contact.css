@@ -4,11 +4,12 @@
   margin-top: 10px;
   border-radius: 10px;
   display: flex;
-  flex-direction: column;
-  height: 100vh;
+  flex-direction: row;
+  height: calc(100vh - 100px);
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #ffffff;
+  overflow: hidden;
 }
 
 /* Header Styles */
@@ -70,17 +71,13 @@
 }
 
 /* Main Layout - Sidebar and Chat Area in Row */
-.chat-page-container {
-  display: flex;
-  /* Account for fixed header */
-}
 
 .groups-sidebar {
   width: 350px;
   border-radius: 10px;
   background: rgba(26, 26, 46, 0.8);
   border-right: 1px solid rgba(100, 126, 234, 0.2);
-  height: calc(100vh - 80px);
+  height: 100%;
   overflow-y: auto;
   backdrop-filter: blur(10px);
 }
@@ -89,7 +86,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 80px);
+  height: 100%;
 }
 
 /* Groups Sidebar Styles */
@@ -370,6 +367,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
+  gap: 1rem;
 }
 
 .message-sender {
@@ -445,25 +443,27 @@
 
 /* Message Input */
 .message-input-container {
-  background: rgba(26, 26, 46, 0.8);
+  background: rgba(20, 20, 35, 0.95);
   border-top: 1px solid rgba(100, 126, 234, 0.2);
   padding: 1.5rem 2rem;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
 }
 
 .message-input-form {
   display: flex;
   gap: 1rem;
-  align-items: flex-end;
+  align-items: center;
+  /* Center items vertically */
   max-width: 100%;
 }
 
 .message-input {
   flex: 1;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(100, 126, 234, 0.3);
-  border-radius: 25px;
+  border-radius: 20px;
   padding: 1rem 1.5rem;
+  align-content: center;
   color: white;
   font-size: 1rem;
   resize: none;
@@ -471,11 +471,13 @@
   transition: all 0.3s ease;
   min-height: 50px;
   max-height: 120px;
+  line-height: 1.5;
 }
 
 .message-input:focus {
   border-color: #667eea;
-  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(102, 126, 234, 0.2);
 }
 
 .message-input::placeholder {
@@ -483,10 +485,10 @@
 }
 
 .file-upload-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(100, 126, 234, 0.3);
-  color: #667eea;
-  padding: 1rem;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #a0aec0;
+  padding: 0.8rem;
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -496,15 +498,16 @@
 }
 
 .file-upload-btn:hover {
-  background: rgba(102, 126, 234, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #667eea;
   transform: scale(1.1);
 }
 
 .send-btn {
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #667eea, #764ba2);
   border: none;
   color: white;
-  padding: 1rem;
+  padding: 0.8rem;
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -512,17 +515,21 @@
   align-items: center;
   justify-content: center;
   min-width: 50px;
+  height: 50px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .send-btn:hover:not(:disabled) {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
 }
 
 .send-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
+  background: #4a5568;
 }
 
 /* Modal Styles */

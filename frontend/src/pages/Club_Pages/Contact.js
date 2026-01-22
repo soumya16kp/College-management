@@ -56,19 +56,12 @@ const Contact = () => {
     }
   }, [clubId]);
 
-  const [fetchedGroups, setFetchedGroups] = useState(new Set());
-
   useEffect(() => {
     if (!activeGroup) return;
 
-    if (fetchedGroups.has(activeGroup.id)) return;
-
+    // Always fetch messages and connect WS when switching groups
     fetchMessages(activeGroup.id);
-
     connectWS(activeGroup.id);
-
-    // Mark this group as fetched
-    setFetchedGroups(prev => new Set(prev).add(activeGroup.id));
   }, [activeGroup]);
 
   useEffect(() => {
@@ -76,7 +69,9 @@ const Contact = () => {
   }, [messages]);
 
   const scrollToBottom = () => {
-
+    if (messagesEndRef.current) {
+      messagesEndRef.current.parentElement.scrollTop = messagesEndRef.current.parentElement.scrollHeight;
+    }
   };
 
   const backToGroups = () => {
@@ -268,7 +263,7 @@ const Contact = () => {
                     </div>
                   </div>
                   <div className="group-actions">
-                    {(canManageGroup(activeGroup) || activeGroup.created_by === user.id) && (
+                    {(canManageGroup(activeGroup) || (user && activeGroup.created_by === user.id)) && (
                       <button
                         className="group-action-btn"
                         onClick={() => setShowGroupSettings(true)}
@@ -284,10 +279,10 @@ const Contact = () => {
               <div className="messages-container">
                 {messages.filter(m => !m.deleted).map(message => (
 
-                  <div key={message.id} className={`message ${message.sender.id === user.id ? 'own' : ''} ${message.pinned ? 'pinned' : ''}`}>
+                  <div key={message.id} className={`message ${user && message.sender?.id === user.id ? 'own' : ''} ${message.pinned ? 'pinned' : ''}`}>
                     <div className="message-avatar">
                       {console.log(message)}
-                      {getInitials(message.sender.username)}
+                      {message.sender ? getInitials(message.sender.username) : '?'}
                     </div>
                     <div className="message-content">
                       {message.pinned && (
@@ -296,7 +291,7 @@ const Contact = () => {
                         </div>
                       )}
                       <div className="message-header">
-                        <span className="message-sender">{message.sender.username}</span>
+                        <span className="message-sender">{message.sender?.username || 'Unknown'}</span>
                         <span className="message-time">{formatTime(message.created_at)}</span>
                       </div>
 
@@ -320,7 +315,7 @@ const Contact = () => {
 
 
                       <div className="message-actions">
-                        {(message.sender.id === user.id || canManageGroup(activeGroup)) && (
+                        {((user && message.sender?.id === user.id) || canManageGroup(activeGroup)) && (
                           <>
                             <button
                               className="message-action-btn"

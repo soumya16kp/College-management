@@ -4,7 +4,7 @@ import { useClubs } from "../../context/ClubContext";
 import { useParams } from "react-router-dom";
 import authService from "../../services/authService";
 import GalleryForm from "../../forms/GalleryForm";
-import { FiCalendar, FiClock, FiMapPin, FiImage, FiUpload, FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
+import { FiCalendar, FiClock, FiMapPin, FiImage, FiUpload, FiChevronLeft, FiChevronRight, FiX, FiSearch } from "react-icons/fi";
 import { MdEvent, MdPhotoLibrary } from "react-icons/md";
 import "./Gallery.css";
 import Loader from "../../components/PageLoader";
@@ -23,6 +23,7 @@ function Gallery() {
   const [currentSlideIndexes, setCurrentSlideIndexes] = useState({});
   const [selectedImage, setSelectedImage] = useState(null); // Lightbox state
   const [mobileDetailsOpen, setMobileDetailsOpen] = useState({}); // Mobile details toggle state
+  const [searchQuery, setSearchQuery] = useState(""); // Search state
 
   const toggleMobileDetails = (eventId) => {
     setMobileDetailsOpen(prev => ({
@@ -144,6 +145,11 @@ function Gallery() {
     setSelectedImage(null);
   };
 
+  // Filter events based on search query
+  const filteredEvents = events.filter(event =>
+    event.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (loading) return <Loader />;
 
   return (
@@ -157,16 +163,26 @@ function Gallery() {
             <p>Discover the vibrant moments of our club </p>
           </div>
         </div>
+        <div className="gallery-search-container">
+          <FiSearch className="gallery-search-icon" />
+          <input
+            type="text"
+            placeholder="Search events..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="gallery-search-input"
+          />
+        </div>
       </div>
 
-      {events.length === 0 ? (
+      {filteredEvents.length === 0 ? (
         <div className="no-gallery">
           <MdPhotoLibrary className="gallery-icon" />
-          <p>No events yet.</p>
+          <p>{searchQuery ? "No events found matching your search." : "No events yet."}</p>
         </div>
       ) : (
         <div className="events-list">
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <div key={event.id} className="event-card">
               <div className="gallery-event-header">
                 <div className="event-title-section">
@@ -301,6 +317,7 @@ function Gallery() {
                             src={getMediaUrl(gallery.image)}
                             alt={`Gallery ${gallery.id}`}
                             className="gallery-image"
+                            onClick={(e) => { e.stopPropagation(); openLightbox(getMediaUrl(gallery.image)); }}
                           />
                           {gallery.title && (
                             <p className="gallery-caption">{gallery.title}</p>
